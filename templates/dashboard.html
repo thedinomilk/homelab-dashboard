@@ -1,0 +1,139 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h1 class="display-5">
+            <i class="fas fa-tachometer-alt me-2"></i> Homelab Dashboard
+        </h1>
+        <p class="lead">Monitor your Proxmox, Docker, and Storage resources</p>
+    </div>
+</div>
+
+<div class="row mb-4" id="connection-status">
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-header bg-primary text-white">
+                <i class="fas fa-server me-2"></i> Proxmox Status
+            </div>
+            <div class="card-body text-center">
+                <div id="proxmox-status-indicator" class="status-indicator">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <h5 id="proxmox-status-text" class="mt-3">Checking connection...</h5>
+                <p id="proxmox-host" class="text-muted">Host: {{ settings.proxmox_host or 'Not configured' }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-header bg-info text-white">
+                <i class="fab fa-docker me-2"></i> Docker Status
+            </div>
+            <div class="card-body text-center">
+                <div id="docker-status-indicator" class="status-indicator">
+                    <div class="spinner-border text-info" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <h5 id="docker-status-text" class="mt-3">Checking connection...</h5>
+                <p id="docker-host" class="text-muted">Host: {{ settings.docker_host or 'Not configured' }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-header bg-success text-white">
+                <i class="fas fa-hdd me-2"></i> Storage Status
+            </div>
+            <div class="card-body text-center">
+                <div id="storage-status-indicator" class="status-indicator">
+                    <div class="spinner-border text-success" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <h5 id="storage-status-text" class="mt-3">Checking storage...</h5>
+                <p id="storage-paths" class="text-muted">
+                    {% if settings.storage_paths %}
+                        Paths: {{ settings.storage_paths|length }} configured
+                    {% else %}
+                        Paths: Not configured
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-dark">
+                <i class="fas fa-microchip me-2"></i> Resource Usage
+            </div>
+            <div class="card-body">
+                <canvas id="resourceChart" height="250"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-header bg-dark">
+                <i class="fas fa-server me-2"></i> Node Overview
+            </div>
+            <div class="card-body p-0">
+                <div id="node-list" class="list-group list-group-flush">
+                    <div class="text-center py-4">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-2">Loading nodes...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-dark">
+                <i class="fab fa-docker me-2"></i> Docker Containers
+            </div>
+            <div class="card-body p-0">
+                <div id="docker-container-summary" class="list-group list-group-flush">
+                    <div class="text-center py-4">
+                        <div class="spinner-border text-info" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-2">Loading containers...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer text-center">
+                <a href="{{ url_for('docker_page') }}" class="btn btn-sm btn-primary">View All Containers</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-dark">
+                <i class="fas fa-hdd me-2"></i> Storage Summary
+            </div>
+            <div class="card-body">
+                <canvas id="storageChart" height="230"></canvas>
+            </div>
+            <div class="card-footer text-center">
+                <a href="{{ url_for('storage_page') }}" class="btn btn-sm btn-primary">View Storage Details</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

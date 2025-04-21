@@ -1,0 +1,136 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h1 class="display-5">
+            <i class="fas fa-book me-2"></i> Documentation
+        </h1>
+        <p class="lead">Store and organize your homelab documentation</p>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span><i class="fas fa-list me-2"></i> Documents</span>
+                    <button id="new-doc-btn" class="btn btn-sm btn-success">
+                        <i class="fas fa-plus me-1"></i> New
+                    </button>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush" id="docs-list">
+                    {% if docs %}
+                        {% for doc in docs %}
+                        <button type="button" class="list-group-item list-group-item-action doc-item" data-id="{{ doc.id }}">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">{{ doc.title }}</h6>
+                                <small>{{ doc.created_at.strftime('%Y-%m-%d') }}</small>
+                            </div>
+                            <small class="text-muted">
+                                {% if doc.tags %}
+                                {% for tag in doc.tags.split(',') %}
+                                <span class="badge bg-secondary me-1">{{ tag.strip() }}</span>
+                                {% endfor %}
+                                {% endif %}
+                            </small>
+                        </button>
+                        {% endfor %}
+                    {% else %}
+                        <div class="list-group-item text-center py-4">
+                            <p class="mb-0">No documents yet</p>
+                            <small class="text-muted">Click the "New" button to create one</small>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span id="doc-title-header"><i class="fas fa-file-alt me-2"></i> Document</span>
+                    <div id="doc-actions" style="display: none;">
+                        <button id="edit-doc-btn" class="btn btn-sm btn-primary me-1">
+                            <i class="fas fa-edit me-1"></i> Edit
+                        </button>
+                        <button id="delete-doc-btn" class="btn btn-sm btn-danger">
+                            <i class="fas fa-trash-alt me-1"></i> Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="doc-view" class="d-none">
+                    <h3 id="view-title"></h3>
+                    <div class="mb-3">
+                        <span id="view-tags"></span>
+                    </div>
+                    <div id="view-content" class="mt-3"></div>
+                </div>
+                
+                <div id="doc-form">
+                    <form id="document-form">
+                        <input type="hidden" id="doc-id">
+                        <div class="mb-3">
+                            <label for="doc-title" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="doc-title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="doc-tags" class="form-label">Tags (comma separated)</label>
+                            <input type="text" class="form-control" id="doc-tags" placeholder="e.g. proxmox, setup, tutorial">
+                        </div>
+                        <div class="mb-3">
+                            <label for="doc-content" class="form-label">Content</label>
+                            <textarea class="form-control" id="doc-content" rows="15" required></textarea>
+                            <small class="text-muted">Supports Markdown formatting</small>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" id="cancel-doc-btn" class="btn btn-secondary">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Save Document</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div id="doc-placeholder" class="text-center py-4">
+                    <i class="fas fa-file-alt fa-3x text-muted mb-3"></i>
+                    <p>Select a document from the list or create a new one</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteDocModal" tabindex="-1" aria-labelledby="deleteDocModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteDocModalLabel">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this document? This action cannot be undone.</p>
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Document: <strong id="delete-doc-title"></strong>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirm-delete-btn">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<!-- Include a Markdown parser -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="{{ url_for('static', filename='js/docs.js') }}"></script>
+{% endblock %}

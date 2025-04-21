@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container text-center py-5">
+    <div class="display-1 text-muted mb-3">500</div>
+    <h1 class="h2 mb-3">Server Error</h1>
+    <p class="h4 text-muted font-weight-normal mb-4">Something went wrong on our end.</p>
+    <div class="alert alert-danger text-start">
+        <p><strong>Error Details:</strong></p>
+        <pre>{{ error }}</pre>
+    </div>
+    <a class="btn btn-primary" href="{{ url_for('index') }}">
+        <i class="fas fa-sync-alt me-2"></i>
+        Retry
+    </a>
+</div>
+{% endblock %}

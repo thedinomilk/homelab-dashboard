@@ -1,0 +1,206 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h1 class="display-5">
+            <i class="fas fa-cog me-2"></i> Settings
+        </h1>
+        <p class="lead">Configure your homelab dashboard connections</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-wrench me-2"></i> Configuration
+            </div>
+            <div class="card-body">
+                <form method="post" action="{{ url_for('settings_page') }}">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5><i class="fas fa-server me-2"></i> Proxmox Configuration</h5>
+                            <div class="mb-3">
+                                <label for="proxmox_host" class="form-label">Proxmox Host</label>
+                                <input type="text" class="form-control" id="proxmox_host" name="proxmox_host" 
+                                       value="{{ settings.proxmox_host }}" placeholder="https://proxmox.local:8006">
+                                <div class="form-text">The URL of your Proxmox VE API (include https:// and port)</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="proxmox_user" class="form-label">Proxmox User</label>
+                                <input type="text" class="form-control" id="proxmox_user" name="proxmox_user" 
+                                       value="{{ settings.proxmox_user }}" placeholder="root@pam">
+                                <div class="form-text">Username format: user@realm (e.g., root@pam)</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="proxmox_token_name" class="form-label">API Token Name</label>
+                                <input type="text" class="form-control" id="proxmox_token_name" name="proxmox_token_name" 
+                                       value="{{ settings.proxmox_token_name }}" placeholder="homelab">
+                                <div class="form-text">Recommended: Create a dedicated API token in Proxmox</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="proxmox_token_value" class="form-label">API Token Value</label>
+                                <input type="password" class="form-control" id="proxmox_token_value" name="proxmox_token_value" 
+                                       placeholder="{% if settings.proxmox_token_value %}••••••••••••••••{% else %}Enter token value{% endif %}">
+                                <div class="form-text">Leave blank to keep the existing token</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h5><i class="fab fa-docker me-2"></i> Docker Configuration</h5>
+                            <div class="mb-3">
+                                <label for="docker_host" class="form-label">Docker Host</label>
+                                <input type="text" class="form-control" id="docker_host" name="docker_host" 
+                                       value="{{ settings.docker_host }}" placeholder="tcp://docker.local">
+                                <div class="form-text">The address of your Docker host (e.g., tcp://192.168.1.10)</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="docker_port" class="form-label">Docker Port</label>
+                                <input type="number" class="form-control" id="docker_port" name="docker_port" 
+                                       value="{{ settings.docker_port }}" placeholder="2375">
+                                <div class="form-text">Default is 2375 (unencrypted) or 2376 (TLS)</div>
+                            </div>
+                            
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <strong>Docker API Security Note:</strong>
+                                <p class="mb-0 mt-1">
+                                    Ensure your Docker API is properly secured. For production use, 
+                                    enable TLS and consider using secrets management.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <h5><i class="fas fa-hdd me-2"></i> Storage Configuration</h5>
+                            <div class="mb-3">
+                                <label for="storage_paths" class="form-label">Storage Paths</label>
+                                <textarea class="form-control" id="storage_paths" name="storage_paths" 
+                                          rows="4" placeholder="/mnt/storage1&#10;/mnt/storage2">{% if settings.storage_paths %}{% for path in settings.storage_paths|from_json %}{{ path }}
+{% endfor %}{% endif %}</textarea>
+                                <div class="form-text">Enter one mount point per line for storage monitoring</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-1"></i> Save Settings
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-shield-alt me-2"></i> Connection Test
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="d-grid">
+                            <button id="test-proxmox" class="btn btn-outline-primary">
+                                <i class="fas fa-server me-1"></i> Test Proxmox Connection
+                            </button>
+                        </div>
+                        <div id="proxmox-test-result" class="mt-2"></div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="d-grid">
+                            <button id="test-docker" class="btn btn-outline-primary">
+                                <i class="fab fa-docker me-1"></i> Test Docker Connection
+                            </button>
+                        </div>
+                        <div id="docker-test-result" class="mt-2"></div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="d-grid">
+                            <button id="test-storage" class="btn btn-outline-primary">
+                                <i class="fas fa-hdd me-1"></i> Test Storage Access
+                            </button>
+                        </div>
+                        <div id="storage-test-result" class="mt-2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('test-proxmox').addEventListener('click', function() {
+        const resultDiv = document.getElementById('proxmox-test-result');
+        resultDiv.innerHTML = '<div class="alert alert-info">Testing connection...</div>';
+        
+        fetch('/api/proxmox/nodes')
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => { throw new Error(err.error || 'Failed to connect to Proxmox'); });
+                }
+                return response.json();
+            })
+            .then(data => {
+                resultDiv.innerHTML = '<div class="alert alert-success">Connected successfully! Found ' + 
+                                      data.length + ' nodes.</div>';
+            })
+            .catch(error => {
+                resultDiv.innerHTML = '<div class="alert alert-danger">Connection failed: ' + 
+                                     error.message + '</div>';
+            });
+    });
+    
+    document.getElementById('test-docker').addEventListener('click', function() {
+        const resultDiv = document.getElementById('docker-test-result');
+        resultDiv.innerHTML = '<div class="alert alert-info">Testing connection...</div>';
+        
+        fetch('/api/docker/containers')
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => { throw new Error(err.error || 'Failed to connect to Docker'); });
+                }
+                return response.json();
+            })
+            .then(data => {
+                resultDiv.innerHTML = '<div class="alert alert-success">Connected successfully! Found ' + 
+                                      data.length + ' containers.</div>';
+            })
+            .catch(error => {
+                resultDiv.innerHTML = '<div class="alert alert-danger">Connection failed: ' + 
+                                     error.message + '</div>';
+            });
+    });
+    
+    document.getElementById('test-storage').addEventListener('click', function() {
+        const resultDiv = document.getElementById('storage-test-result');
+        resultDiv.innerHTML = '<div class="alert alert-info">Testing storage access...</div>';
+        
+        fetch('/api/storage/info')
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => { throw new Error(err.error || 'Failed to access storage'); });
+                }
+                return response.json();
+            })
+            .then(data => {
+                resultDiv.innerHTML = '<div class="alert alert-success">Storage accessible! Found ' + 
+                                      data.length + ' storage points.</div>';
+            })
+            .catch(error => {
+                resultDiv.innerHTML = '<div class="alert alert-danger">Access failed: ' + 
+                                     error.message + '</div>';
+            });
+    });
+});
+</script>
+{% endblock %}
