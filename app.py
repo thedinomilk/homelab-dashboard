@@ -101,6 +101,16 @@ def settings_page():
             [path.strip() for path in storage_paths.split('\n') if path.strip()]
         )
         
+        # Update SSH settings for ZFS management
+        settings.ssh_host = request.form.get('ssh_host', '')
+        settings.ssh_user = request.form.get('ssh_user', '')
+        
+        # Only update SSH password if provided
+        if request.form.get('ssh_password'):
+            settings.ssh_password = request.form.get('ssh_password')
+            
+        settings.ssh_key_path = request.form.get('ssh_key_path', '')
+        
         db.session.commit()
         flash('Settings updated successfully!', 'success')
         return redirect(url_for('settings_page'))
@@ -182,17 +192,83 @@ def get_storage_info():
 def list_zpools():
     """List all ZFS pools"""
     try:
-        result = storage.manage_zpool('list', '')
+        settings = UserSettings.query.first()
+        result = storage.manage_zpool('list', '', settings)
         return jsonify(result)
     except Exception as e:
         logging.error(f"Error listing ZFS pools: {str(e)}")
+        return jsonify({"error": str(e)}), 500
+        
+@app.route('/api/storage/zpool/test-ssh')
+def test_zpool_ssh():
+    """Test SSH connection for ZFS management"""
+    try:
+        settings = UserSettings.query.first()
+        
+        # Skip test if SSH settings are not configured
+        if not settings.ssh_host or not settings.ssh_user:
+            return jsonify({
+                "success": False,
+                "message": "SSH connection not configured. Please set SSH host and username."
+            }), 400
+            
+        # Run a simple command via SSH to test connection
+        stdout, stderr, exit_code = storage.run_ssh_command(
+            settings.ssh_host,
+            settings.ssh_user,
+            settings.ssh_password,
+            settings.ssh_key_path,
+            "command -v zpool || echo 'ZFS not installed'"
+        )
+        
+        if exit_code != 0:
+            return jsonify({
+                "success": False,
+                "message": f"SSH connection failed: {stderr}"
+            })
+            
+        # Check if zpool command is available
+        if "not installed" in stdout:
+            return jsonify({
+                "success": False,
+                "message": "Connected to SSH, but ZFS tools are not installed on the remote system."
+            })
+            
+        # If ZFS is installed, try to list pools to verify full functionality
+        stdout, stderr, exit_code = storage.run_ssh_command(
+            settings.ssh_host,
+            settings.ssh_user,
+            settings.ssh_password,
+            settings.ssh_key_path,
+            "zpool list -H"
+        )
+        
+        if exit_code != 0:
+            return jsonify({
+                "success": False,
+                "message": f"ZFS tools are installed, but unable to list pools: {stderr}"
+            })
+        
+        # Count the pools
+        pools = [line for line in stdout.strip().split('\n') if line.strip()]
+        pool_count = len(pools)
+        
+        # Report success with pool count
+        return jsonify({
+            "success": True,
+            "message": f"SSH connection successful and ZFS is working! Found {pool_count} ZFS pools."
+        })
+        
+    except Exception as e:
+        logging.error(f"Error testing SSH ZFS connection: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 @app.route('/api/storage/zpool/delete/<pool_name>', methods=['POST'])
 def delete_zpool(pool_name):
     """Delete a ZFS pool"""
     try:
-        result = storage.manage_zpool('delete', pool_name)
+        settings = UserSettings.query.first()
+        result = storage.manage_zpool('delete', pool_name, settings)
         return jsonify(result)
     except Exception as e:
         logging.error(f"Error deleting ZFS pool: {str(e)}")

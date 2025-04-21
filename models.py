@@ -11,6 +11,12 @@ class UserSettings(db.Model):
     docker_port = db.Column(db.Integer, default=2375)
     storage_paths = db.Column(db.Text, nullable=True)  # JSON string of storage paths
     
+    # SSH settings for remote ZFS management
+    ssh_host = db.Column(db.String(255), nullable=True)
+    ssh_user = db.Column(db.String(255), nullable=True)
+    ssh_password = db.Column(db.String(255), nullable=True)
+    ssh_key_path = db.Column(db.String(255), nullable=True)
+    
     def __repr__(self):
         return f'<UserSettings {self.id}>'
 

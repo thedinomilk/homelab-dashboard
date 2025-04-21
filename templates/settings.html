@@ -86,6 +86,56 @@
                         </div>
                     </div>
                     
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <h5><i class="fas fa-terminal me-2"></i> SSH Configuration for ZFS Management</h5>
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <strong>Remote ZFS Management:</strong>
+                                <p class="mb-0 mt-1">
+                                    Configure SSH access to a remote system with ZFS installed to manage ZFS pools remotely.
+                                    This is useful when running this dashboard in environments without ZFS tools (like Replit).
+                                </p>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="ssh_host" class="form-label">SSH Host</label>
+                                        <input type="text" class="form-control" id="ssh_host" name="ssh_host" 
+                                               value="{{ settings.ssh_host }}" placeholder="192.168.1.10">
+                                        <div class="form-text">IP address or hostname of the system with ZFS installed</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="ssh_user" class="form-label">SSH Username</label>
+                                        <input type="text" class="form-control" id="ssh_user" name="ssh_user" 
+                                               value="{{ settings.ssh_user }}" placeholder="root">
+                                        <div class="form-text">SSH username (needs permission to run ZFS commands)</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="ssh_password" class="form-label">SSH Password</label>
+                                        <input type="password" class="form-control" id="ssh_password" name="ssh_password" 
+                                               placeholder="{% if settings.ssh_password %}••••••••••••••••{% else %}Enter password{% endif %}">
+                                        <div class="form-text">Leave blank to keep existing password or if using key authentication</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="ssh_key_path" class="form-label">SSH Key Path</label>
+                                        <input type="text" class="form-control" id="ssh_key_path" name="ssh_key_path" 
+                                               value="{{ settings.ssh_key_path }}" placeholder="/path/to/private_key">
+                                        <div class="form-text">Optional: Path to SSH private key file (alternative to password)</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-save me-1"></i> Save Settings
@@ -105,7 +155,7 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="d-grid">
                             <button id="test-proxmox" class="btn btn-outline-primary">
                                 <i class="fas fa-server me-1"></i> Test Proxmox Connection
@@ -113,7 +163,7 @@
                         </div>
                         <div id="proxmox-test-result" class="mt-2"></div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="d-grid">
                             <button id="test-docker" class="btn btn-outline-primary">
                                 <i class="fab fa-docker me-1"></i> Test Docker Connection
@@ -121,13 +171,21 @@
                         </div>
                         <div id="docker-test-result" class="mt-2"></div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="d-grid">
                             <button id="test-storage" class="btn btn-outline-primary">
                                 <i class="fas fa-hdd me-1"></i> Test Storage Access
                             </button>
                         </div>
                         <div id="storage-test-result" class="mt-2"></div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="d-grid">
+                            <button id="test-ssh-zfs" class="btn btn-outline-primary">
+                                <i class="fas fa-terminal me-1"></i> Test SSH ZFS Connection
+                            </button>
+                        </div>
+                        <div id="ssh-zfs-test-result" class="mt-2"></div>
                     </div>
                 </div>
             </div>
@@ -198,6 +256,30 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => {
                 resultDiv.innerHTML = '<div class="alert alert-danger">Access failed: ' + 
+                                     error.message + '</div>';
+            });
+    });
+    
+    document.getElementById('test-ssh-zfs').addEventListener('click', function() {
+        const resultDiv = document.getElementById('ssh-zfs-test-result');
+        resultDiv.innerHTML = '<div class="alert alert-info">Testing SSH ZFS connection...</div>';
+        
+        fetch('/api/storage/zpool/test-ssh')
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => { throw new Error(err.error || err.message || 'Failed to connect to ZFS via SSH'); });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    resultDiv.innerHTML = '<div class="alert alert-success">' + data.message + '</div>';
+                } else {
+                    resultDiv.innerHTML = '<div class="alert alert-warning">' + data.message + '</div>';
+                }
+            })
+            .catch(error => {
+                resultDiv.innerHTML = '<div class="alert alert-danger">Connection failed: ' + 
                                      error.message + '</div>';
             });
     });

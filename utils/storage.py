@@ -3,84 +3,216 @@ import os
 import shutil
 import logging
 import subprocess
+import paramiko
+from typing import Optional, Tuple, Dict, List, Any
 
-def manage_zpool(action, pool_name):
+def run_ssh_command(host: str, username: str, password: Optional[str] = None, 
+                  key_path: Optional[str] = None, command: str = "") -> Tuple[str, str, int]:
+    """
+    Run a command over SSH
+    
+    Args:
+        host: SSH host (IP or hostname)
+        username: SSH username
+        password: SSH password (optional if key_path is provided)
+        key_path: Path to SSH private key (optional if password is provided)
+        command: Command to run
+        
+    Returns:
+        tuple: (stdout, stderr, return_code)
+    """
+    if not host or not username:
+        return "", "Missing SSH host or username", -1
+        
+    if not command:
+        return "", "No command specified", -1
+    
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    
+    try:
+        # Connect using either password or key
+        if key_path and os.path.exists(key_path):
+            # Use key-based authentication
+            key = paramiko.RSAKey.from_private_key_file(key_path)
+            ssh.connect(host, username=username, pkey=key)
+        else:
+            # Use password authentication
+            ssh.connect(host, username=username, password=password)
+        
+        # Execute command
+        stdin, stdout, stderr = ssh.exec_command(command)
+        exit_code = stdout.channel.recv_exit_status()
+        
+        # Get output
+        stdout_str = stdout.read().decode('utf-8')
+        stderr_str = stderr.read().decode('utf-8')
+        
+        return stdout_str, stderr_str, exit_code
+    
+    except Exception as e:
+        logging.error(f"SSH error: {str(e)}")
+        return "", str(e), -1
+    
+    finally:
+        ssh.close()
+
+def manage_zpool(action: str, pool_name: str, settings: Optional[Any] = None) -> Dict[str, Any]:
     """
     Manage ZFS pool operations
     
     Args:
         action: Operation to perform (delete, create, etc.)
         pool_name: Name of the ZFS pool
+        settings: UserSettings object for SSH connection (optional)
         
     Returns:
         dict: Result of the operation
     """
     try:
+        # Initialize SSH variables with defaults
+        ssh_host = ""
+        ssh_user = "root"
+        ssh_password = None
+        ssh_key_path = None
+        use_ssh = False
+        
+        # Check if we should use SSH (settings has ssh_* attributes)
+        if settings and hasattr(settings, 'ssh_host') and settings.ssh_host:
+            use_ssh = True
+            ssh_host = settings.ssh_host
+            ssh_user = getattr(settings, 'ssh_user', 'root')
+            ssh_password = getattr(settings, 'ssh_password', None) 
+            ssh_key_path = getattr(settings, 'ssh_key_path', None)
+        
         if action == 'delete':
-            # First, check if pool exists
-            check_cmd = ['zpool', 'list', pool_name]
-            check_result = subprocess.run(
-                check_cmd, 
-                capture_output=True, 
-                text=True
-            )
-            
-            if check_result.returncode != 0:
-                return {
-                    'success': False,
-                    'message': f"ZFS pool '{pool_name}' does not exist or is not accessible"
-                }
+            if use_ssh:
+                # First, check if pool exists via SSH
+                check_cmd = f"zpool list {pool_name}"
+                stdout, stderr, exit_code = run_ssh_command(
+                    ssh_host, ssh_user, ssh_password, ssh_key_path, check_cmd
+                )
                 
-            # Execute pool deletion (force destruction)
-            cmd = ['zpool', 'destroy', '-f', pool_name]
-            result = subprocess.run(
-                cmd, 
-                capture_output=True, 
-                text=True
-            )
-            
-            if result.returncode == 0:
-                return {
-                    'success': True,
-                    'message': f"ZFS pool '{pool_name}' has been successfully deleted"
-                }
+                if exit_code != 0:
+                    return {
+                        'success': False,
+                        'message': f"ZFS pool '{pool_name}' does not exist or is not accessible"
+                    }
+                
+                # Execute pool deletion via SSH
+                cmd = f"zpool destroy -f {pool_name}"
+                stdout, stderr, exit_code = run_ssh_command(
+                    ssh_host, ssh_user, ssh_password, ssh_key_path, cmd
+                )
+                
+                if exit_code == 0:
+                    return {
+                        'success': True,
+                        'message': f"ZFS pool '{pool_name}' has been successfully deleted"
+                    }
+                else:
+                    return {
+                        'success': False,
+                        'message': f"Failed to delete ZFS pool: {stderr.strip()}"
+                    }
             else:
-                return {
-                    'success': False,
-                    'message': f"Failed to delete ZFS pool: {result.stderr.strip()}"
-                }
+                # Local execution
+                # First, check if pool exists
+                check_cmd = ['zpool', 'list', pool_name]
+                check_result = subprocess.run(
+                    check_cmd, 
+                    capture_output=True, 
+                    text=True
+                )
                 
+                if check_result.returncode != 0:
+                    return {
+                        'success': False,
+                        'message': f"ZFS pool '{pool_name}' does not exist or is not accessible"
+                    }
+                    
+                # Execute pool deletion (force destruction)
+                cmd = ['zpool', 'destroy', '-f', pool_name]
+                result = subprocess.run(
+                    cmd, 
+                    capture_output=True, 
+                    text=True
+                )
+                
+                if result.returncode == 0:
+                    return {
+                        'success': True,
+                        'message': f"ZFS pool '{pool_name}' has been successfully deleted"
+                    }
+                else:
+                    return {
+                        'success': False,
+                        'message': f"Failed to delete ZFS pool: {result.stderr.strip()}"
+                    }
+                    
         elif action == 'list':
-            # List all ZFS pools
-            cmd = ['zpool', 'list', '-H']
-            result = subprocess.run(
-                cmd, 
-                capture_output=True, 
-                text=True
-            )
-            
-            if result.returncode == 0:
-                pools = []
-                for line in result.stdout.strip().split('\n'):
-                    if line:
-                        parts = line.split('\t')
-                        if len(parts) >= 5:
-                            pools.append({
-                                'name': parts[0],
-                                'size': parts[1],
-                                'allocated': parts[2],
-                                'free': parts[3],
-                                'health': parts[4],
-                            })
-                return {
-                    'success': True,
-                    'pools': pools
-                }
+            if use_ssh:
+                # List all ZFS pools via SSH
+                cmd = "zpool list -H"
+                stdout, stderr, exit_code = run_ssh_command(
+                    ssh_host, ssh_user, ssh_password, ssh_key_path, cmd
+                )
+                
+                if exit_code == 0:
+                    pools = []
+                    for line in stdout.strip().split('\n'):
+                        if line:
+                            parts = line.split('\t')
+                            if len(parts) >= 5:
+                                pools.append({
+                                    'name': parts[0],
+                                    'size': parts[1],
+                                    'allocated': parts[2],
+                                    'free': parts[3],
+                                    'health': parts[4],
+                                })
+                    return {
+                        'success': True,
+                        'pools': pools
+                    }
+                else:
+                    return {
+                        'success': False,
+                        'message': f"Failed to list ZFS pools: {stderr.strip()}"
+                    }
             else:
-                return {
-                    'success': False,
-                    'message': f"Failed to list ZFS pools: {result.stderr.strip()}"
-                }
+                # Local execution
+                # List all ZFS pools
+                cmd = ['zpool', 'list', '-H']
+                result = subprocess.run(
+                    cmd, 
+                    capture_output=True, 
+                    text=True
+                )
+                
+                if result.returncode == 0:
+                    pools = []
+                    for line in result.stdout.strip().split('\n'):
+                        if line:
+                            parts = line.split('\t')
+                            if len(parts) >= 5:
+                                pools.append({
+                                    'name': parts[0],
+                                    'size': parts[1],
+                                    'allocated': parts[2],
+                                    'free': parts[3],
+                                    'health': parts[4],
+                                })
+                    return {
+                        'success': True,
+                        'pools': pools
+                    }
+                else:
+                    return {
+                        'success': False,
+                        'message': f"Failed to list ZFS pools: {result.stderr.strip()}"
+                    }
+            
         else:
             return {
                 'success': False,
