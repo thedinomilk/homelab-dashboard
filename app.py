@@ -1,8 +1,6 @@
 import os
 import logging
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import DeclarativeBase
 from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.security import generate_password_hash, check_password_hash
 import json
@@ -11,12 +9,8 @@ from datetime import datetime
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
 
-# Create base model class
-class Base(DeclarativeBase):
-    pass
-
-# Initialize SQLAlchemy with the base model class
-db = SQLAlchemy(model_class=Base)
+# Import database
+from database import db, init_db
 
 # Create Flask app
 app = Flask(__name__)
@@ -29,18 +23,16 @@ app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
     "pool_recycle": 300,
     "pool_pre_ping": True,
 }
-# Initialize SQLAlchemy with the app
-db.init_app(app)
 
-# Import routes after app initialization to avoid circular imports
+# Initialize database
+init_db(app)
+
+# Import utils after app initialization
 from utils import proxmox, docker, storage
 from models import UserSettings, DocuEntry, ScriptEntry
 
+# Initialize default settings if none exist
 with app.app_context():
-    # Create all database tables
-    db.create_all()
-    
-    # Initialize default settings if none exist
     if not UserSettings.query.first():
         default_settings = UserSettings(
             proxmox_host="",

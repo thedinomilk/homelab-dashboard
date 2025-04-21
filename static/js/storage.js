@@ -2,18 +2,53 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize storage components
     loadStorageOverview();
     loadStorageDetails();
+    loadZFSPools();
     initializeStorageTrends();
     
-    // Setup refresh button
+    // Setup refresh buttons
     document.getElementById('refresh-storage').addEventListener('click', function() {
         loadStorageOverview();
         loadStorageDetails();
+    });
+    
+    document.getElementById('refresh-zpools').addEventListener('click', function() {
+        loadZFSPools();
+    });
+    
+    // Setup ZFS pool deletion modal
+    const deletePoolModal = new bootstrap.Modal(document.getElementById('deletePoolModal'));
+    let poolToDelete = '';
+    
+    // Event delegation for delete pool buttons (will be added dynamically)
+    document.addEventListener('click', function(event) {
+        if (event.target.classList.contains('delete-pool-btn') || 
+            event.target.closest('.delete-pool-btn')) {
+            const button = event.target.classList.contains('delete-pool-btn') ? 
+                          event.target : 
+                          event.target.closest('.delete-pool-btn');
+            poolToDelete = button.dataset.pool;
+            
+            // Update modal content with pool name
+            document.getElementById('pool-name-to-delete').textContent = poolToDelete;
+            
+            // Show modal
+            deletePoolModal.show();
+        }
+    });
+    
+    // Confirm delete button
+    document.getElementById('confirm-delete-pool').addEventListener('click', function() {
+        if (poolToDelete) {
+            deleteZFSPool(poolToDelete);
+            deletePoolModal.hide();
+        }
     });
     
     // Auto refresh every 2 minutes
     setInterval(function() {
         loadStorageOverview();
         loadStorageDetails();
+        loadZFSPools();
     }, 120000);
 });
 
@@ -329,6 +364,153 @@ function loadStorageDetails() {
 
 // Initialize storage trends chart with placeholder data
 // In a real implementation, you would fetch historical data from a database
+// Load ZFS pools
+function loadZFSPools() {
+    const loadingDiv = document.getElementById('zpools-loading');
+    const zpoolsContent = document.getElementById('zpools-content');
+    const zpoolsError = document.getElementById('zpools-error');
+    const noZpools = document.getElementById('no-zpools');
+    
+    // Show loading state
+    loadingDiv.style.display = 'block';
+    zpoolsContent.style.display = 'none';
+    zpoolsError.style.display = 'none';
+    
+    fetch('/api/storage/zpool/list')
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => { throw new Error(err.error || 'Failed to load ZFS pool information'); });
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Hide loading state
+            loadingDiv.style.display = 'none';
+            zpoolsContent.style.display = 'block';
+            
+            if (!data.success) {
+                throw new Error(data.message || 'Failed to retrieve ZFS pool information');
+            }
+            
+            const poolsTable = document.getElementById('zpools-table').querySelector('tbody');
+            
+            if (!data.pools || data.pools.length === 0) {
+                poolsTable.innerHTML = '';
+                noZpools.style.display = 'block';
+                return;
+            }
+            
+            noZpools.style.display = 'none';
+            
+            // Update the table with pool information
+            let html = '';
+            data.pools.forEach(pool => {
+                // Determine health status color
+                let healthClass = 'success';
+                if (pool.health !== 'ONLINE') {
+                    healthClass = pool.health === 'DEGRADED' ? 'warning' : 'danger';
+                }
+                
+                html += `
+                    <tr>
+                        <td>${pool.name}</td>
+                        <td>${pool.size}</td>
+                        <td>${pool.allocated}</td>
+                        <td>${pool.free}</td>
+                        <td><span class="badge bg-${healthClass}">${pool.health}</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-danger delete-pool-btn" data-pool="${pool.name}">
+                                <i class="fas fa-trash-alt me-1"></i> Delete
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            poolsTable.innerHTML = html;
+        })
+        .catch(error => {
+            console.error('Error loading ZFS pools:', error);
+            zpoolsError.textContent = `Error: ${error.message}`;
+            zpoolsError.style.display = 'block';
+            loadingDiv.style.display = 'none';
+        });
+}
+
+// Delete a ZFS pool
+function deleteZFSPool(poolName) {
+    // Show a toast notification that deletion is in progress
+    showToast(`Deleting ZFS pool "${poolName}"...`, 'info');
+    
+    fetch(`/api/storage/zpool/delete/${poolName}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(err => { throw new Error(err.error || 'Failed to delete ZFS pool'); });
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            showToast(data.message, 'success');
+            // Refresh the ZFS pools list
+            loadZFSPools();
+        } else {
+            showToast(`Error: ${data.message}`, 'danger');
+        }
+    })
+    .catch(error => {
+        console.error('Error deleting ZFS pool:', error);
+        showToast(`Error: ${error.message}`, 'danger');
+    });
+}
+
+// Helper function to display toast notifications
+function showToast(message, type = 'info') {
+    const toastContainer = document.querySelector('.toast-container');
+    
+    // Create toast container if it doesn't exist
+    if (!toastContainer) {
+        const container = document.createElement('div');
+        container.className = 'toast-container position-fixed bottom-0 end-0 p-3';
+        document.body.appendChild(container);
+    }
+    
+    // Create toast element
+    const toastEl = document.createElement('div');
+    toastEl.className = `toast align-items-center text-white bg-${type} border-0`;
+    toastEl.setAttribute('role', 'alert');
+    toastEl.setAttribute('aria-live', 'assertive');
+    toastEl.setAttribute('aria-atomic', 'true');
+    
+    // Create toast content
+    toastEl.innerHTML = `
+        <div class="d-flex">
+            <div class="toast-body">
+                ${message}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    `;
+    
+    // Add toast to container
+    const container = document.querySelector('.toast-container');
+    container.appendChild(toastEl);
+    
+    // Initialize and show toast
+    const toast = new bootstrap.Toast(toastEl, { autohide: true, delay: 5000 });
+    toast.show();
+    
+    // Remove toast element after it's hidden
+    toastEl.addEventListener('hidden.bs.toast', function() {
+        toastEl.remove();
+    });
+}
+
 let storageTrendsChart;
 function initializeStorageTrends() {
     const ctx = document.getElementById('storageTrendsChart').getContext('2d');
