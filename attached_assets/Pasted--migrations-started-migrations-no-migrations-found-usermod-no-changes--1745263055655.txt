@@ -1,0 +1,111 @@
+[migrations] started
+[migrations] no migrations found
+usermod: no changes
+───────────────────────────────────────
+  _____ __ __ _____ _____ _____ _____ 
+ |     |  |  |   __|_   _|     |     |
+ |   --|  |  |__   | | | |  |  | | | |
+ |_____|_____|_____| |_| |_____|_|_|_|
+       _____ __ __ _ __    ____  
+      | __  |  |  | |  |  |    \ 
+      | __ -|  |  | |  |__|  |  |
+      |_____|_____|_|_____|____/ 
+  Based on images from linuxserver.io
+───────────────────────────────────────
+To support the app dev(s) visit:
+Bubuntux: https://github.com/sponsors/bubuntux
+To support LSIO projects visit:
+https://www.linuxserver.io/donate/
+───────────────────────────────────────
+GID/UID
+───────────────────────────────────────
+User UID:    911
+User GID:    911
+───────────────────────────────────────
+fix-attrs: warning: fix-attrs is deprecated, please fix volume permissions in your container manager instead
+update-alternatives: using /usr/sbin/iptables-legacy to provide /usr/sbin/iptables (iptables) in manual mode
+update-alternatives: using /usr/sbin/ip6tables-legacy to provide /usr/sbin/ip6tables (ip6tables) in manual mode
+Firewall is up, everything has to go through the vpn
+Enabling connection to secure interface and docker network
+No inet6 network
+Enabling connection to network 192.168.86.0/24
+[custom-init] No custom files found, skipping...
+[ls.io-init] done.
+
+-
+  
+A new version of NordVPN is available! Please update the application.
+
+-
+  
+
+-
+\
+|
+  
+Welcome to NordVPN! You can now connect to VPN by using 'nordvpn connect'.
+
+-
+  
+A new version of NordVPN is available! Please update the application.
+
+-
+  
+Technology is already set to 'NORDLYNX'.
+
+-
+  
+A new version of NordVPN is available! Please update the application.
+
+-
+  
+Port 9092 (UDP|TCP) is whitelisted successfully.
+
+-
+  
+A new version of NordVPN is available! Please update the application.
+
+-
+  
+Subnet 172.18.0.0/16 is whitelisted successfully.
+
+-
+  
+A new version of NordVPN is available! Please update the application.
+
+-
+  
+Subnet 192.168.86.0/24 is whitelisted successfully.
+Connecting...
+
+-
+  
+A new version of NordVPN is available! Please update the application.
+
+-
+  
+Connecting to United States #5092 (us5092.nordvpn.com)
+
+-
+\
+|
+/
+-
+\
+  
+You are connected to United States #5092 (us5092.nordvpn.com)!
+
+-
+  
+############################################################
+__  .___  ___. .______     ______   .______     .___________.    ___      .__   __. .___________. 
+|  | |   \/   | |   _  \   /  __  \  |   _  \    |           |   /   \     |  \ |  | |           |
+|  | |  \  /  | |  |_)  | |  |  |  | |  |_)  |   `---|  |----`  /  ^  \    |   \|  | `---|  |----`
+|  | |  |\/|  | |   ___/  |  |  |  | |      /        |  |      /  /_\  \   |  . `  |     |  |
+|  | |  |  |  | |  |      |  `--'  | |  |\  \----.   |  |     /  _____  \  |  |\   |     |  |
+|__| |__|  |__| | _|       \______/  | _| `._____|   |__|    /__/     \__\ |__| \__|     |__|
+↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+Please migrate to the NordLynx container (https://github.com/bubuntux/nordlynx)
+Here is your private Key: cAncOgxSlp1fKnlLP7pJFMPGYPgwR0z4PBdjle5BAGQ=
+IP: 10.5.0.2/32
+############################################################

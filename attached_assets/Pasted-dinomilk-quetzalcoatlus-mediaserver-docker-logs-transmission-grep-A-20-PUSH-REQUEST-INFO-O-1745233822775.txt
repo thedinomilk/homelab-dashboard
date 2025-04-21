@@ -1,0 +1,317 @@
+dinomilk@quetzalcoatlus:~/mediaserver$ docker logs transmission | grep -A 20 "PUSH_REQUEST"
+INFO: OVPN: Checking curl installation
+INFO: OVPN: DNS resolution ok
+INFO: OVPN: ok, configurations download site reachable
+INFO: OVPN: Removing existing configs in /etc/openvpn/nordvpn
+Checking NORDPVN API responses
+INFO: OVPN:Selecting the best server...
+INFO: OVPN: Searching for country : US (228)
+WARNING: OVPN: empty or invalid NORDVPN_CATEGORY (value=). ignoring this parameter. Possible values are: legacy_double_vpn,legacy_onion_over_vpn,legacy_ultra_fast_tv,legacy_anti_ddos,legacy_dedicated_ip,legacy_standard,legacy_netflix_usa,legacy_p2p,legacy_obfuscated_servers,europe,the_americas,asia_pacific,africa_the_middle_east_and_india,anycast-dns,geo_dns,grafana,kapacitor,legacy_socks5_proxy,fastnetmon,. Please check https://haugene.github.io/docker-transmission-openvpn/provider-specific/#nordvpn
+INFO: OVPN:Searching for technology: openvpn_udp
+INFO: OVPN: Best server : us9951.nordvpn.com, load: null
+Best server : us9951.nordvpn.com
+INFO: OVPN: Downloading config: us9951.nordvpn.com.ovpn
+INFO: OVPN: Downloading from: https://downloads.nordcdn.com/configs/files/ovpn_udp/servers/us9951.nordvpn.com.udp.ovpn
+OVPN: NORDVPN: selected: us9951.nordvpn.com, VPN_PROVIDER_HOME: /etc/openvpn/nordvpn
+INFO: OVPN: Checking curl installation
+INFO: OVPN: DNS resolution ok
+INFO: OVPN: ok, configurations download site reachable
+INFO: OVPN: Removing existing configs in /etc/openvpn/nordvpn
+Checking NORDPVN API responses
+INFO: OVPN:Selecting the best server...
+INFO: OVPN: Searching for country : US (228)
+WARNING: OVPN: empty or invalid NORDVPN_CATEGORY (value=). ignoring this parameter. Possible values are: legacy_double_vpn,legacy_onion_over_vpn,legacy_ultra_fast_tv,legacy_anti_ddos,legacy_dedicated_ip,legacy_standard,legacy_netflix_usa,legacy_p2p,legacy_obfuscated_servers,europe,the_americas,asia_pacific,africa_the_middle_east_and_india,anycast-dns,geo_dns,grafana,kapacitor,legacy_socks5_proxy,fastnetmon,. Please check https://haugene.github.io/docker-transmission-openvpn/provider-specific/#nordvpn
+INFO: OVPN:Searching for technology: openvpn_udp
+INFO: OVPN: Best server : us9951.nordvpn.com, load: null
+2025-04-21 03:08:20 SENT CONTROL [us9951.nordvpn.com]: 'PUSH_REQUEST' (status=1)
+Best server : us9951.nordvpn.com
+INFO: OVPN: Downloading config: us9951.nordvpn.com.ovpn
+2025-04-21 03:08:20 AUTH: Received control message: AUTH_FAILED
+2025-04-21 03:08:20 SIGTERM[soft,auth-failure] received, process exiting
+INFO: OVPN: Downloading from: https://downloads.nordcdn.com/configs/files/ovpn_udp/servers/us9951.nordvpn.com.udp.ovpn
+OVPN: NORDVPN: selected: us9951.nordvpn.com, VPN_PROVIDER_HOME: /etc/openvpn/nordvpn
+Starting container with revision: 07f5a2b9aea5028c9bb75438c1552708e91dde71
+TRANSMISSION_HOME is currently set to: /config/transmission-home
+Creating TUN device /dev/net/tun
+Using OpenVPN provider: NORDVPN
+Running with VPN_CONFIG_SOURCE auto
+Provider NORDVPN has a bundled setup script. Defaulting to internal config
+Executing setup script for NORDVPN
+/etc/openvpn/nordvpn/..
+Starting OpenVPN using config us9951.nordvpn.com.ovpn
+Modifying /etc/openvpn/nordvpn/us9951.nordvpn.com.ovpn for best behaviour in this container
+Modification: Point auth-user-pass option to the username/password file
+Modification: Change ca certificate path
+Modification: Change ping options
+Modification: Update/set resolv-retry to 15 seconds
+Modification: Change tls-crypt keyfile path
+Modification: Set output verbosity to 3
+Modification: Remap SIGUSR1 signal to SIGTERM, avoid OpenVPN restart loop
+Modification: Updating status for config failure detection
+--
+2025-04-21 03:08:26 SENT CONTROL [us9951.nordvpn.com]: 'PUSH_REQUEST' (status=1)
+INFO: OVPN: Checking curl installation
+INFO: OVPN: DNS resolution ok
+2025-04-21 03:08:32 SENT CONTROL [us9951.nordvpn.com]: 'PUSH_REQUEST' (status=1)
+2025-04-21 03:08:32 AUTH: Received control message: AUTH_FAILED
+INFO: OVPN: ok, configurations download site reachable
+2025-04-21 03:08:32 SIGTERM[soft,auth-failure] received, process exiting
+Starting container with revision: 07f5a2b9aea5028c9bb75438c1552708e91dde71
+TRANSMISSION_HOME is currently set to: /config/transmission-home
+Creating TUN device /dev/net/tun
+Using OpenVPN provider: NORDVPN
+Running with VPN_CONFIG_SOURCE auto
+Provider NORDVPN has a bundled setup script. Defaulting to internal config
+Executing setup script for NORDVPN
+/etc/openvpn/nordvpn/..
+INFO: OVPN: Removing existing configs in /etc/openvpn/nordvpn
+Checking NORDPVN API responses
+INFO: OVPN:Selecting the best server...
+INFO: OVPN: Searching for country : US (228)
+WARNING: OVPN: empty or invalid NORDVPN_CATEGORY (value=). ignoring this parameter. Possible values are: legacy_double_vpn,legacy_onion_over_vpn,legacy_ultra_fast_tv,legacy_anti_ddos,legacy_dedicated_ip,legacy_standard,legacy_netflix_usa,legacy_p2p,legacy_obfuscated_servers,europe,the_americas,asia_pacific,africa_the_middle_east_and_india,anycast-dns,geo_dns,grafana,kapacitor,legacy_socks5_proxy,fastnetmon,. Please check https://haugene.github.io/docker-transmission-openvpn/provider-specific/#nordvpn
+INFO: OVPN:Searching for technology: openvpn_udp
+INFO: OVPN: Best server : us9951.nordvpn.com, load: null
+Best server : us9951.nordvpn.com
+INFO: OVPN: Downloading config: us9951.nordvpn.com.ovpn
+INFO: OVPN: Downloading from: https://downloads.nordcdn.com/configs/files/ovpn_udp/servers/us9951.nordvpn.com.udp.ovpn
+OVPN: NORDVPN: selected: us9951.nordvpn.com, VPN_PROVIDER_HOME: /etc/openvpn/nordvpn
+Starting OpenVPN using config us9951.nordvpn.com.ovpn
+Modifying /etc/openvpn/nordvpn/us9951.nordvpn.com.ovpn for best behaviour in this container
+Modification: Point auth-user-pass option to the username/password file
+Modification: Change ca certificate path
+Modification: Change ping options
+Modification: Update/set resolv-retry to 15 seconds
+Modification: Change tls-crypt keyfile path
+Modification: Set output verbosity to 3
+Modification: Remap SIGUSR1 signal to SIGTERM, avoid OpenVPN restart loop
+Modification: Updating status for config failure detection
+INFO: OVPN: Checking curl installation
+INFO: OVPN: DNS resolution ok
+INFO: OVPN: ok, configurations download site reachable
+INFO: OVPN: Removing existing configs in /etc/openvpn/nordvpn
+Checking NORDPVN API responses
+INFO: OVPN:Selecting the best server...
+INFO: OVPN: Searching for country : US (228)
+WARNING: OVPN: empty or invalid NORDVPN_CATEGORY (value=). ignoring this parameter. Possible values are: legacy_double_vpn,legacy_onion_over_vpn,legacy_ultra_fast_tv,legacy_anti_ddos,legacy_dedicated_ip,legacy_standard,legacy_netflix_usa,legacy_p2p,legacy_obfuscated_servers,europe,the_americas,asia_pacific,africa_the_middle_east_and_india,anycast-dns,geo_dns,grafana,kapacitor,legacy_socks5_proxy,fastnetmon,. Please check https://haugene.github.io/docker-transmission-openvpn/provider-specific/#nordvpn
+--
+2025-04-21 03:08:38 SENT CONTROL [us9951.nordvpn.com]: 'PUSH_REQUEST' (status=1)
+INFO: OVPN:Searching for technology: openvpn_udp
+2025-04-21 03:08:38 AUTH: Received control message: AUTH_FAILED
+2025-04-21 03:08:38 SIGTERM[soft,auth-failure] received, process exiting
+INFO: OVPN: Best server : us9951.nordvpn.com, load: null
+Best server : us9951.nordvpn.com
+INFO: OVPN: Downloading config: us9951.nordvpn.com.ovpn
+Starting container with revision: 07f5a2b9aea5028c9bb75438c1552708e91dde71
+TRANSMISSION_HOME is currently set to: /config/transmission-home
+Creating TUN device /dev/net/tun
+INFO: OVPN: Downloading from: https://downloads.nordcdn.com/configs/files/ovpn_udp/servers/us9951.nordvpn.com.udp.ovpn
+Using OpenVPN provider: NORDVPN
+OVPN: NORDVPN: selected: us9951.nordvpn.com, VPN_PROVIDER_HOME: /etc/openvpn/nordvpn
+Running with VPN_CONFIG_SOURCE auto
+Provider NORDVPN has a bundled setup script. Defaulting to internal config
+Executing setup script for NORDVPN
+/etc/openvpn/nordvpn/..
+Starting OpenVPN using config us9951.nordvpn.com.ovpn
+Modifying /etc/openvpn/nordvpn/us9951.nordvpn.com.ovpn for best behaviour in this container
+Modification: Point auth-user-pass option to the username/password file
+Modification: Change ca certificate path
+Modification: Change ping options
+Modification: Update/set resolv-retry to 15 seconds
+Modification: Change tls-crypt keyfile path
+Modification: Set output verbosity to 3
+Modification: Remap SIGUSR1 signal to SIGTERM, avoid OpenVPN restart loop
+Modification: Updating status for config failure detection
+--
+2025-04-21 03:08:44 SENT CONTROL [us9951.nordvpn.com]: 'PUSH_REQUEST' (status=1)
+2025-04-21 03:08:44 AUTH: Received control message: AUTH_FAILED
+2025-04-21 03:08:44 SIGTERM[soft,auth-failure] received, process exiting
+Starting container with revision: 07f5a2b9aea5028c9bb75438c1552708e91dde71
+INFO: OVPN: Checking curl installation
+TRANSMISSION_HOME is currently set to: /config/transmission-home
+Creating TUN device /dev/net/tun
+INFO: OVPN: DNS resolution ok
+Using OpenVPN provider: NORDVPN
+Running with VPN_CONFIG_SOURCE auto
+INFO: OVPN: ok, configurations download site reachable
+Provider NORDVPN has a bundled setup script. Defaulting to internal config
+INFO: OVPN: Removing existing configs in /etc/openvpn/nordvpn
+Executing setup script for NORDVPN
+/etc/openvpn/nordvpn/..
+Checking NORDPVN API responses
+INFO: OVPN:Selecting the best server...
+INFO: OVPN: Searching for country : US (228)
+WARNING: OVPN: empty or invalid NORDVPN_CATEGORY (value=). ignoring this parameter. Possible values are: legacy_double_vpn,legacy_onion_over_vpn,legacy_ultra_fast_tv,legacy_anti_ddos,legacy_dedicated_ip,legacy_standard,legacy_netflix_usa,legacy_p2p,legacy_obfuscated_servers,europe,the_americas,asia_pacific,africa_the_middle_east_and_india,anycast-dns,geo_dns,grafana,kapacitor,legacy_socks5_proxy,fastnetmon,. Please check https://haugene.github.io/docker-transmission-openvpn/provider-specific/#nordvpn
+INFO: OVPN:Searching for technology: openvpn_udp
+INFO: OVPN: Best server : us9951.nordvpn.com, load: null
+Best server : us9951.nordvpn.com
+INFO: OVPN: Downloading config: us9951.nordvpn.com.ovpn
+INFO: OVPN: Downloading from: https://downloads.nordcdn.com/configs/files/ovpn_udp/servers/us9951.nordvpn.com.udp.ovpn
+OVPN: NORDVPN: selected: us9951.nordvpn.com, VPN_PROVIDER_HOME: /etc/openvpn/nordvpn
+Starting OpenVPN using config us9951.nordvpn.com.ovpn
+Modifying /etc/openvpn/nordvpn/us9951.nordvpn.com.ovpn for best behaviour in this container
+Modification: Point auth-user-pass option to the username/password file
+Modification: Change ca certificate path
+Modification: Change ping options
+Modification: Update/set resolv-retry to 15 seconds
+Modification: Change tls-crypt keyfile path
+Modification: Set output verbosity to 3
+Modification: Remap SIGUSR1 signal to SIGTERM, avoid OpenVPN restart loop
+Modification: Updating status for config failure detection
+--
+2025-04-21 03:08:51 SENT CONTROL [us9951.nordvpn.com]: 'PUSH_REQUEST' (status=1)
+2025-04-21 03:08:51 AUTH: Received control message: AUTH_FAILED
+INFO: OVPN: Checking curl installation
+2025-04-21 03:08:51 SIGTERM[soft,auth-failure] received, process exiting
+Starting container with revision: 07f5a2b9aea5028c9bb75438c1552708e91dde71
+TRANSMISSION_HOME is currently set to: /config/transmission-home
+INFO: OVPN: DNS resolution ok
+Creating TUN device /dev/net/tun
+Using OpenVPN provider: NORDVPN
+Running with VPN_CONFIG_SOURCE auto
+INFO: OVPN: ok, configurations download site reachable
+Provider NORDVPN has a bundled setup script. Defaulting to internal config
+Executing setup script for NORDVPN
+INFO: OVPN: Removing existing configs in /etc/openvpn/nordvpn
+/etc/openvpn/nordvpn/..
+Checking NORDPVN API responses
+INFO: OVPN:Selecting the best server...
+INFO: OVPN: Searching for country : US (228)
+WARNING: OVPN: empty or invalid NORDVPN_CATEGORY (value=). ignoring this parameter. Possible values are: legacy_double_vpn,legacy_onion_over_vpn,legacy_ultra_fast_tv,legacy_anti_ddos,legacy_dedicated_ip,legacy_standard,legacy_netflix_usa,legacy_p2p,legacy_obfuscated_servers,europe,the_americas,asia_pacific,africa_the_middle_east_and_india,anycast-dns,geo_dns,grafana,kapacitor,legacy_socks5_proxy,fastnetmon,. Please check https://haugene.github.io/docker-transmission-openvpn/provider-specific/#nordvpn
+INFO: OVPN:Searching for technology: openvpn_udp
+INFO: OVPN: Best server : us9951.nordvpn.com, load: null
+Best server : us9951.nordvpn.com
+INFO: OVPN: Downloading config: us9951.nordvpn.com.ovpn
+INFO: OVPN: Downloading from: https://downloads.nordcdn.com/configs/files/ovpn_udp/servers/us9951.nordvpn.com.udp.ovpn
+OVPN: NORDVPN: selected: us9951.nordvpn.com, VPN_PROVIDER_HOME: /etc/openvpn/nordvpn
+Starting OpenVPN using config us9951.nordvpn.com.ovpn
+Modifying /etc/openvpn/nordvpn/us9951.nordvpn.com.ovpn for best behaviour in this container
+Modification: Point auth-user-pass option to the username/password file
+Modification: Change ca certificate path
+Modification: Change ping options
+Modification: Update/set resolv-retry to 15 seconds
+Modification: Change tls-crypt keyfile path
+Modification: Set output verbosity to 3
+Modification: Remap SIGUSR1 signal to SIGTERM, avoid OpenVPN restart loop
+Modification: Updating status for config failure detection
+--
+2025-04-21 03:08:58 SENT CONTROL [us9951.nordvpn.com]: 'PUSH_REQUEST' (status=1)
+2025-04-21 03:08:58 AUTH: Received control message: AUTH_FAILED
+2025-04-21 03:08:58 SIGTERM[soft,auth-failure] received, process exiting
+Starting container with revision: 07f5a2b9aea5028c9bb75438c1552708e91dde71
+TRANSMISSION_HOME is currently set to: /config/transmission-home
+Creating TUN device /dev/net/tun
+Using OpenVPN provider: NORDVPN
+INFO: OVPN: Checking curl installation
+Running with VPN_CONFIG_SOURCE auto
+Provider NORDVPN has a bundled setup script. Defaulting to internal config
+Executing setup script for NORDVPN
+/etc/openvpn/nordvpn/..
+INFO: OVPN: DNS resolution ok
+INFO: OVPN: ok, configurations download site reachable
+INFO: OVPN: Removing existing configs in /etc/openvpn/nordvpn
+Checking NORDPVN API responses
+INFO: OVPN:Selecting the best server...
+INFO: OVPN: Searching for country : US (228)
+WARNING: OVPN: empty or invalid NORDVPN_CATEGORY (value=). ignoring this parameter. Possible values are: legacy_double_vpn,legacy_onion_over_vpn,legacy_ultra_fast_tv,legacy_anti_ddos,legacy_dedicated_ip,legacy_standard,legacy_netflix_usa,legacy_p2p,legacy_obfuscated_servers,europe,the_americas,asia_pacific,africa_the_middle_east_and_india,anycast-dns,geo_dns,grafana,kapacitor,legacy_socks5_proxy,fastnetmon,. Please check https://haugene.github.io/docker-transmission-openvpn/provider-specific/#nordvpn
+INFO: OVPN:Searching for technology: openvpn_udp
+INFO: OVPN: Best server : us9951.nordvpn.com, load: null
+Best server : us9951.nordvpn.com
+INFO: OVPN: Downloading config: us9951.nordvpn.com.ovpn
+INFO: OVPN: Downloading from: https://downloads.nordcdn.com/configs/files/ovpn_udp/servers/us9951.nordvpn.com.udp.ovpn
+OVPN: NORDVPN: selected: us9951.nordvpn.com, VPN_PROVIDER_HOME: /etc/openvpn/nordvpn
+Starting OpenVPN using config us9951.nordvpn.com.ovpn
+Modifying /etc/openvpn/nordvpn/us9951.nordvpn.com.ovpn for best behaviour in this container
+Modification: Point auth-user-pass option to the username/password file
+Modification: Change ca certificate path
+Modification: Change ping options
+Modification: Update/set resolv-retry to 15 seconds
+Modification: Change tls-crypt keyfile path
+Modification: Set output verbosity to 3
+Modification: Remap SIGUSR1 signal to SIGTERM, avoid OpenVPN restart loop
+Modification: Updating status for config failure detection
+--
+2025-04-21 03:09:06 SENT CONTROL [us9951.nordvpn.com]: 'PUSH_REQUEST' (status=1)
+2025-04-21 03:09:06 AUTH: Received control message: AUTH_FAILED
+2025-04-21 03:09:06 SIGTERM[soft,auth-failure] received, process exiting
+INFO: OVPN: Checking curl installation
+INFO: OVPN: DNS resolution ok
+INFO: OVPN: ok, configurations download site reachable
+INFO: OVPN: Removing existing configs in /etc/openvpn/nordvpn
+Checking NORDPVN API responses
+Starting container with revision: 07f5a2b9aea5028c9bb75438c1552708e91dde71
+TRANSMISSION_HOME is currently set to: /config/transmission-home
+Creating TUN device /dev/net/tun
+Using OpenVPN provider: NORDVPN
+Running with VPN_CONFIG_SOURCE auto
+Provider NORDVPN has a bundled setup script. Defaulting to internal config
+Executing setup script for NORDVPN
+/etc/openvpn/nordvpn/..
+INFO: OVPN:Selecting the best server...
+INFO: OVPN: Searching for country : US (228)
+WARNING: OVPN: empty or invalid NORDVPN_CATEGORY (value=). ignoring this parameter. Possible values are: legacy_double_vpn,legacy_onion_over_vpn,legacy_ultra_fast_tv,legacy_anti_ddos,legacy_dedicated_ip,legacy_standard,legacy_netflix_usa,legacy_p2p,legacy_obfuscated_servers,europe,the_americas,asia_pacific,africa_the_middle_east_and_india,anycast-dns,geo_dns,grafana,kapacitor,legacy_socks5_proxy,fastnetmon,. Please check https://haugene.github.io/docker-transmission-openvpn/provider-specific/#nordvpn
+INFO: OVPN:Searching for technology: openvpn_udp
+INFO: OVPN: Best server : us9951.nordvpn.com, load: null
+Best server : us9951.nordvpn.com
+INFO: OVPN: Downloading config: us9951.nordvpn.com.ovpn
+INFO: OVPN: Downloading from: https://downloads.nordcdn.com/configs/files/ovpn_udp/servers/us9951.nordvpn.com.udp.ovpn
+OVPN: NORDVPN: selected: us9951.nordvpn.com, VPN_PROVIDER_HOME: /etc/openvpn/nordvpn
+Starting OpenVPN using config us9951.nordvpn.com.ovpn
+Modifying /etc/openvpn/nordvpn/us9951.nordvpn.com.ovpn for best behaviour in this container
+Modification: Point auth-user-pass option to the username/password file
+Modification: Change ca certificate path
+Modification: Change ping options
+Modification: Update/set resolv-retry to 15 seconds
+Modification: Change tls-crypt keyfile path
+Modification: Set output verbosity to 3
+Modification: Remap SIGUSR1 signal to SIGTERM, avoid OpenVPN restart loop
+Modification: Updating status for config failure detection
+--
+2025-04-21 03:09:16 SENT CONTROL [us9951.nordvpn.com]: 'PUSH_REQUEST' (status=1)
+2025-04-21 03:09:16 AUTH: Received control message: AUTH_FAILED
+INFO: OVPN: Checking curl installation
+2025-04-21 03:09:16 SIGTERM[soft,auth-failure] received, process exiting
+Starting container with revision: 07f5a2b9aea5028c9bb75438c1552708e91dde71
+INFO: OVPN: DNS resolution ok
+TRANSMISSION_HOME is currently set to: /config/transmission-home
+Creating TUN device /dev/net/tun
+Using OpenVPN provider: NORDVPN
+Running with VPN_CONFIG_SOURCE auto
+Provider NORDVPN has a bundled setup script. Defaulting to internal config
+Executing setup script for NORDVPN
+/etc/openvpn/nordvpn/..
+INFO: OVPN: ok, configurations download site reachable
+INFO: OVPN: Removing existing configs in /etc/openvpn/nordvpn
+Checking NORDPVN API responses
+INFO: OVPN:Selecting the best server...
+INFO: OVPN: Searching for country : US (228)
+WARNING: OVPN: empty or invalid NORDVPN_CATEGORY (value=). ignoring this parameter. Possible values are: legacy_double_vpn,legacy_onion_over_vpn,legacy_ultra_fast_tv,legacy_anti_ddos,legacy_dedicated_ip,legacy_standard,legacy_netflix_usa,legacy_p2p,legacy_obfuscated_servers,europe,the_americas,asia_pacific,africa_the_middle_east_and_india,anycast-dns,geo_dns,grafana,kapacitor,legacy_socks5_proxy,fastnetmon,. Please check https://haugene.github.io/docker-transmission-openvpn/provider-specific/#nordvpn
+INFO: OVPN:Searching for technology: openvpn_udp
+INFO: OVPN: Best server : us9951.nordvpn.com, load: null
+Best server : us9951.nordvpn.com
+INFO: OVPN: Downloading config: us9951.nordvpn.com.ovpn
+INFO: OVPN: Downloading from: https://downloads.nordcdn.com/configs/files/ovpn_udp/servers/us9951.nordvpn.com.udp.ovpn
+OVPN: NORDVPN: selected: us9951.nordvpn.com, VPN_PROVIDER_HOME: /etc/openvpn/nordvpn
+Starting OpenVPN using config us9951.nordvpn.com.ovpn
+Modifying /etc/openvpn/nordvpn/us9951.nordvpn.com.ovpn for best behaviour in this container
+Modification: Point auth-user-pass option to the username/password file
+Modification: Change ca certificate path
+Modification: Change ping options
+Modification: Update/set resolv-retry to 15 seconds
+Modification: Change tls-crypt keyfile path
+Modification: Set output verbosity to 3
+Modification: Remap SIGUSR1 signal to SIGTERM, avoid OpenVPN restart loop
+Modification: Updating status for config failure detection
+--
+2025-04-21 03:09:28 SENT CONTROL [us9951.nordvpn.com]: 'PUSH_REQUEST' (status=1)
+2025-04-21 03:09:28 AUTH: Received control message: AUTH_FAILED
+2025-04-21 03:09:28 SIGTERM[soft,auth-failure] received, process exiting
+Starting container with revision: 07f5a2b9aea5028c9bb75438c1552708e91dde71
+TRANSMISSION_HOME is currently set to: /config/transmission-home
+Creating TUN device /dev/net/tun
+Using OpenVPN provider: NORDVPN
+Running with VPN_CONFIG_SOURCE auto
+Provider NORDVPN has a bundled setup script. Defaulting to internal config
+Executing setup script for NORDVPN
+INFO: OVPN: Checking curl installation
+/etc/openvpn/nordvpn/..
+INFO: OVPN: DNS resolution ok
