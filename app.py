@@ -293,6 +293,50 @@ def delete_apatosaurus_zpool():
         logging.error(f"Error deleting 'apatosaurus' ZFS pool: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
+@app.route('/api/storage/transfer', methods=['POST'])
+def transfer_files_to_server():
+    """Transfer files from local to remote server using SFTP"""
+    try:
+        settings = UserSettings.query.first()
+        
+        # Check if SSH settings are configured
+        if not settings.ssh_host or not settings.ssh_user:
+            return jsonify({
+                "success": False,
+                "message": "SSH connection not configured. Please set SSH host and username."
+            }), 400
+        
+        # Get parameters from request
+        data = request.json
+        source_path = data.get('source_path')
+        destination_path = data.get('destination_path')
+        
+        # Validate parameters
+        if not source_path or not destination_path:
+            return jsonify({
+                "success": False,
+                "message": "Missing required parameters: source_path and/or destination_path"
+            }), 400
+        
+        # Handle recursive flag
+        recursive = data.get('recursive', True)
+        
+        # Use settings from database
+        result = storage.transfer_files(
+            source_path=source_path,
+            destination_host=settings.ssh_host,
+            destination_path=destination_path,
+            username=settings.ssh_user,
+            password=settings.ssh_password,
+            key_path=settings.ssh_key_path,
+            recursive=recursive
+        )
+        
+        return jsonify(result)
+    except Exception as e:
+        logging.error(f"Error transferring files: {str(e)}")
+        return jsonify({"error": str(e)}), 500
+
 # Documentation APIs
 @app.route('/api/docs', methods=['GET', 'POST'])
 def manage_docs():

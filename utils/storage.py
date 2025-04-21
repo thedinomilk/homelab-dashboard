@@ -4,6 +4,7 @@ import shutil
 import logging
 import subprocess
 import paramiko
+from paramiko import SFTPClient
 from typing import Optional, Tuple, Dict, List, Any
 
 def run_ssh_command(host: str, username: str, password: Optional[str] = None, 
@@ -311,6 +312,166 @@ def get_storage_info(settings):
     except Exception as e:
         logging.error(f"Error in get_storage_info: {str(e)}")
         raise Exception(f"Error getting storage information: {str(e)}")
+
+def transfer_files(source_path: str, destination_host: str, destination_path: str, 
+               username: str, password: Optional[str] = None, key_path: Optional[str] = None,
+               recursive: bool = True) -> Dict[str, Any]:
+    """
+    Transfer files from local to remote server using SCP (Secure Copy Protocol)
+    
+    Args:
+        source_path: Local path of file or directory to transfer
+        destination_host: Remote hostname or IP address
+        destination_path: Remote path to copy files to
+        username: SSH username
+        password: SSH password (optional if key_path is provided)
+        key_path: Path to SSH private key (optional if password is provided)
+        recursive: Whether to copy directories recursively
+        
+    Returns:
+        dict: Result of the operation with success status and message
+    """
+    if not source_path or not os.path.exists(source_path):
+        return {
+            'success': False,
+            'message': f"Source path '{source_path}' does not exist"
+        }
+        
+    if not destination_host or not destination_path or not username:
+        return {
+            'success': False,
+            'message': "Missing required parameters (destination_host, destination_path, or username)"
+        }
+    
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    
+    try:
+        # Connect using either password or key
+        if key_path and os.path.exists(key_path):
+            # Use key-based authentication
+            key = paramiko.RSAKey.from_private_key_file(key_path)
+            ssh.connect(destination_host, username=username, pkey=key)
+        else:
+            # Use password authentication
+            ssh.connect(destination_host, username=username, password=password)
+        
+        # Create sftp client
+        sftp = ssh.open_sftp()
+        
+        # Ensure the destination directory exists
+        try:
+            # Try to create all directories in the path
+            if destination_path != '/':  # Skip if root directory
+                destination_dirs = destination_path.split('/')
+                current_path = '/'
+                
+                # Build path incrementally and create as needed
+                for directory in destination_dirs:
+                    if not directory:  # Skip empty segments from leading/trailing/consecutive slashes
+                        continue
+                        
+                    current_path = os.path.join(current_path, directory)
+                    try:
+                        sftp.stat(current_path)  # Test if directory exists
+                    except FileNotFoundError:
+                        sftp.mkdir(current_path)  # Create if not exists
+        except Exception as e:
+            logging.warning(f"Error ensuring destination directory exists: {str(e)}")
+            
+        # Track transfer statistics
+        transferred_files = 0
+        total_size = 0
+        failed_files = []
+        
+        # Handle directory or file transfer
+        if os.path.isdir(source_path):
+            # It's a directory - need to copy recursively if specified
+            if not recursive:
+                return {
+                    'success': False,
+                    'message': f"Source '{source_path}' is a directory, but recursive copy not enabled"
+                }
+                
+            # Walk the directory structure and copy files
+            for root, dirs, files in os.walk(source_path):
+                # Create relative path
+                rel_path = os.path.relpath(root, source_path)
+                if rel_path == '.':
+                    rel_path = ''
+                    
+                # Create destination directory for current path
+                current_dest_path = os.path.join(destination_path, rel_path).replace('\\', '/')
+                try:
+                    try:
+                        sftp.stat(current_dest_path)
+                    except FileNotFoundError:
+                        sftp.mkdir(current_dest_path)
+                except Exception as e:
+                    logging.warning(f"Error creating directory {current_dest_path}: {str(e)}")
+                
+                # Copy all files in the current directory
+                for file in files:
+                    local_file = os.path.join(root, file)
+                    remote_file = os.path.join(current_dest_path, file).replace('\\', '/')
+                    
+                    try:
+                        sftp.put(local_file, remote_file)
+                        file_size = os.path.getsize(local_file)
+                        transferred_files += 1
+                        total_size += file_size
+                        logging.info(f"Transferred: {local_file} → {remote_file} ({file_size} bytes)")
+                    except Exception as e:
+                        logging.error(f"Error transferring {local_file}: {str(e)}")
+                        failed_files.append(local_file)
+        else:
+            # It's a single file
+            try:
+                # If destination is a directory, append the filename
+                file_name = os.path.basename(source_path)
+                if destination_path.endswith('/'):
+                    remote_file = os.path.join(destination_path, file_name).replace('\\', '/')
+                else:
+                    remote_file = destination_path
+                    
+                sftp.put(source_path, remote_file)
+                file_size = os.path.getsize(source_path)
+                transferred_files += 1
+                total_size += file_size
+                logging.info(f"Transferred: {source_path} → {remote_file} ({file_size} bytes)")
+            except Exception as e:
+                logging.error(f"Error transferring {source_path}: {str(e)}")
+                failed_files.append(source_path)
+        
+        summary = {
+            'success': len(failed_files) == 0,
+            'transferred_files': transferred_files,
+            'failed_files': len(failed_files),
+            'total_size_bytes': total_size,
+            'total_size_mb': round(total_size / (1024 * 1024), 2)
+        }
+        
+        if failed_files:
+            summary['message'] = f"Completed with some errors. {transferred_files} files transferred, {len(failed_files)} failed."
+            summary['failed_file_list'] = failed_files
+        else:
+            summary['message'] = f"Successfully transferred {transferred_files} files ({summary['total_size_mb']} MB)"
+            
+        return summary
+            
+    except Exception as e:
+        logging.error(f"Error in file transfer: {str(e)}")
+        return {
+            'success': False,
+            'message': f"File transfer error: {str(e)}"
+        }
+    finally:
+        # Close SFTP connection if it was opened
+        if 'sftp' in locals() and sftp:
+            sftp.close()
+        # Close SSH connection
+        if ssh:
+            ssh.close()
 
 def get_storage_details(path):
     """
