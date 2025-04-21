@@ -3,11 +3,27 @@ import json
 import requests
 from flask import Flask, render_template, jsonify, request, redirect, url_for
 from dotenv import load_dotenv
+from models import db, UserSettings, ProxmoxAnalysis, Recommendation, ImplementationPlan
 
 # Load environment variables
 load_dotenv()
 
 app = Flask(__name__)
+
+# Configure database
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
+app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+    "pool_recycle": 300,
+    "pool_pre_ping": True,
+}
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+# Initialize the database
+db.init_app(app)
+
+# Create all tables
+with app.app_context():
+    db.create_all()
 
 class ProxmoxData:
     def __init__(self, data=None):
@@ -220,18 +236,68 @@ def upload_data():
 def analyze_data():
     try:
         proxmox_data = ProxmoxData()
-        if not proxmox_data.load_from_file('uploads/proxmox_data.json'):
-            return jsonify({'error': 'Failed to load data file'}), 404
-            
+        filepath = 'uploads/proxmox_data.json'
+        
+        if not proxmox_data.load_from_file(filepath):
+            # Try using proxmox_info.json if it exists
+            filepath = 'uploads/proxmox_info.json'
+            if not proxmox_data.load_from_file(filepath):
+                return jsonify({'error': 'Failed to load data file'}), 404
+        
+        # Analyze the data
         analysis = proxmox_data.analyze_resource_utilization()
         recommendations = proxmox_data.generate_architecture_recommendations()
         
+        # Save the analysis to the database
+        with open(filepath, 'r') as f:
+            raw_data = f.read()
+            
+        # Create a new analysis record
+        new_analysis = ProxmoxAnalysis(
+            raw_data=raw_data,
+            cpu_usage=analysis['cpu']['percent'],
+            memory_usage=analysis['memory']['percent'],
+            storage_usage=analysis['storage']['percent'],
+            vm_count=analysis['vms']['total'],
+            container_count=analysis['containers']['total'],
+            resource_analysis=json.dumps(analysis),
+            recommendations=json.dumps(recommendations)
+        )
+        
+        db.session.add(new_analysis)
+        db.session.commit()
+        
+        # Add detailed recommendations
+        for category, recs in recommendations.items():
+            priority = 3  # Default priority
+            
+            # Set priority based on category (example logic)
+            if category == 'infrastructure':
+                priority = 1
+            elif category in ['virtualization', 'storage']:
+                priority = 2
+            
+            # Add each recommendation
+            for rec_text in recs:
+                recommendation = Recommendation(
+                    analysis_id=new_analysis.id,
+                    category=category,
+                    recommendation=rec_text,
+                    priority=priority
+                )
+                db.session.add(recommendation)
+        
+        db.session.commit()
+        
         return jsonify({
             'analysis': analysis,
-            'recommendations': recommendations
+            'recommendations': recommendations,
+            'analysis_id': new_analysis.id
         })
         
     except Exception as e:
+        import traceback
+        print(traceback.format_exc())
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
