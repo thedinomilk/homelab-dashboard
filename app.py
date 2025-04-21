@@ -273,6 +273,25 @@ def delete_zpool(pool_name):
     except Exception as e:
         logging.error(f"Error deleting ZFS pool: {str(e)}")
         return jsonify({"error": str(e)}), 500
+        
+@app.route('/api/storage/zpool/delete-apatosaurus', methods=['POST'])
+def delete_apatosaurus_zpool():
+    """Dedicated endpoint to delete the 'apatosaurus' ZFS pool"""
+    try:
+        settings = UserSettings.query.first()
+        
+        # Skip if SSH settings are not configured
+        if not settings.ssh_host or not settings.ssh_user:
+            return jsonify({
+                "success": False,
+                "message": "SSH connection not configured. Please set SSH host and username."
+            }), 400
+        
+        result = storage.manage_zpool('delete', 'apatosaurus', settings)
+        return jsonify(result)
+    except Exception as e:
+        logging.error(f"Error deleting 'apatosaurus' ZFS pool: {str(e)}")
+        return jsonify({"error": str(e)}), 500
 
 # Documentation APIs
 @app.route('/api/docs', methods=['GET', 'POST'])

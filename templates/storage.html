@@ -127,6 +127,24 @@
                 <div id="zpools-error" class="alert alert-danger mt-3" style="display: none;">
                     Failed to retrieve ZFS pool information. Make sure ZFS is installed and properly configured.
                 </div>
+                
+                <div class="mt-4 border-top pt-3">
+                    <h5><i class="fas fa-bolt me-2"></i> Quick Actions</h5>
+                    <div class="alert alert-secondary">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>Delete 'apatosaurus' ZFS Pool</strong>
+                                <p class="mb-0 text-muted small">
+                                    One-click action to delete the 'apatosaurus' ZFS pool directly.
+                                    Make sure your SSH settings are configured properly.
+                                </p>
+                            </div>
+                            <button id="delete-apatosaurus-btn" class="btn btn-danger">
+                                <i class="fas fa-trash-alt me-1"></i> Delete apatosaurus
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

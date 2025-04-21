@@ -44,6 +44,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
+    // Setup "Delete apatosaurus" quick action button
+    const deleteApatosaurusBtn = document.getElementById('delete-apatosaurus-btn');
+    if (deleteApatosaurusBtn) {
+        deleteApatosaurusBtn.addEventListener('click', function() {
+            if (confirm("Are you sure you want to delete the 'apatosaurus' ZFS pool? This action cannot be undone.")) {
+                deleteApatosaurusZFSPool();
+            }
+        });
+    }
+    
     // Auto refresh every 2 minutes
     setInterval(function() {
         loadStorageOverview();
@@ -465,6 +475,38 @@ function deleteZFSPool(poolName) {
     })
     .catch(error => {
         console.error('Error deleting ZFS pool:', error);
+        showToast(`Error: ${error.message}`, 'danger');
+    });
+}
+
+// Special function to delete the apatosaurus ZFS pool
+function deleteApatosaurusZFSPool() {
+    // Show a toast notification that deletion is in progress
+    showToast(`Deleting ZFS pool "apatosaurus"...`, 'info');
+    
+    fetch('/api/storage/zpool/delete-apatosaurus', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(err => { throw new Error(err.error || 'Failed to delete apatosaurus ZFS pool'); });
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            showToast(data.message, 'success');
+            // Refresh the ZFS pools list
+            loadZFSPools();
+        } else {
+            showToast(`Error: ${data.message}`, 'danger');
+        }
+    })
+    .catch(error => {
+        console.error('Error deleting apatosaurus ZFS pool:', error);
         showToast(`Error: ${error.message}`, 'danger');
     });
 }
