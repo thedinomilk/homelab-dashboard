@@ -1,0 +1,213 @@
+{
+  "export_time": "2025-04-21T05:05:57.903607",
+  "nodes": [
+    {
+      "status": "online",
+      "uptime": 36531,
+      "id": "node/proxmox",
+      "disk": 14169309184,
+      "maxdisk": 88971722752,
+      "node": "proxmox",
+      "maxcpu": 12,
+      "maxmem": 33565356032,
+      "type": "node",
+      "cpu": 0.00700799736169511,
+      "level": "",
+      "ssl_fingerprint": "7C:D3:97:A7:C3:57:B6:84:18:D5:A7:6B:92:C5:58:80:4B:7B:1E:05:48:0A:8F:9B:A7:D5:7E:4B:9E:7A:A8:19",
+      "mem": 8659357696
+    }
+  ],
+  "vms": [
+    {
+      "netout": 5550206,
+      "cpu": 0,
+      "disk": 0,
+      "pid": 1768,
+      "mem": 1918897263,
+      "name": "dev-vm",
+      "status": "running",
+      "maxdisk": 34359738368,
+      "vmid": 102,
+      "netin": 209729975,
+      "maxmem": 4294967296,
+      "diskread": 0,
+      "diskwrite": 0,
+      "uptime": 36303,
+      "cpus": 2
+    }
+  ],
+  "containers": [
+    {
+      "disk": 5519187968,
+      "swap": 0,
+      "cpu": 0.00827008335010569,
+      "netout": 78147076,
+      "type": "lxc",
+      "pid": 2006,
+      "maxdisk": 16729894912,
+      "status": "running",
+      "mem": 149991424,
+      "maxswap": 536870912,
+      "name": "mediastack",
+      "netin": 330306152,
+      "maxmem": 2147483648,
+      "uptime": 36258,
+      "cpus": 2,
+      "diskwrite": 766406656,
+      "diskread": 1225408512,
+      "vmid": 101
+    },
+    {
+      "cpu": 0.0576477775058054,
+      "swap": 0,
+      "disk": 1182978048,
+      "type": "lxc",
+      "netout": 5822,
+      "pid": 542990,
+      "status": "running",
+      "maxdisk": 8350298112,
+      "maxswap": 536870912,
+      "mem": 39497728,
+      "name": "proxmox-agent",
+      "maxmem": 536870912,
+      "netin": 416386,
+      "diskread": 89690112,
+      "diskwrite": 2445312,
+      "uptime": 334,
+      "cpus": 1,
+      "vmid": 103
+    },
+    {
+      "maxdisk": 17179869184,
+      "status": "stopped",
+      "name": "mediastack",
+      "maxswap": 536870912,
+      "mem": 0,
+      "diskread": 0,
+      "diskwrite": 0,
+      "cpus": 2,
+      "uptime": 0,
+      "netin": 0,
+      "maxmem": 2147483648,
+      "vmid": 100,
+      "cpu": 0,
+      "swap": 0,
+      "disk": 0,
+      "type": "lxc",
+      "netout": 0
+    }
+  ],
+  "storage": [
+    {
+      "used_fraction": 0.159256320387271,
+      "storage": "local",
+      "enabled": 1,
+      "avail": 70235865088,
+      "content": "rootdir,iso,vztmpl,backup",
+      "type": "dir",
+      "active": 1,
+      "total": 88971722752,
+      "shared": 0,
+      "used": 14169309184
+    },
+    {
+      "content": "rootdir,images",
+      "enabled": 1,
+      "avail": 185616108304,
+      "active": 1,
+      "total": 200189935616,
+      "used": 14573827312,
+      "shared": 0,
+      "type": "lvmthin",
+      "storage": "local-lvm",
+      "used_fraction": 0.07279999999578
+    }
+  ],
+  "node_status": {
+    "current-kernel": {
+      "sysname": "Linux",
+      "machine": "x86_64",
+      "release": "6.8.12-9-pve",
+      "version": "#1 SMP PREEMPT_DYNAMIC PMX 6.8.12-9 (2025-03-16T19:18Z)"
+    },
+    "swap": {
+      "free": 8588881920,
+      "total": 8589930496,
+      "used": 1048576
+    },
+    "rootfs": {
+      "total": 88971722752,
+      "free": 74802413568,
+      "avail": 70235865088,
+      "used": 14169309184
+    },
+    "boot-info": {
+      "mode": "efi",
+      "secureboot": 0
+    },
+    "wait": 0,
+    "memory": {
+      "free": 4891021312,
+      "total": 33565356032,
+      "used": 8682602496
+    },
+    "kversion": "Linux 6.8.12-9-pve #1 SMP PREEMPT_DYNAMIC PMX 6.8.12-9 (2025-03-16T19:18Z)",
+    "cpu": 0,
+    "idle": 0,
+    "ksm": {
+      "shared": 212488192
+    },
+    "loadavg": [
+      "0.07",
+      "0.02",
+      "0.00"
+    ],
+    "uptime": 36538,
+    "pveversion": "pve-manager/8.4.0/ec58e45e1bcdf2ac",
+    "cpuinfo": {
+      "hvm": "1",
+      "mhz": "4596.010",
+      "sockets": 1,
+      "model": "Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz",
+      "flags": "fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault pti tpr_shadow flexpriority ept vpid ept_ad fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 erms invpcid rtm mpx rdseed adx smap clflushopt intel_pt xsaveopt xsavec xgetbv1 xsaves dtherm ida arat pln pts hwp hwp_notify hwp_act_window hwp_epp vnmi",
+      "cores": 6,
+      "user_hz": 100,
+      "cpus": 12
+    },
+    "network": [
+      {
+        "families": [
+          "inet"
+        ],
+        "method": "manual",
+        "autostart": 1,
+        "type": "eth",
+        "iface": "enp0s31f6",
+        "exists": 1,
+        "priority": 3,
+        "method6": "manual",
+        "active": 1
+      },
+      {
+        "priority": 4,
+        "bridge_stp": "off",
+        "type": "bridge",
+        "iface": "vmbr0",
+        "method6": "manual",
+        "bridge_fd": "0",
+        "bridge_ports": "enp0s31f6",
+        "active": 1,
+        "autostart": 1,
+        "families": [
+          "inet"
+        ],
+        "method": "dhcp"
+      }
+    ],
+    "version": {
+      "release": "8.4",
+      "version": "8.4.0",
+      "repoid": "ec58e45e1bcdf2ac"
+    }
+  }
+}
