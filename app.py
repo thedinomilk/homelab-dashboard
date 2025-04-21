@@ -186,6 +186,26 @@ def get_storage_info():
         logging.error(f"Error getting storage info: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
+@app.route('/api/storage/zpool/list')
+def list_zpools():
+    """List all ZFS pools"""
+    try:
+        result = storage.manage_zpool('list', '')
+        return jsonify(result)
+    except Exception as e:
+        logging.error(f"Error listing ZFS pools: {str(e)}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/storage/zpool/delete/<pool_name>', methods=['POST'])
+def delete_zpool(pool_name):
+    """Delete a ZFS pool"""
+    try:
+        result = storage.manage_zpool('delete', pool_name)
+        return jsonify(result)
+    except Exception as e:
+        logging.error(f"Error deleting ZFS pool: {str(e)}")
+        return jsonify({"error": str(e)}), 500
+
 # Documentation APIs
 @app.route('/api/docs', methods=['GET', 'POST'])
 def manage_docs():

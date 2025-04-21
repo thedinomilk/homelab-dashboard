@@ -4,6 +4,95 @@ import shutil
 import logging
 import subprocess
 
+def manage_zpool(action, pool_name):
+    """
+    Manage ZFS pool operations
+    
+    Args:
+        action: Operation to perform (delete, create, etc.)
+        pool_name: Name of the ZFS pool
+        
+    Returns:
+        dict: Result of the operation
+    """
+    try:
+        if action == 'delete':
+            # First, check if pool exists
+            check_cmd = ['zpool', 'list', pool_name]
+            check_result = subprocess.run(
+                check_cmd, 
+                capture_output=True, 
+                text=True
+            )
+            
+            if check_result.returncode != 0:
+                return {
+                    'success': False,
+                    'message': f"ZFS pool '{pool_name}' does not exist or is not accessible"
+                }
+                
+            # Execute pool deletion (force destruction)
+            cmd = ['zpool', 'destroy', '-f', pool_name]
+            result = subprocess.run(
+                cmd, 
+                capture_output=True, 
+                text=True
+            )
+            
+            if result.returncode == 0:
+                return {
+                    'success': True,
+                    'message': f"ZFS pool '{pool_name}' has been successfully deleted"
+                }
+            else:
+                return {
+                    'success': False,
+                    'message': f"Failed to delete ZFS pool: {result.stderr.strip()}"
+                }
+                
+        elif action == 'list':
+            # List all ZFS pools
+            cmd = ['zpool', 'list', '-H']
+            result = subprocess.run(
+                cmd, 
+                capture_output=True, 
+                text=True
+            )
+            
+            if result.returncode == 0:
+                pools = []
+                for line in result.stdout.strip().split('\n'):
+                    if line:
+                        parts = line.split('\t')
+                        if len(parts) >= 5:
+                            pools.append({
+                                'name': parts[0],
+                                'size': parts[1],
+                                'allocated': parts[2],
+                                'free': parts[3],
+                                'health': parts[4],
+                            })
+                return {
+                    'success': True,
+                    'pools': pools
+                }
+            else:
+                return {
+                    'success': False,
+                    'message': f"Failed to list ZFS pools: {result.stderr.strip()}"
+                }
+        else:
+            return {
+                'success': False,
+                'message': f"Unsupported action: {action}"
+            }
+    except Exception as e:
+        logging.error(f"Error in manage_zpool: {str(e)}")
+        return {
+            'success': False,
+            'message': f"Error: {str(e)}"
+        }
+
 def get_storage_info(settings):
     """
     Get storage usage information for configured paths
