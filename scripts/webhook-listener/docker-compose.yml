@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  webhook-listener:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: homelab-webhook-listener
+    restart: always
+    ports:
+      - "8555:8555"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock  # Allow the container to use Docker
+      - webhook-repo:/app/repo                     # Persist the repository data
+    environment:
+      - WEBHOOK_SECRET=your_webhook_secret         # Change this to your secure secret
+      - WEBHOOK_PORT=8555
+      - REPO_PATH=/app/repo
+      - GITHUB_REPO=thedinomilk/homelab-dashboard  # Update this to your repository
+
+volumes:
+  webhook-repo:  # Volume to persist the repository between restarts
