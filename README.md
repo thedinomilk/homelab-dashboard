@@ -180,6 +180,58 @@ When deploying in Portainer, make sure to:
 1. Upload the `.env` file to your server
 2. Update your stack configuration to use this file with `env_file: .env`
 
+## Setting Up GitHub Secrets
+
+For using GitHub Actions deployment, you need to set up these secrets in your GitHub repository:
+
+### Method 1: Using the Helper Script (Recommended)
+
+1. Clone your repository:
+   ```bash
+   git clone https://github.com/yourusername/homelab-dashboard.git
+   cd homelab-dashboard
+   ```
+
+2. Make the helper script executable:
+   ```bash
+   chmod +x scripts/configure-github-secrets.sh
+   ```
+
+3. Run the helper script:
+   ```bash
+   ./scripts/configure-github-secrets.sh
+   ```
+
+4. Follow the prompts to set up your secrets.
+
+### Method 2: Manual Configuration
+
+1. Go to your GitHub repository on GitHub.com
+2. Click on "Settings" tab
+3. In the left sidebar, click on "Secrets and variables" then "Actions"
+4. Click on "New repository secret" to add each of the following secrets:
+
+| Secret Name | Description | Example |
+|-------------|-------------|---------|
+| `SSH_PRIVATE_KEY` | Your private SSH key for server access | Contents of `~/.ssh/id_rsa` |
+| `HOMELAB_HOST` | Hostname or IP of your homelab server | `192.168.1.100` |
+| `HOMELAB_USER` | Username for SSH access to your server | `username` |
+| `PROXMOX_HOST` | Hostname or IP of your Proxmox server | `192.168.1.10` |
+| `PROXMOX_USER` | Proxmox API username | `user@pam` |
+| `PROXMOX_TOKEN_NAME` | Proxmox API token name | `github-deploy` |
+| `PROXMOX_TOKEN_VALUE` | Proxmox API token value | `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` |
+| `DOCKER_HOST` | Hostname or IP of your Docker server | `192.168.1.20` |
+| `DOCKER_PORT` | Port for Docker API access | `2375` |
+| `SECRET_KEY` | Flask secret key | Random string |
+| `SESSION_SECRET` | Flask session secret key | Random string |
+| `DATABASE_URL` | PostgreSQL database URL | `postgresql://user:pass@host:5432/db` |
+| `PORTAINER_URL` | URL to your Portainer instance | `http://192.168.1.20:9000` |
+| `PORTAINER_USERNAME` | Portainer admin username | `admin` |
+| `PORTAINER_PASSWORD` | Portainer admin password | Your password |
+| `STACK_NAME` | Name of your Portainer stack | `homelab-dashboard` |
+| `PORTAINER_WEBHOOK_URL` | Webhook URL for stack updates | `http://192.168.1.20:9000/api/webhooks/...` |
+| `GITHUB_TOKEN_ENV` | GitHub API token | `ghp_...` |
+
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.# This file intentionally modified to trigger a refresh
+This project is licensed under the MIT License - see the LICENSE file for details.

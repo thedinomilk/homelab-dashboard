@@ -23,7 +23,12 @@ var/
 # Virtual Environment
 venv/
 ENV/
+
+# Environment variables and secrets
 .env
+.env.*
+!.env.template
+!.env.example
 
 # Flask
 instance/

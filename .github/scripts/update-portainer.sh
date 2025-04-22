@@ -65,16 +65,48 @@ STACK_DETAILS=$(curl -s -X GET "${PORTAINER_URL}/api/stacks/${STACK_ID}" \
 ENVIRONMENT_VARS=$(curl -s -X GET "${PORTAINER_URL}/api/stacks/${STACK_ID}/env" \
   -H "Authorization: Bearer ${JWT}")
 
-# Update the stack with the pull option
-echo "Updating stack ${STACK_NAME}..."
-UPDATE_RESPONSE=$(curl -s -X PUT "${PORTAINER_URL}/api/stacks/${STACK_ID}?endpointId=${ENDPOINT_ID}" \
-  -H "Authorization: Bearer ${JWT}" \
-  -H "Content-Type: application/json" \
-  -d "{
-    \"prune\": true,
-    \"pullImage\": true,
-    \"env\": ${ENVIRONMENT_VARS}
-  }")
+# If the environment variables file exists, add it to the stack update
+if ssh ${HOMELAB_USER}@${HOMELAB_HOST} "[ -f ${ENV_FILE_PATH} ]"; then
+  echo "Using environment variables from ${ENV_FILE_PATH}..."
+  
+  # Read the variables from the .env file
+  ENV_VARS=$(ssh ${HOMELAB_USER}@${HOMELAB_HOST} "cat ${ENV_FILE_PATH}" | grep -v "^#" | grep "=" | sed -e 's/\r//g')
+  
+  # Create JSON array for env variables
+  ENV_JSON="["
+  while IFS= read -r line; do
+    if [[ ! -z "$line" ]]; then
+      key=$(echo "$line" | cut -d= -f1)
+      value=$(echo "$line" | cut -d= -f2-)
+      ENV_JSON+="{ \"name\": \"$key\", \"value\": \"$value\" },"
+    fi
+  done <<< "$ENV_VARS"
+  # Remove trailing comma and close array
+  ENV_JSON=${ENV_JSON%,}
+  ENV_JSON+="]"
+  
+  # Update the stack with the pull option and new environment variables
+  echo "Updating stack ${STACK_NAME} with environment variables..."
+  UPDATE_RESPONSE=$(curl -s -X PUT "${PORTAINER_URL}/api/stacks/${STACK_ID}?endpointId=${ENDPOINT_ID}" \
+    -H "Authorization: Bearer ${JWT}" \
+    -H "Content-Type: application/json" \
+    -d "{
+      \"prune\": true,
+      \"pullImage\": true,
+      \"env\": ${ENV_JSON}
+    }")
+else
+  # Fall back to existing environment variables  
+  echo "Updating stack ${STACK_NAME} with existing environment variables..."
+  UPDATE_RESPONSE=$(curl -s -X PUT "${PORTAINER_URL}/api/stacks/${STACK_ID}?endpointId=${ENDPOINT_ID}" \
+    -H "Authorization: Bearer ${JWT}" \
+    -H "Content-Type: application/json" \
+    -d "{
+      \"prune\": true,
+      \"pullImage\": true,
+      \"env\": ${ENVIRONMENT_VARS}
+    }")
+fi
 
 if echo "${UPDATE_RESPONSE}" | grep -q "ResourceControl"; then
   echo "Stack ${STACK_NAME} updated successfully!"
