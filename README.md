@@ -53,7 +53,9 @@ If you're already using Portainer to manage Docker containers:
 
 ### Option 3: GitHub Actions Automated Deployment (Recommended)
 
-This method uses GitHub Secrets and GitHub Actions to securely manage credentials and automate deployment:
+This method uses GitHub Secrets and GitHub Actions to securely manage credentials and automate deployment to your Portainer stack. 
+
+> **Note:** If you haven't created a Portainer stack yet, follow the detailed guide at [docs/portainer-stack-setup.md](docs/portainer-stack-setup.md).
 
 1. Fork or clone this repository to your own GitHub account
 
