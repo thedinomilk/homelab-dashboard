@@ -1,23 +1,28 @@
 import requests
 import logging
 import json
+import os
 from datetime import datetime
 
-def get_docker_url(settings):
+def get_docker_url(settings=None):
     """
-    Build the Docker API URL from settings
+    Build the Docker API URL using hardcoded values
     
     Args:
-        settings: UserSettings object with Docker config
+        settings: Ignored - maintained for backward compatibility
         
     Returns:
         str: Docker API base URL
     """
-    if not settings.docker_host:
-        raise ValueError("Docker host not configured")
+    # Hardcoded Docker credentials
+    docker_host = os.environ.get("DOCKER_HOST")
+    docker_port = int(os.environ.get("DOCKER_PORT", 2375))
     
     # Format Docker URL
-    base_url = settings.docker_host
+    if not docker_host:
+        raise ValueError("Docker host not configured")
+        
+    base_url = docker_host
     if base_url.startswith('tcp://'):
         base_url = base_url.replace('tcp://', 'http://')
     
@@ -26,7 +31,7 @@ def get_docker_url(settings):
     
     # Add port if not in URL
     if ':' not in base_url.split('//')[-1]:
-        base_url = f"{base_url}:{settings.docker_port}"
+        base_url = f"{base_url}:{docker_port}"
     
     return base_url
 

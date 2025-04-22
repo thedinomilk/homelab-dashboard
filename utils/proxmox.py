@@ -1,43 +1,47 @@
 import requests
 import logging
 import json
+import os
 from urllib3.exceptions import InsecureRequestWarning
 import urllib3
 
 # Suppress only the single warning from urllib3 needed.
 urllib3.disable_warnings(InsecureRequestWarning)
 
-def get_proxmox_connection(settings):
+def get_proxmox_connection(settings=None):
     """
-    Establish a connection to the Proxmox API
+    Establish a connection to the Proxmox API using hardcoded values
     
     Args:
-        settings: UserSettings object with Proxmox credentials
+        settings: Ignored - maintained for backward compatibility
         
     Returns:
         tuple: (base_url, headers, verify_ssl)
     """
-    if not settings.proxmox_host:
-        raise ValueError("Proxmox host not configured")
-        
-    if not settings.proxmox_token_name or not settings.proxmox_token_value:
-        raise ValueError("Proxmox API token not configured")
+    # Hardcoded Proxmox credentials
+    proxmox_host = os.environ.get("PROXMOX_HOST")
+    proxmox_user = os.environ.get("PROXMOX_USER")
+    proxmox_token_name = os.environ.get("PROXMOX_TOKEN_NAME")
+    proxmox_token_value = os.environ.get("PROXMOX_TOKEN_VALUE")
     
     # Format the base URL
-    base_url = settings.proxmox_host
+    if not proxmox_host:
+        raise ValueError("Proxmox host not configured")
+        
+    base_url = proxmox_host
     if not base_url.startswith('http'):
         base_url = f"https://{base_url}"
     if not base_url.endswith('/api2/json'):
         if not base_url.endswith('/'):
-            base_url += '/'
-        base_url += 'api2/json'
+            base_url = f"{base_url}/"
+        base_url = f"{base_url}api2/json"
     
     # API token format is USER@REALM!TOKENNAME=TOKENVALUE
-    token_id = f"{settings.proxmox_user}!{settings.proxmox_token_name}"
+    token_id = f"{proxmox_user}!{proxmox_token_name}"
     
     # Set up API headers
     headers = {
-        'Authorization': f'PVEAPIToken={token_id}={settings.proxmox_token_value}'
+        'Authorization': f'PVEAPIToken={token_id}={proxmox_token_value}'
     }
     
     # For now, disable SSL verification (not recommended for production)
