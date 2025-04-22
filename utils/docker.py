@@ -18,9 +18,16 @@ def get_docker_url(settings=None):
     docker_host = os.environ.get("DOCKER_HOST")
     docker_port = int(os.environ.get("DOCKER_PORT", 2375))
     
+    # Check for development mode
+    development_mode = os.environ.get("DEVELOPMENT_MODE", "false").lower() == "true"
+    
     # Format Docker URL
     if not docker_host:
-        raise ValueError("Docker host not configured")
+        if development_mode:
+            logging.warning("Development mode enabled - using mock Docker host")
+            docker_host = "localhost"
+        else:
+            raise ValueError("Docker host not configured")
         
     base_url = docker_host
     if base_url.startswith('tcp://'):
@@ -46,6 +53,71 @@ def get_containers(settings, all_containers=True):
     Returns:
         list: List of container objects
     """
+    # Check for development mode
+    development_mode = os.environ.get("DEVELOPMENT_MODE", "false").lower() == "true"
+    
+    if development_mode:
+        logging.warning("Development mode enabled - returning mock Docker containers")
+        # Return mock container data for development
+        now = datetime.now().timestamp()
+        
+        mock_containers = [
+            {
+                "Id": "container1",
+                "Names": ["/media-server"],
+                "Name": "media-server",
+                "Image": "linuxserver/plex:latest",
+                "Created": now - 86400,  # 1 day ago
+                "CreatedFormatted": datetime.fromtimestamp(now - 86400).strftime('%Y-%m-%d %H:%M:%S'),
+                "Status": "Up 1 day",
+                "StatusClass": "success",
+                "Ports": [{"PrivatePort": 32400, "PublicPort": 32400, "Type": "tcp"}],
+                "PortsFormatted": ["32400:32400/tcp"]
+            },
+            {
+                "Id": "container2",
+                "Names": ["/transmission"],
+                "Name": "transmission",
+                "Image": "linuxserver/transmission:latest",
+                "Created": now - 172800,  # 2 days ago
+                "CreatedFormatted": datetime.fromtimestamp(now - 172800).strftime('%Y-%m-%d %H:%M:%S'),
+                "Status": "Up 2 days",
+                "StatusClass": "success",
+                "Ports": [{"PrivatePort": 9091, "PublicPort": 9091, "Type": "tcp"}],
+                "PortsFormatted": ["9091:9091/tcp"]
+            },
+            {
+                "Id": "container3",
+                "Names": ["/portainer"],
+                "Name": "portainer",
+                "Image": "portainer/portainer-ce:latest",
+                "Created": now - 604800,  # 7 days ago
+                "CreatedFormatted": datetime.fromtimestamp(now - 604800).strftime('%Y-%m-%d %H:%M:%S'),
+                "Status": "Up 7 days",
+                "StatusClass": "success",
+                "Ports": [{"PrivatePort": 9000, "PublicPort": 9000, "Type": "tcp"}],
+                "PortsFormatted": ["9000:9000/tcp"]
+            },
+            {
+                "Id": "container4",
+                "Names": ["/database"],
+                "Name": "database",
+                "Image": "postgres:14",
+                "Created": now - 259200,  # 3 days ago
+                "CreatedFormatted": datetime.fromtimestamp(now - 259200).strftime('%Y-%m-%d %H:%M:%S'),
+                "Status": "Exited (0) 1 hour ago",
+                "StatusClass": "danger",
+                "Ports": [{"PrivatePort": 5432, "PublicPort": 5432, "Type": "tcp"}],
+                "PortsFormatted": ["5432:5432/tcp"]
+            }
+        ]
+        
+        # Only return running containers if all_containers is False
+        if not all_containers:
+            return [c for c in mock_containers if 'up' in c['Status'].lower()]
+        return mock_containers
+    
+    # Normal production mode
     base_url = get_docker_url(settings)
     
     try:

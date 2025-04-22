@@ -24,9 +24,19 @@ def get_proxmox_connection(settings=None):
     proxmox_token_name = os.environ.get("PROXMOX_TOKEN_NAME")
     proxmox_token_value = os.environ.get("PROXMOX_TOKEN_VALUE")
     
+    # Check for development mode
+    development_mode = os.environ.get("DEVELOPMENT_MODE", "false").lower() == "true"
+    
     # Format the base URL
     if not proxmox_host:
-        raise ValueError("Proxmox host not configured")
+        if development_mode:
+            logging.warning("Development mode enabled - using mock Proxmox host")
+            proxmox_host = "localhost"
+            proxmox_user = "dev@pam"
+            proxmox_token_name = "dev-token"
+            proxmox_token_value = "dev-value"
+        else:
+            raise ValueError("Proxmox host not configured")
         
     base_url = proxmox_host
     if not base_url.startswith('http'):
@@ -59,6 +69,18 @@ def get_nodes(settings):
     Returns:
         list: List of node objects
     """
+    # Check for development mode
+    development_mode = os.environ.get("DEVELOPMENT_MODE", "false").lower() == "true"
+    
+    if development_mode:
+        logging.warning("Development mode enabled - returning mock Proxmox nodes")
+        # Return mock data for development
+        return [
+            {"node": "proxmox-1", "status": "online", "cpu": 0.1, "maxcpu": 8, "mem": 2048, "maxmem": 16384, "uptime": 1234567},
+            {"node": "proxmox-2", "status": "online", "cpu": 0.2, "maxcpu": 8, "mem": 4096, "maxmem": 32768, "uptime": 7654321}
+        ]
+    
+    # Normal production mode
     base_url, headers, verify_ssl = get_proxmox_connection(settings)
     
     try:
@@ -87,6 +109,39 @@ def get_resources(settings, resource_type=None):
     Returns:
         list: List of resources
     """
+    # Check for development mode
+    development_mode = os.environ.get("DEVELOPMENT_MODE", "false").lower() == "true"
+    
+    if development_mode:
+        logging.warning(f"Development mode enabled - returning mock Proxmox resources for type: {resource_type}")
+        # Return mock data for development
+        if resource_type == "vm":
+            return [
+                {"type": "qemu", "node": "proxmox-1", "id": "qemu/100", "name": "web-server", "status": "running", "cpu": 1, "maxcpu": 2, "mem": 2048, "maxmem": 4096},
+                {"type": "qemu", "node": "proxmox-2", "id": "qemu/101", "name": "db-server", "status": "running", "cpu": 2, "maxcpu": 4, "mem": 4096, "maxmem": 8192}
+            ]
+        elif resource_type == "lxc":
+            return [
+                {"type": "lxc", "node": "proxmox-1", "id": "lxc/200", "name": "docker-host", "status": "running", "cpu": 1, "maxcpu": 2, "mem": 1024, "maxmem": 2048},
+                {"type": "lxc", "node": "proxmox-2", "id": "lxc/201", "name": "media-server", "status": "running", "cpu": 2, "maxcpu": 4, "mem": 2048, "maxmem": 4096}
+            ]
+        elif resource_type == "storage":
+            return [
+                {"type": "storage", "node": "proxmox-1", "storage": "local", "total": 1000000000, "used": 500000000, "avail": 500000000},
+                {"type": "storage", "node": "proxmox-2", "storage": "zfs-pool", "total": 5000000000, "used": 1000000000, "avail": 4000000000}
+            ]
+        else:
+            # Generic resource list
+            return [
+                {"type": "node", "node": "proxmox-1", "status": "online", "cpu": 0.1, "mem": 0.3, "disk": 0.5},
+                {"type": "node", "node": "proxmox-2", "status": "online", "cpu": 0.2, "mem": 0.4, "disk": 0.6},
+                {"type": "qemu", "node": "proxmox-1", "id": "qemu/100", "name": "web-server", "status": "running"},
+                {"type": "qemu", "node": "proxmox-2", "id": "qemu/101", "name": "db-server", "status": "running"},
+                {"type": "lxc", "node": "proxmox-1", "id": "lxc/200", "name": "docker-host", "status": "running"},
+                {"type": "lxc", "node": "proxmox-2", "id": "lxc/201", "name": "media-server", "status": "running"}
+            ]
+    
+    # Normal production mode
     base_url, headers, verify_ssl = get_proxmox_connection(settings)
     
     url = f"{base_url}/cluster/resources"
