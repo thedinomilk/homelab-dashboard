@@ -17,23 +17,21 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Create .env file
+      - name: Create .env file (ultra simplistic)
         run: |
-          # Use the template file approach (safest)
-          cp .env.template .env
-          sed -i "s|__PROXMOX_HOST__|${{ secrets.PROXMOX_HOST }}|g" .env
-          sed -i "s|__PROXMOX_USER__|${{ secrets.PROXMOX_USER }}|g" .env
-          sed -i "s|__PROXMOX_TOKEN_NAME__|${{ secrets.PROXMOX_TOKEN_NAME }}|g" .env
-          sed -i "s|__PROXMOX_TOKEN_VALUE__|${{ secrets.PROXMOX_TOKEN_VALUE }}|g" .env
-          sed -i "s|__DOCKER_HOST__|${{ secrets.DOCKER_HOST }}|g" .env
-          sed -i "s|__DOCKER_PORT__|${{ secrets.DOCKER_PORT }}|g" .env
-          sed -i "s|__DATABASE_URL__|${{ secrets.DATABASE_URL }}|g" .env
-          sed -i "s|__GITHUB_TOKEN__|${{ secrets.GITHUB_TOKEN }}|g" .env
-          sed -i "s|__SECRET_KEY__|${{ secrets.SECRET_KEY }}|g" .env
-          sed -i "s|__SESSION_SECRET__|${{ secrets.SESSION_SECRET }}|g" .env
+          echo "PROXMOX_HOST=${{ secrets.PROXMOX_HOST }}" > .env
+          echo "PROXMOX_USER=${{ secrets.PROXMOX_USER }}" >> .env
+          echo "PROXMOX_TOKEN_NAME=${{ secrets.PROXMOX_TOKEN_NAME }}" >> .env
+          echo "PROXMOX_TOKEN_VALUE=${{ secrets.PROXMOX_TOKEN_VALUE }}" >> .env
+          echo "DOCKER_HOST=${{ secrets.DOCKER_HOST }}" >> .env
+          echo "DOCKER_PORT=${{ secrets.DOCKER_PORT }}" >> .env
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+          echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> .env
+          echo "FLASK_ENV=production" >> .env
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
+          echo "SESSION_SECRET=${{ secrets.SESSION_SECRET }}" >> .env
           
-          echo "Created .env file (showing without secret values):"
-          sed 's/=.*/=***HIDDEN***/g' .env
+          echo "Created .env file successfully."
 
       - name: Copy project to server
         run: |
