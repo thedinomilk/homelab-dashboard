@@ -63,7 +63,7 @@ jobs:
       - name: Update Portainer stack
         run: |
           # Install jq
-          apt-get update && apt-get install -y jq curl
+          sudo apt-get update && sudo apt-get install -y jq curl
           
           # Execute the update script
           bash .github/scripts/update-portainer.sh \
