@@ -1,0 +1,9 @@
+flask
+flask-sqlalchemy
+gunicorn
+psycopg2-binary
+email-validator
+python-dotenv
+requests
+paramiko
+openai
