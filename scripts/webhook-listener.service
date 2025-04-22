@@ -1,0 +1,19 @@
+[Unit]
+Description=GitHub Webhook Listener for Homelab Dashboard
+After=network.target
+
+[Service]
+Type=simple
+User=YOUR_USERNAME
+Group=YOUR_USERNAME
+WorkingDirectory=/home/YOUR_USERNAME/homelab-dashboard
+ExecStart=/usr/bin/python3 /home/YOUR_USERNAME/homelab-dashboard/scripts/webhook-listener.py
+Restart=always
+RestartSec=10
+Environment=WEBHOOK_SECRET=your_webhook_secret
+Environment=WEBHOOK_PORT=8555
+Environment=REPO_PATH=/home/YOUR_USERNAME/homelab-dashboard
+Environment=GITHUB_REPO=thedinomilk/homelab-dashboard
+
+[Install]
+WantedBy=multi-user.target
