@@ -19,7 +19,25 @@ A comprehensive homelab management platform designed to simplify infrastructure 
 - Git installed on your homelab server
 - A server with at least 1GB RAM and 10GB free disk space
 
-### Option 1: Automatic Deployment
+### Option 1: Portainer Deployment (Recommended)
+
+If you're already using Portainer to manage Docker containers:
+
+1. In Portainer, go to "Stacks" in the left menu
+2. Click "Add stack"
+3. Give it a name like "homelab-dashboard"
+4. For "Build method" select "Git repository"
+5. For "Repository URL" enter: `https://github.com/thedinomilk/homelab-dashboard.git`
+6. For "Repository reference" enter: `main`
+7. For "Compose path" enter: `docker-compose.yml`
+   - Or use `docker-compose.portainer.yml` if you want to use an existing database
+8. Set environment variables:
+   - `DATABASE_URL`: Your PostgreSQL connection string (if using external database)
+   - `SESSION_SECRET`: A secure random string for session security
+9. Click "Deploy the stack"
+10. Access the application at `http://your-server-ip:5000`
+
+### Option 2: Automatic Deployment
 
 1. SSH into your homelab server
 2. Download the deployment script:
@@ -33,7 +51,7 @@ A comprehensive homelab management platform designed to simplify infrastructure 
    ```
 4. Access the application at `http://your-server-ip:5000`
 
-### Option 2: Manual Deployment
+### Option 3: Manual Deployment
 
 1. SSH into your homelab server
 2. Create a deployment directory:
