@@ -12,10 +12,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      # No longer needed - removed SSH setup to avoid timeout issues
 
       - name: Create .env file (using GitHub built-in env handling)
         env:
@@ -35,40 +32,21 @@ jobs:
           echo "FLASK_ENV=production" >> .env
           echo "Created .env file successfully."
 
-      - name: Copy project to server
+      # Skip SSH copy - we'll use direct update to Portainer
+      - name: Check out project and prepare deployment
         run: |
-          # Add server to known hosts (using the more reliable StrictHostKeyChecking=no option)
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-          
-          # Simple approach to create the SSH connection
-          echo "Host homelab" >> ~/.ssh/config
-          echo "  HostName ${{ secrets.HOMELAB_HOST }}" >> ~/.ssh/config
-          echo "  User ${{ secrets.HOMELAB_USER }}" >> ~/.ssh/config
-          echo "  StrictHostKeyChecking no" >> ~/.ssh/config
-          chmod 600 ~/.ssh/config
-          
-          # Create homelab directory if it doesn't exist
-          ssh homelab "mkdir -p ~/homelab-dashboard"
-          
-          # Copy project files to server
-          rsync -avz --delete \
-            --exclude '.git' \
-            --exclude '.github' \
-            --exclude 'venv' \
-            --exclude '__pycache__' \
-            --exclude '*.pyc' \
-            . homelab:~/homelab-dashboard/
+          # We'll skip the direct SSH copy to the server, as it's causing connection timeouts
+          # Instead, we'll rely on the Portainer API to pull directly from GitHub
+          echo "Preparing for direct Portainer deployment..."
+          echo "Created .env file will be used by the GitHub Action"
 
-      - name: Update Portainer stack
+      - name: Update Portainer stack directly
         run: |
           # Install jq
           sudo apt-get update && sudo apt-get install -y jq curl
           
-          # Execute the update script with secrets
+          # Execute the updated direct Portainer API script
           bash .github/scripts/update-portainer.sh \
             "${{ secrets.PORTAINER_URL }}" \
             "${{ secrets.PORTAINER_API_KEY }}" \
-            "homelab-dashboard" \
-            "homelab" \
-            "~/homelab-dashboard"
+            "homelab-dashboard"

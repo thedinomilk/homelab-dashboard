@@ -1,20 +1,18 @@
 #!/bin/bash
 set -e
 
-# This script updates a Portainer stack with the latest code
-# Usage: ./update-portainer.sh PORTAINER_URL PORTAINER_API_KEY STACK_NAME SSH_CONNECTION REMOTE_PATH
+# This script updates a Portainer stack with the latest code using a local docker-compose.yml
+# Usage: ./update-portainer.sh PORTAINER_URL PORTAINER_API_KEY STACK_NAME
 
 # Arguments
 PORTAINER_URL="$1"
 PORTAINER_API_KEY="$2"
 STACK_NAME="$3"
-SSH_CONNECTION="$4"
-REMOTE_PATH="$5"
 
 # Check if all required arguments are provided
-if [ -z "$PORTAINER_URL" ] || [ -z "$PORTAINER_API_KEY" ] || [ -z "$STACK_NAME" ] || [ -z "$SSH_CONNECTION" ] || [ -z "$REMOTE_PATH" ]; then
+if [ -z "$PORTAINER_URL" ] || [ -z "$PORTAINER_API_KEY" ] || [ -z "$STACK_NAME" ]; then
     echo "Error: Missing required arguments"
-    echo "Usage: ./update-portainer.sh PORTAINER_URL PORTAINER_API_KEY STACK_NAME SSH_CONNECTION REMOTE_PATH"
+    echo "Usage: ./update-portainer.sh PORTAINER_URL PORTAINER_API_KEY STACK_NAME"
     exit 1
 fi
 
@@ -25,12 +23,12 @@ TMP_DIR=$(mktemp -d)
 TMP_COMPOSE_FILE="$TMP_DIR/docker-compose.yml"
 TMP_JSON_FILE="$TMP_DIR/stack-request.json"
 
-# Copy the docker-compose file from the remote server
-echo "Copying docker-compose file from remote server..."
-scp "$SSH_CONNECTION:$REMOTE_PATH/docker-compose.yml" "$TMP_COMPOSE_FILE"
+# Use the local docker-compose.yml file
+echo "Using local docker-compose.yml file..."
+cp docker-compose.portainer.yml "$TMP_COMPOSE_FILE"
 
 if [ ! -f "$TMP_COMPOSE_FILE" ]; then
-    echo "Error: Failed to copy docker-compose.yml from remote server"
+    echo "Error: docker-compose.portainer.yml not found"
     exit 1
 fi
 
