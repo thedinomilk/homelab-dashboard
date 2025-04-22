@@ -51,7 +51,62 @@ If you're already using Portainer to manage Docker containers:
    ```
 4. Access the application at `http://your-server-ip:5000`
 
-### Option 3: Manual Deployment
+### Option 3: GitHub Actions Automated Deployment (Recommended)
+
+This method uses GitHub Secrets and GitHub Actions to securely manage credentials and automate deployment:
+
+1. Fork or clone this repository to your own GitHub account
+
+2. **Option A: Use the Configuration Helper Script (Recommended)**
+   
+   ```bash
+   # Clone your repo
+   git clone https://github.com/yourusername/homelab-dashboard.git
+   cd homelab-dashboard
+   
+   # Run the configuration script
+   ./scripts/configure-github-secrets.sh
+   ```
+   
+   The script will guide you through setting up all necessary GitHub Secrets.
+
+3. **Option B: Manual Setup**
+   
+   Go to your repository's Settings > Secrets and variables > Actions
+   Manually add the following repository secrets:
+
+   **Required Secrets:**
+   - `SSH_PRIVATE_KEY`: Your private SSH key for accessing the homelab server
+   - `HOMELAB_HOST`: IP or hostname of your homelab server
+   - `HOMELAB_USER`: Username for SSH access to your server
+   - `PROXMOX_HOST`: IP/hostname of your Proxmox server
+   - `PROXMOX_USER`: Proxmox username (usually in format user@pam)
+   - `PROXMOX_TOKEN_NAME`: API token name for Proxmox
+   - `PROXMOX_TOKEN_VALUE`: API token value for Proxmox
+   - `DOCKER_HOST`: IP/hostname of your Docker host
+   - `DOCKER_PORT`: Port for Docker API (usually 2375)
+   - `SECRET_KEY`: Flask application secret key
+   - `SESSION_SECRET`: Flask session secret
+   - `DATABASE_URL`: PostgreSQL database connection string
+
+   **Optional Portainer Integration:**
+   - `PORTAINER_URL`: URL to your Portainer instance
+   - `PORTAINER_USERNAME`: Portainer admin username
+   - `PORTAINER_PASSWORD`: Portainer admin password
+   - `STACK_NAME`: Name of your stack in Portainer
+   
+   **Alternative Portainer Integration:**
+   - `PORTAINER_WEBHOOK_URL`: Webhook URL for your Portainer stack
+
+4. Push to the main branch or manually trigger the "Deploy to Homelab" workflow
+5. The GitHub Action will:
+   - Create a secure .env file with your credentials
+   - Copy it to your homelab server
+   - Update your Portainer stack with the latest code
+
+6. Access the application at `http://your-server-ip:5000`
+
+### Option 4: Manual Deployment
 
 1. SSH into your homelab server
 2. Create a deployment directory:
@@ -63,11 +118,12 @@ If you're already using Portainer to manage Docker containers:
    ```bash
    git clone https://github.com/thedinomilk/homelab-dashboard.git .
    ```
-4. Deploy with Docker Compose:
+4. Create a `.env` file with your configuration (see below)
+5. Deploy with Docker Compose:
    ```bash
    docker-compose up -d
    ```
-5. Access the application at `http://your-server-ip:5000`
+6. Access the application at `http://your-server-ip:5000`
 
 ### Setup Automated Updates (Optional)
 

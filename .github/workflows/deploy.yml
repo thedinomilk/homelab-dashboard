@@ -1,0 +1,84 @@
+name: Deploy to Homelab
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      
+      - name: Create .env file
+        run: |
+          # Create .env file with GitHub secrets
+          cat > .env <<EOF
+          # Proxmox configuration
+          PROXMOX_HOST=${{ secrets.PROXMOX_HOST }}
+          PROXMOX_USER=${{ secrets.PROXMOX_USER }}
+          PROXMOX_TOKEN_NAME=${{ secrets.PROXMOX_TOKEN_NAME }}
+          PROXMOX_TOKEN_VALUE=${{ secrets.PROXMOX_TOKEN_VALUE }}
+          
+          # Docker configuration
+          DOCKER_HOST=${{ secrets.DOCKER_HOST }}
+          DOCKER_PORT=${{ secrets.DOCKER_PORT }}
+          
+          # GitHub configuration
+          GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN_ENV }}
+          
+          # Flask configuration
+          FLASK_ENV=production
+          SECRET_KEY=${{ secrets.SECRET_KEY }}
+          DATABASE_URL=${{ secrets.DATABASE_URL }}
+          SESSION_SECRET=${{ secrets.SESSION_SECRET }}
+          EOF
+          
+          # Display .env file for debugging (without sensitive values)
+          echo "Created .env file with the following variables:"
+          grep -v "TOKEN\|KEY\|PASSWORD" .env || true
+      
+      - name: Make scripts executable
+        run: chmod +x .github/scripts/update-portainer.sh
+      
+      - name: Deploy to homelab
+        env:
+          HOMELAB_HOST: ${{ secrets.HOMELAB_HOST }}
+          HOMELAB_USER: ${{ secrets.HOMELAB_USER }}
+          PORTAINER_URL: ${{ secrets.PORTAINER_URL }}
+          PORTAINER_USERNAME: ${{ secrets.PORTAINER_USERNAME }}
+          PORTAINER_PASSWORD: ${{ secrets.PORTAINER_PASSWORD }}
+          STACK_NAME: ${{ secrets.STACK_NAME || 'homelab-dashboard' }}
+        run: |
+          # Add the homelab server to known hosts
+          ssh-keyscan -H ${{ secrets.HOMELAB_HOST }} >> ~/.ssh/known_hosts
+          
+          # Create deployment directory if it doesn't exist
+          ssh ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }} "mkdir -p ~/homelab-dashboard"
+          
+          # Copy .env file to homelab
+          scp .env ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }}:~/homelab-dashboard/
+          
+          # Deploy via Portainer API if credentials are provided
+          if [[ ! -z "${{ secrets.PORTAINER_URL }}" && ! -z "${{ secrets.PORTAINER_USERNAME }}" && ! -z "${{ secrets.PORTAINER_PASSWORD }}" ]]; then
+            echo "Updating stack via Portainer API..."
+            ./.github/scripts/update-portainer.sh
+          # Otherwise try webhook
+          elif [[ ! -z "${{ secrets.PORTAINER_WEBHOOK_URL }}" ]]; then
+            echo "Updating stack via webhook..."
+            curl -X POST ${{ secrets.PORTAINER_WEBHOOK_URL }}
+          else
+            echo "No Portainer credentials or webhook URL provided. Skipping automatic update."
+            echo "Please update your stack manually in Portainer."
+          fi
+          
+          echo "Deployment completed! Remember to check your homelab dashboard."
