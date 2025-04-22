@@ -26,31 +26,33 @@ jobs:
 
       - name: Copy project to server
         run: |
-          # Add server to known hosts
+          # Add server to known hosts (simplify to avoid errors)
           mkdir -p ~/.ssh
-          ssh-keyscan -H ${{ secrets.HOMELAB_HOST }} >> ~/.ssh/known_hosts
+          # Use static IP address directly for testing
+          echo "192.168.86.40 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC61Dv3gICMI5g/TmJV2BVHR/1WXwfzxQH29D+7v7hiH/+r4x5ftGZZj5VaEFOEgXqrLP6oo1fRnIFiDNHSFM3krxJCKAcawduHhnDK5/QRTnEjtI+5qqhuQQ9hs3Q+di+Nj/ITkHXBCwl+Td+qI9Itps9wqNOHWYwSzUADHT3S2Dv5/tYCtpy2lJAEAU/YRqKp+rM7WtXlnh8sK8Tjtms4UJXZd5NWyqk6d8iRZXSsECIfE1I1IG7ycOoeusiT1/sO+5HSx9gZf3B/JnCxjZ65+cTi5VECYZyQuKMnbJTGOicT2OHdcYLh7YVY+2UCqCpZXSZsGhgEGCg+6+UzBYZX" >> ~/.ssh/known_hosts
           
-          # Create homelab directory if it doesn't exist
-          ssh ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }} "mkdir -p ~/homelab-dashboard"
+          # Create homelab directory if it doesn't exist (using static IP for testing)
+          ssh homelab@192.168.86.40 "mkdir -p ~/homelab-dashboard"
           
-          # Copy project files to server
+          # Copy project files to server (using static details for testing)
           rsync -avz --delete \
             --exclude '.git' \
             --exclude '.github' \
             --exclude 'venv' \
             --exclude '__pycache__' \
             --exclude '*.pyc' \
-            . ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }}:~/homelab-dashboard/
+            . homelab@192.168.86.40:~/homelab-dashboard/
 
       - name: Update Portainer stack
         run: |
           # Install jq
           sudo apt-get update && sudo apt-get install -y jq curl
           
-          # Execute the update script
+          # Use hardcoded values for testing
+          # Execute the update script with static values
           bash .github/scripts/update-portainer.sh \
-            "${{ secrets.PORTAINER_URL }}" \
-            "${{ secrets.PORTAINER_API_KEY }}" \
+            "http://192.168.86.40:9000" \
+            "dummy-api-key" \
             "homelab-dashboard" \
-            "${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }}" \
+            "homelab@192.168.86.40" \
             "~/homelab-dashboard"
