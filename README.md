@@ -91,4 +91,4 @@ To automatically update the application with the latest code from GitHub:
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the LICENSE file for details.# This file intentionally modified to trigger a refresh
