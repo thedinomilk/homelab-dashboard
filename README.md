@@ -86,8 +86,43 @@ To automatically update the application with the latest code from GitHub:
 
 ### Environment Variables
 
+#### Required Variables
 - `DATABASE_URL`: PostgreSQL connection string
 - `SESSION_SECRET`: Secret key for session management
+- `PROXMOX_HOST`: Hostname or IP address of your Proxmox server
+- `PROXMOX_USER`: Username for Proxmox API access
+- `PROXMOX_TOKEN_NAME`: API token name for Proxmox
+- `PROXMOX_TOKEN_VALUE`: API token value for Proxmox
+- `DOCKER_HOST`: Hostname or IP address of your Docker server
+- `DOCKER_PORT`: Port for Docker API access (typically 2375)
+- `GITHUB_TOKEN`: GitHub personal access token (if using GitHub integration)
+
+#### Using .env File
+
+You can create a `.env` file in the root directory with these variables:
+
+```
+# Proxmox configuration
+PROXMOX_HOST=your_proxmox_ip
+PROXMOX_USER=your_proxmox_username
+PROXMOX_TOKEN_NAME=your_proxmox_token_name
+PROXMOX_TOKEN_VALUE=your_proxmox_token_value
+
+# Docker configuration
+DOCKER_HOST=your_docker_host_ip
+DOCKER_PORT=2375
+
+# GitHub configuration
+GITHUB_TOKEN=your_github_token
+
+# Flask configuration
+FLASK_ENV=production
+SECRET_KEY=your_random_secret_key
+```
+
+When deploying in Portainer, make sure to:
+1. Upload the `.env` file to your server
+2. Update your stack configuration to use this file with `env_file: .env`
 
 ## License
 

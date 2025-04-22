@@ -6,9 +6,21 @@ services:
     restart: always
     ports:
       - "5000:5000"
+    env_file:
+      - .env
     environment:
       - DATABASE_URL=${DATABASE_URL:-postgresql://homelab_user:homelab_password@your-db-host:5432/homelab_dashboard}
       - SESSION_SECRET=${SESSION_SECRET:-defaultsecretkey}
+      # Proxmox configuration
+      - PROXMOX_HOST=${PROXMOX_HOST}
+      - PROXMOX_USER=${PROXMOX_USER}
+      - PROXMOX_TOKEN_NAME=${PROXMOX_TOKEN_NAME}
+      - PROXMOX_TOKEN_VALUE=${PROXMOX_TOKEN_VALUE}
+      # Docker configuration
+      - DOCKER_HOST=${DOCKER_HOST}
+      - DOCKER_PORT=${DOCKER_PORT}
+      # GitHub configuration
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
     volumes:
       - homelab_uploads:/app/uploads
 
