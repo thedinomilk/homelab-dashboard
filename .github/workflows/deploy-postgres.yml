@@ -1,0 +1,78 @@
+name: Deploy PostgreSQL Database
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'docker-compose.portainer-postgres.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy-postgres:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy to Portainer
+        env:
+          PORTAINER_URL: ${{ secrets.PORTAINER_URL }}
+          PORTAINER_API_KEY: ${{ secrets.PORTAINER_API_KEY }}
+          PORTAINER_STACK_NAME: "homelab-postgres"
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+        run: |
+          # Install curl
+          apt-get update && apt-get install -y curl jq
+          
+          # Create .env file with PostgreSQL credentials
+          echo "POSTGRES_USER=${POSTGRES_USER}" > .env.postgres
+          echo "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}" >> .env.postgres
+          echo "POSTGRES_DB=${POSTGRES_DB}" >> .env.postgres
+          
+          # Get stack ID
+          STACK_ID=$(curl -s -H "X-API-Key: ${PORTAINER_API_KEY}" "${PORTAINER_URL}/api/stacks" | jq -r '.[] | select(.Name == "'"${PORTAINER_STACK_NAME}"'") | .Id')
+          
+          # Create or update stack
+          if [ -z "$STACK_ID" ]; then
+            # Create new stack
+            echo "Creating new PostgreSQL stack in Portainer..."
+            curl -X POST \
+              -H "X-API-Key: ${PORTAINER_API_KEY}" \
+              -H "Content-Type: application/json" \
+              -d '{
+                "name": "'"${PORTAINER_STACK_NAME}"'",
+                "swarmID": "",
+                "stackFileContent": "'"$(cat docker-compose.portainer-postgres.yml | sed 's/"/\\"/g' | sed 's/$/\\n/' | tr -d '\n')"'",
+                "env": [
+                  { "name": "POSTGRES_USER", "value": "'"${POSTGRES_USER}"'" },
+                  { "name": "POSTGRES_PASSWORD", "value": "'"${POSTGRES_PASSWORD}"'" },
+                  { "name": "POSTGRES_DB", "value": "'"${POSTGRES_DB}"'" }
+                ]
+              }' \
+              "${PORTAINER_URL}/api/stacks"
+          else
+            # Update existing stack
+            echo "Updating PostgreSQL stack in Portainer..."
+            curl -X PUT \
+              -H "X-API-Key: ${PORTAINER_API_KEY}" \
+              -H "Content-Type: application/json" \
+              -d '{
+                "stackFileContent": "'"$(cat docker-compose.portainer-postgres.yml | sed 's/"/\\"/g' | sed 's/$/\\n/' | tr -d '\n')"'",
+                "env": [
+                  { "name": "POSTGRES_USER", "value": "'"${POSTGRES_USER}"'" },
+                  { "name": "POSTGRES_PASSWORD", "value": "'"${POSTGRES_PASSWORD}"'" },
+                  { "name": "POSTGRES_DB", "value": "'"${POSTGRES_DB}"'" }
+                ],
+                "prune": false
+              }' \
+              "${PORTAINER_URL}/api/stacks/${STACK_ID}"
+          fi
+          
+          echo "PostgreSQL deployment completed!"
