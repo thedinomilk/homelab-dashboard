@@ -27,6 +27,17 @@ app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
 # Initialize database
 init_db(app)
 
+# Create Jinja2 filters
+@app.template_filter('from_json')
+def from_json_filter(value):
+    """Convert JSON string to Python list/dict"""
+    if not value:
+        return []
+    try:
+        return json.loads(value)
+    except:
+        return []
+
 # Import utils after app initialization
 from utils import proxmox, docker, storage
 from models import UserSettings, DocuEntry, ScriptEntry, MediaRequest
