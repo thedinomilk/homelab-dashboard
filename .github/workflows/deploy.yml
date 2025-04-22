@@ -17,8 +17,23 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Create .env file (one-line approach)
-        run: echo -e "PROXMOX_HOST=${{ secrets.PROXMOX_HOST }}\nPROXMOX_USER=${{ secrets.PROXMOX_USER }}\nPROXMOX_TOKEN_NAME=${{ secrets.PROXMOX_TOKEN_NAME }}\nPROXMOX_TOKEN_VALUE=${{ secrets.PROXMOX_TOKEN_VALUE }}\nDOCKER_HOST=${{ secrets.DOCKER_HOST }}\nDOCKER_PORT=${{ secrets.DOCKER_PORT }}\nDATABASE_URL=${{ secrets.DATABASE_URL }}\nGITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}\nFLASK_ENV=production\nSECRET_KEY=${{ secrets.SECRET_KEY }}\nSESSION_SECRET=${{ secrets.SESSION_SECRET }}" > .env
+      - name: Create .env file (using GitHub built-in env handling)
+        env:
+          PROXMOX_HOST: ${{ secrets.PROXMOX_HOST }}
+          PROXMOX_USER: ${{ secrets.PROXMOX_USER }}
+          PROXMOX_TOKEN_NAME: ${{ secrets.PROXMOX_TOKEN_NAME }}
+          PROXMOX_TOKEN_VALUE: ${{ secrets.PROXMOX_TOKEN_VALUE }}
+          DOCKER_HOST: ${{ secrets.DOCKER_HOST }}
+          DOCKER_PORT: ${{ secrets.DOCKER_PORT }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+        run: |
+          # Use env defined above to create .env file
+          env | grep -E '^(PROXMOX_|DOCKER_|DATABASE_URL|GITHUB_TOKEN|SECRET_KEY|SESSION_SECRET)' > .env
+          echo "FLASK_ENV=production" >> .env
+          echo "Created .env file successfully."
 
       - name: Copy project to server
         run: |
