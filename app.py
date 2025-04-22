@@ -126,7 +126,8 @@ def get_proxmox_nodes():
         return jsonify(nodes)
     except Exception as e:
         logging.error(f"Error getting Proxmox nodes: {str(e)}")
-        return jsonify({"error": str(e)}), 500
+        # Return empty array instead of error to prevent frontend issues
+        return jsonify([]), 200
 
 @app.route('/api/proxmox/resources')
 def get_proxmox_resources():
@@ -136,7 +137,8 @@ def get_proxmox_resources():
         return jsonify(resources)
     except Exception as e:
         logging.error(f"Error getting Proxmox resources: {str(e)}")
-        return jsonify({"error": str(e)}), 500
+        # Return empty array instead of error
+        return jsonify([]), 200
 
 @app.route('/api/docker/containers')
 def get_docker_containers():
@@ -146,7 +148,8 @@ def get_docker_containers():
         return jsonify(containers)
     except Exception as e:
         logging.error(f"Error getting Docker containers: {str(e)}")
-        return jsonify({"error": str(e)}), 500
+        # Return empty array instead of error
+        return jsonify([]), 200
 
 @app.route('/api/docker/container/<container_id>/start', methods=['POST'])
 def start_container(container_id):
@@ -186,7 +189,8 @@ def get_storage_info():
         return jsonify(storage_info)
     except Exception as e:
         logging.error(f"Error getting storage info: {str(e)}")
-        return jsonify({"error": str(e)}), 500
+        # Return empty array instead of error
+        return jsonify([]), 200
 
 @app.route('/api/storage/zpool/list')
 def list_zpools():
