@@ -17,42 +17,57 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Create .env file (using static file)
+      - name: Create .env file
         run: |
-          # Use a static script to create the .env file to bypass any shell issues
-          bash .github/static-env-creator.sh
+          # Simple approach with basic echo commands
+          echo "PROXMOX_HOST=${{ secrets.PROXMOX_HOST }}" > .env
+          echo "PROXMOX_USER=${{ secrets.PROXMOX_USER }}" >> .env
+          echo "PROXMOX_TOKEN_NAME=${{ secrets.PROXMOX_TOKEN_NAME }}" >> .env
+          echo "PROXMOX_TOKEN_VALUE=${{ secrets.PROXMOX_TOKEN_VALUE }}" >> .env
+          echo "DOCKER_HOST=${{ secrets.DOCKER_HOST }}" >> .env
+          echo "DOCKER_PORT=${{ secrets.DOCKER_PORT }}" >> .env
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+          echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> .env
+          echo "FLASK_ENV=production" >> .env
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
+          echo "SESSION_SECRET=${{ secrets.SESSION_SECRET }}" >> .env
           
-          echo "Created static .env file for testing."
+          echo "Created .env file successfully."
 
       - name: Copy project to server
         run: |
-          # Add server to known hosts (simplify to avoid errors)
+          # Add server to known hosts (using the more reliable StrictHostKeyChecking=no option)
           mkdir -p ~/.ssh
-          # Use static IP address directly for testing
-          echo "192.168.86.40 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC61Dv3gICMI5g/TmJV2BVHR/1WXwfzxQH29D+7v7hiH/+r4x5ftGZZj5VaEFOEgXqrLP6oo1fRnIFiDNHSFM3krxJCKAcawduHhnDK5/QRTnEjtI+5qqhuQQ9hs3Q+di+Nj/ITkHXBCwl+Td+qI9Itps9wqNOHWYwSzUADHT3S2Dv5/tYCtpy2lJAEAU/YRqKp+rM7WtXlnh8sK8Tjtms4UJXZd5NWyqk6d8iRZXSsECIfE1I1IG7ycOoeusiT1/sO+5HSx9gZf3B/JnCxjZ65+cTi5VECYZyQuKMnbJTGOicT2OHdcYLh7YVY+2UCqCpZXSZsGhgEGCg+6+UzBYZX" >> ~/.ssh/known_hosts
+          chmod 700 ~/.ssh
           
-          # Create homelab directory if it doesn't exist (using static IP for testing)
-          ssh homelab@192.168.86.40 "mkdir -p ~/homelab-dashboard"
+          # Simple approach to create the SSH connection
+          echo "Host homelab" >> ~/.ssh/config
+          echo "  HostName ${{ secrets.HOMELAB_HOST }}" >> ~/.ssh/config
+          echo "  User ${{ secrets.HOMELAB_USER }}" >> ~/.ssh/config
+          echo "  StrictHostKeyChecking no" >> ~/.ssh/config
+          chmod 600 ~/.ssh/config
           
-          # Copy project files to server (using static details for testing)
+          # Create homelab directory if it doesn't exist
+          ssh homelab "mkdir -p ~/homelab-dashboard"
+          
+          # Copy project files to server
           rsync -avz --delete \
             --exclude '.git' \
             --exclude '.github' \
             --exclude 'venv' \
             --exclude '__pycache__' \
             --exclude '*.pyc' \
-            . homelab@192.168.86.40:~/homelab-dashboard/
+            . homelab:~/homelab-dashboard/
 
       - name: Update Portainer stack
         run: |
           # Install jq
           sudo apt-get update && sudo apt-get install -y jq curl
           
-          # Use hardcoded values for testing
-          # Execute the update script with static values
+          # Execute the update script with secrets
           bash .github/scripts/update-portainer.sh \
-            "http://192.168.86.40:9000" \
-            "dummy-api-key" \
+            "${{ secrets.PORTAINER_URL }}" \
+            "${{ secrets.PORTAINER_API_KEY }}" \
             "homelab-dashboard" \
-            "homelab@192.168.86.40" \
+            "homelab" \
             "~/homelab-dashboard"
