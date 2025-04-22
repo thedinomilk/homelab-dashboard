@@ -1,0 +1,635 @@
+2025-04-22T05:15:19.9298025Z Current runner version: '2.323.0'
+2025-04-22T05:15:19.9320880Z ##[group]Operating System
+2025-04-22T05:15:19.9322021Z Ubuntu
+2025-04-22T05:15:19.9322739Z 24.04.2
+2025-04-22T05:15:19.9323288Z LTS
+2025-04-22T05:15:19.9323878Z ##[endgroup]
+2025-04-22T05:15:19.9324597Z ##[group]Runner Image
+2025-04-22T05:15:19.9325272Z Image: ubuntu-24.04
+2025-04-22T05:15:19.9325935Z Version: 20250413.1.0
+2025-04-22T05:15:19.9327100Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20250413.1/images/ubuntu/Ubuntu2404-Readme.md
+2025-04-22T05:15:19.9328630Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20250413.1
+2025-04-22T05:15:19.9329673Z ##[endgroup]
+2025-04-22T05:15:19.9330290Z ##[group]Runner Image Provisioner
+2025-04-22T05:15:19.9331029Z 2.0.422.1
+2025-04-22T05:15:19.9331877Z ##[endgroup]
+2025-04-22T05:15:19.9333224Z ##[group]GITHUB_TOKEN Permissions
+2025-04-22T05:15:19.9335297Z Contents: read
+2025-04-22T05:15:19.9336056Z Metadata: read
+2025-04-22T05:15:19.9336827Z Packages: read
+2025-04-22T05:15:19.9337602Z ##[endgroup]
+2025-04-22T05:15:19.9339903Z Secret source: Actions
+2025-04-22T05:15:19.9341036Z Prepare workflow directory
+2025-04-22T05:15:19.9668618Z Prepare all required actions
+2025-04-22T05:15:19.9705176Z Getting action download info
+2025-04-22T05:15:20.4705557Z ##[group]Download immutable action package 'actions/checkout@v2'
+2025-04-22T05:15:20.4706663Z Version: 2.7.0
+2025-04-22T05:15:20.4707820Z Digest: sha256:95d28907bc868c0bab52f05f1f84cf8416c9415fba4c92519bc0b83bdce1eae3
+2025-04-22T05:15:20.4709106Z Source commit SHA: ee0669bd1cc54295c223e0bb666b733df41de1c5
+2025-04-22T05:15:20.4709964Z ##[endgroup]
+2025-04-22T05:15:20.6278570Z Complete job name: deploy
+2025-04-22T05:15:20.6922515Z ##[group]Run actions/checkout@v2
+2025-04-22T05:15:20.6923438Z with:
+2025-04-22T05:15:20.6923980Z   repository: thedinomilk/homelab-dashboard
+2025-04-22T05:15:20.6924746Z   token: ***
+2025-04-22T05:15:20.6925206Z   ssh-strict: true
+2025-04-22T05:15:20.6925716Z   persist-credentials: true
+2025-04-22T05:15:20.6926266Z   clean: true
+2025-04-22T05:15:20.6926720Z   fetch-depth: 1
+2025-04-22T05:15:20.6927183Z   lfs: false
+2025-04-22T05:15:20.6927636Z   submodules: false
+2025-04-22T05:15:20.6928135Z   set-safe-directory: true
+2025-04-22T05:15:20.6928852Z ##[endgroup]
+2025-04-22T05:15:20.8472205Z Syncing repository: thedinomilk/homelab-dashboard
+2025-04-22T05:15:20.8474144Z ##[group]Getting Git version info
+2025-04-22T05:15:20.8475053Z Working directory is '/home/runner/work/homelab-dashboard/homelab-dashboard'
+2025-04-22T05:15:20.8476435Z [command]/usr/bin/git version
+2025-04-22T05:15:20.8509037Z git version 2.49.0
+2025-04-22T05:15:20.8534982Z ##[endgroup]
+2025-04-22T05:15:20.8550558Z Temporarily overriding HOME='/home/runner/work/_temp/066f9495-0e6e-4f49-9b45-f8f9f94d571b' before making global git config changes
+2025-04-22T05:15:20.8553052Z Adding repository directory to the temporary git global config as a safe directory
+2025-04-22T05:15:20.8555200Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/homelab-dashboard/homelab-dashboard
+2025-04-22T05:15:20.8589725Z Deleting the contents of '/home/runner/work/homelab-dashboard/homelab-dashboard'
+2025-04-22T05:15:20.8593594Z ##[group]Initializing the repository
+2025-04-22T05:15:20.8597150Z [command]/usr/bin/git init /home/runner/work/homelab-dashboard/homelab-dashboard
+2025-04-22T05:15:20.8652434Z hint: Using 'master' as the name for the initial branch. This default branch name
+2025-04-22T05:15:20.8654086Z hint: is subject to change. To configure the initial branch name to use in all
+2025-04-22T05:15:20.8655810Z hint: of your new repositories, which will suppress this warning, call:
+2025-04-22T05:15:20.8657213Z hint:
+2025-04-22T05:15:20.8658112Z hint: 	git config --global init.defaultBranch <name>
+2025-04-22T05:15:20.8659044Z hint:
+2025-04-22T05:15:20.8659678Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2025-04-22T05:15:20.8660638Z hint: 'development'. The just-created branch can be renamed via this command:
+2025-04-22T05:15:20.8662218Z hint:
+2025-04-22T05:15:20.8662702Z hint: 	git branch -m <name>
+2025-04-22T05:15:20.8663612Z Initialized empty Git repository in /home/runner/work/homelab-dashboard/homelab-dashboard/.git/
+2025-04-22T05:15:20.8666821Z [command]/usr/bin/git remote add origin https://github.com/thedinomilk/homelab-dashboard
+2025-04-22T05:15:20.8698603Z ##[endgroup]
+2025-04-22T05:15:20.8699572Z ##[group]Disabling automatic garbage collection
+2025-04-22T05:15:20.8702000Z [command]/usr/bin/git config --local gc.auto 0
+2025-04-22T05:15:20.8729696Z ##[endgroup]
+2025-04-22T05:15:20.8730558Z ##[group]Setting up auth
+2025-04-22T05:15:20.8735505Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-04-22T05:15:20.8764668Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-04-22T05:15:20.9036577Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-04-22T05:15:20.9067438Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-04-22T05:15:20.9300193Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2025-04-22T05:15:20.9334794Z ##[endgroup]
+2025-04-22T05:15:20.9336279Z ##[group]Fetching the repository
+2025-04-22T05:15:20.9344510Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --progress --no-recurse-submodules --depth=1 origin +6f5da49deed2364e6b752f2837d27ab36d8e8c88:refs/remotes/origin/main
+2025-04-22T05:15:21.4788293Z remote: Enumerating objects: 124, done.        
+2025-04-22T05:15:21.4789981Z remote: Counting objects:   0% (1/124)        
+2025-04-22T05:15:21.4791084Z remote: Counting objects:   1% (2/124)        
+2025-04-22T05:15:21.4792398Z remote: Counting objects:   2% (3/124)        
+2025-04-22T05:15:21.4793104Z remote: Counting objects:   3% (4/124)        
+2025-04-22T05:15:21.4793776Z remote: Counting objects:   4% (5/124)        
+2025-04-22T05:15:21.4794443Z remote: Counting objects:   5% (7/124)        
+2025-04-22T05:15:21.4795124Z remote: Counting objects:   6% (8/124)        
+2025-04-22T05:15:21.4795791Z remote: Counting objects:   7% (9/124)        
+2025-04-22T05:15:21.4796454Z remote: Counting objects:   8% (10/124)        
+2025-04-22T05:15:21.4797132Z remote: Counting objects:   9% (12/124)        
+2025-04-22T05:15:21.4797804Z remote: Counting objects:  10% (13/124)        
+2025-04-22T05:15:21.4798488Z remote: Counting objects:  11% (14/124)        
+2025-04-22T05:15:21.4799156Z remote: Counting objects:  12% (15/124)        
+2025-04-22T05:15:21.4799819Z remote: Counting objects:  13% (17/124)        
+2025-04-22T05:15:21.4800480Z remote: Counting objects:  14% (18/124)        
+2025-04-22T05:15:21.4801118Z remote: Counting objects:  15% (19/124)        
+2025-04-22T05:15:21.4801971Z remote: Counting objects:  16% (20/124)        
+2025-04-22T05:15:21.4802620Z remote: Counting objects:  17% (22/124)        
+2025-04-22T05:15:21.4803278Z remote: Counting objects:  18% (23/124)        
+2025-04-22T05:15:21.4803921Z remote: Counting objects:  19% (24/124)        
+2025-04-22T05:15:21.4804565Z remote: Counting objects:  20% (25/124)        
+2025-04-22T05:15:21.4805212Z remote: Counting objects:  21% (27/124)        
+2025-04-22T05:15:21.4805859Z remote: Counting objects:  22% (28/124)        
+2025-04-22T05:15:21.4806501Z remote: Counting objects:  23% (29/124)        
+2025-04-22T05:15:21.4807149Z remote: Counting objects:  24% (30/124)        
+2025-04-22T05:15:21.4807791Z remote: Counting objects:  25% (31/124)        
+2025-04-22T05:15:21.4808425Z remote: Counting objects:  26% (33/124)        
+2025-04-22T05:15:21.4809054Z remote: Counting objects:  27% (34/124)        
+2025-04-22T05:15:21.4809698Z remote: Counting objects:  28% (35/124)        
+2025-04-22T05:15:21.4810579Z remote: Counting objects:  29% (36/124)        
+2025-04-22T05:15:21.4811216Z remote: Counting objects:  30% (38/124)        
+2025-04-22T05:15:21.4811966Z remote: Counting objects:  31% (39/124)        
+2025-04-22T05:15:21.4812600Z remote: Counting objects:  32% (40/124)        
+2025-04-22T05:15:21.4813274Z remote: Counting objects:  33% (41/124)        
+2025-04-22T05:15:21.4813938Z remote: Counting objects:  34% (43/124)        
+2025-04-22T05:15:21.4814570Z remote: Counting objects:  35% (44/124)        
+2025-04-22T05:15:21.4815211Z remote: Counting objects:  36% (45/124)        
+2025-04-22T05:15:21.4815846Z remote: Counting objects:  37% (46/124)        
+2025-04-22T05:15:21.4816485Z remote: Counting objects:  38% (48/124)        
+2025-04-22T05:15:21.4817123Z remote: Counting objects:  39% (49/124)        
+2025-04-22T05:15:21.4817757Z remote: Counting objects:  40% (50/124)        
+2025-04-22T05:15:21.4818389Z remote: Counting objects:  41% (51/124)        
+2025-04-22T05:15:21.4819029Z remote: Counting objects:  42% (53/124)        
+2025-04-22T05:15:21.4819660Z remote: Counting objects:  43% (54/124)        
+2025-04-22T05:15:21.5101921Z remote: Counting objects:  44% (55/124)        
+2025-04-22T05:15:21.5103489Z remote: Counting objects:  45% (56/124)        
+2025-04-22T05:15:21.5104918Z remote: Counting objects:  46% (58/124)        
+2025-04-22T05:15:21.5106365Z remote: Counting objects:  47% (59/124)        
+2025-04-22T05:15:21.5107763Z remote: Counting objects:  48% (60/124)        
+2025-04-22T05:15:21.5108672Z remote: Counting objects:  49% (61/124)        
+2025-04-22T05:15:21.5109575Z remote: Counting objects:  50% (62/124)        
+2025-04-22T05:15:21.5110692Z remote: Counting objects:  51% (64/124)        
+2025-04-22T05:15:21.5111373Z remote: Counting objects:  52% (65/124)        
+2025-04-22T05:15:21.5112323Z remote: Counting objects:  53% (66/124)        
+2025-04-22T05:15:21.5112978Z remote: Counting objects:  54% (67/124)        
+2025-04-22T05:15:21.5113640Z remote: Counting objects:  55% (69/124)        
+2025-04-22T05:15:21.5114299Z remote: Counting objects:  56% (70/124)        
+2025-04-22T05:15:21.5114944Z remote: Counting objects:  57% (71/124)        
+2025-04-22T05:15:21.5115603Z remote: Counting objects:  58% (72/124)        
+2025-04-22T05:15:21.5116258Z remote: Counting objects:  59% (74/124)        
+2025-04-22T05:15:21.5116919Z remote: Counting objects:  60% (75/124)        
+2025-04-22T05:15:21.5117571Z remote: Counting objects:  61% (76/124)        
+2025-04-22T05:15:21.5118226Z remote: Counting objects:  62% (77/124)        
+2025-04-22T05:15:21.5118880Z remote: Counting objects:  63% (79/124)        
+2025-04-22T05:15:21.5119542Z remote: Counting objects:  64% (80/124)        
+2025-04-22T05:15:21.5120190Z remote: Counting objects:  65% (81/124)        
+2025-04-22T05:15:21.5120843Z remote: Counting objects:  66% (82/124)        
+2025-04-22T05:15:21.5121659Z remote: Counting objects:  67% (84/124)        
+2025-04-22T05:15:21.5122387Z remote: Counting objects:  68% (85/124)        
+2025-04-22T05:15:21.5123039Z remote: Counting objects:  69% (86/124)        
+2025-04-22T05:15:21.5123686Z remote: Counting objects:  70% (87/124)        
+2025-04-22T05:15:21.5124348Z remote: Counting objects:  71% (89/124)        
+2025-04-22T05:15:21.5125008Z remote: Counting objects:  72% (90/124)        
+2025-04-22T05:15:21.5125656Z remote: Counting objects:  73% (91/124)        
+2025-04-22T05:15:21.5126318Z remote: Counting objects:  74% (92/124)        
+2025-04-22T05:15:21.5126975Z remote: Counting objects:  75% (93/124)        
+2025-04-22T05:15:21.5127612Z remote: Counting objects:  76% (95/124)        
+2025-04-22T05:15:21.5128243Z remote: Counting objects:  77% (96/124)        
+2025-04-22T05:15:21.5128879Z remote: Counting objects:  78% (97/124)        
+2025-04-22T05:15:21.5129529Z remote: Counting objects:  79% (98/124)        
+2025-04-22T05:15:21.5130180Z remote: Counting objects:  80% (100/124)        
+2025-04-22T05:15:21.5130832Z remote: Counting objects:  81% (101/124)        
+2025-04-22T05:15:21.5131762Z remote: Counting objects:  82% (102/124)        
+2025-04-22T05:15:21.5132426Z remote: Counting objects:  83% (103/124)        
+2025-04-22T05:15:21.5133083Z remote: Counting objects:  84% (105/124)        
+2025-04-22T05:15:21.5133724Z remote: Counting objects:  85% (106/124)        
+2025-04-22T05:15:21.5134354Z remote: Counting objects:  86% (107/124)        
+2025-04-22T05:15:21.5135006Z remote: Counting objects:  87% (108/124)        
+2025-04-22T05:15:21.5135647Z remote: Counting objects:  88% (110/124)        
+2025-04-22T05:15:21.5136286Z remote: Counting objects:  89% (111/124)        
+2025-04-22T05:15:21.5136932Z remote: Counting objects:  90% (112/124)        
+2025-04-22T05:15:21.5137570Z remote: Counting objects:  91% (113/124)        
+2025-04-22T05:15:21.5138214Z remote: Counting objects:  92% (115/124)        
+2025-04-22T05:15:21.5138852Z remote: Counting objects:  93% (116/124)        
+2025-04-22T05:15:21.5139489Z remote: Counting objects:  94% (117/124)        
+2025-04-22T05:15:21.5140132Z remote: Counting objects:  95% (118/124)        
+2025-04-22T05:15:21.5140774Z remote: Counting objects:  96% (120/124)        
+2025-04-22T05:15:21.5141406Z remote: Counting objects:  97% (121/124)        
+2025-04-22T05:15:21.5142154Z remote: Counting objects:  98% (122/124)        
+2025-04-22T05:15:21.5142793Z remote: Counting objects:  99% (123/124)        
+2025-04-22T05:15:21.5143443Z remote: Counting objects: 100% (124/124)        
+2025-04-22T05:15:21.5144120Z remote: Counting objects: 100% (124/124), done.        
+2025-04-22T05:15:21.5144815Z remote: Compressing objects:   0% (1/110)        
+2025-04-22T05:15:21.5145473Z remote: Compressing objects:   1% (2/110)        
+2025-04-22T05:15:21.5146247Z remote: Compressing objects:   2% (3/110)        
+2025-04-22T05:15:21.5146901Z remote: Compressing objects:   3% (4/110)        
+2025-04-22T05:15:21.5147563Z remote: Compressing objects:   4% (5/110)        
+2025-04-22T05:15:21.5148210Z remote: Compressing objects:   5% (6/110)        
+2025-04-22T05:15:21.5148871Z remote: Compressing objects:   6% (7/110)        
+2025-04-22T05:15:21.5149531Z remote: Compressing objects:   7% (8/110)        
+2025-04-22T05:15:21.5150190Z remote: Compressing objects:   8% (9/110)        
+2025-04-22T05:15:21.5232419Z remote: Compressing objects:   9% (10/110)        
+2025-04-22T05:15:21.5234022Z remote: Compressing objects:  10% (11/110)        
+2025-04-22T05:15:21.5235515Z remote: Compressing objects:  11% (13/110)        
+2025-04-22T05:15:21.5236997Z remote: Compressing objects:  12% (14/110)        
+2025-04-22T05:15:21.5238492Z remote: Compressing objects:  13% (15/110)        
+2025-04-22T05:15:21.5239405Z remote: Compressing objects:  14% (16/110)        
+2025-04-22T05:15:21.5240323Z remote: Compressing objects:  15% (17/110)        
+2025-04-22T05:15:21.5241242Z remote: Compressing objects:  16% (18/110)        
+2025-04-22T05:15:21.5242335Z remote: Compressing objects:  17% (19/110)        
+2025-04-22T05:15:21.5243011Z remote: Compressing objects:  18% (20/110)        
+2025-04-22T05:15:21.5243749Z remote: Compressing objects:  19% (21/110)        
+2025-04-22T05:15:21.5244406Z remote: Compressing objects:  20% (22/110)        
+2025-04-22T05:15:21.5245068Z remote: Compressing objects:  21% (24/110)        
+2025-04-22T05:15:21.5245719Z remote: Compressing objects:  22% (25/110)        
+2025-04-22T05:15:21.5246373Z remote: Compressing objects:  23% (26/110)        
+2025-04-22T05:15:21.5247051Z remote: Compressing objects:  24% (27/110)        
+2025-04-22T05:15:21.5247727Z remote: Compressing objects:  25% (28/110)        
+2025-04-22T05:15:21.5248404Z remote: Compressing objects:  26% (29/110)        
+2025-04-22T05:15:21.5249064Z remote: Compressing objects:  27% (30/110)        
+2025-04-22T05:15:21.5250131Z remote: Compressing objects:  28% (31/110)        
+2025-04-22T05:15:21.5250830Z remote: Compressing objects:  29% (32/110)        
+2025-04-22T05:15:21.5251937Z remote: Compressing objects:  30% (33/110)        
+2025-04-22T05:15:21.5252872Z remote: Compressing objects:  31% (35/110)        
+2025-04-22T05:15:21.5253788Z remote: Compressing objects:  32% (36/110)        
+2025-04-22T05:15:21.5254443Z remote: Compressing objects:  33% (37/110)        
+2025-04-22T05:15:21.5255108Z remote: Compressing objects:  34% (38/110)        
+2025-04-22T05:15:21.5255750Z remote: Compressing objects:  35% (39/110)        
+2025-04-22T05:15:21.5256404Z remote: Compressing objects:  36% (40/110)        
+2025-04-22T05:15:21.5257055Z remote: Compressing objects:  37% (41/110)        
+2025-04-22T05:15:21.5257712Z remote: Compressing objects:  38% (42/110)        
+2025-04-22T05:15:21.5258421Z remote: Compressing objects:  39% (43/110)        
+2025-04-22T05:15:21.5259081Z remote: Compressing objects:  40% (44/110)        
+2025-04-22T05:15:21.5259732Z remote: Compressing objects:  41% (46/110)        
+2025-04-22T05:15:21.5260392Z remote: Compressing objects:  42% (47/110)        
+2025-04-22T05:15:21.5261042Z remote: Compressing objects:  43% (48/110)        
+2025-04-22T05:15:21.5261890Z remote: Compressing objects:  44% (49/110)        
+2025-04-22T05:15:21.5262572Z remote: Compressing objects:  45% (50/110)        
+2025-04-22T05:15:21.5263287Z remote: Compressing objects:  46% (51/110)        
+2025-04-22T05:15:21.5263941Z remote: Compressing objects:  47% (52/110)        
+2025-04-22T05:15:21.5264601Z remote: Compressing objects:  48% (53/110)        
+2025-04-22T05:15:21.5265259Z remote: Compressing objects:  49% (54/110)        
+2025-04-22T05:15:21.5265916Z remote: Compressing objects:  50% (55/110)        
+2025-04-22T05:15:21.5266592Z remote: Compressing objects:  51% (57/110)        
+2025-04-22T05:15:21.5267248Z remote: Compressing objects:  52% (58/110)        
+2025-04-22T05:15:21.5268042Z remote: Compressing objects:  53% (59/110)        
+2025-04-22T05:15:21.5276741Z remote: Compressing objects:  54% (60/110)        
+2025-04-22T05:15:21.5324057Z remote: Compressing objects:  55% (61/110)        
+2025-04-22T05:15:21.5344148Z remote: Compressing objects:  56% (62/110)        
+2025-04-22T05:15:21.5356160Z remote: Compressing objects:  57% (63/110)        
+2025-04-22T05:15:21.5384251Z remote: Compressing objects:  58% (64/110)        
+2025-04-22T05:15:21.5399604Z remote: Compressing objects:  59% (65/110)        
+2025-04-22T05:15:21.5434295Z remote: Compressing objects:  60% (66/110)        
+2025-04-22T05:15:21.5446701Z remote: Compressing objects:  61% (68/110)        
+2025-04-22T05:15:21.5451800Z remote: Compressing objects:  62% (69/110)        
+2025-04-22T05:15:21.5527657Z remote: Compressing objects:  63% (70/110)        
+2025-04-22T05:15:21.5528650Z remote: Compressing objects:  64% (71/110)        
+2025-04-22T05:15:21.5552207Z remote: Compressing objects:  65% (72/110)        
+2025-04-22T05:15:21.5566998Z remote: Compressing objects:  66% (73/110)        
+2025-04-22T05:15:21.5576949Z remote: Compressing objects:  67% (74/110)        
+2025-04-22T05:15:21.5612274Z remote: Compressing objects:  68% (75/110)        
+2025-04-22T05:15:21.5666788Z remote: Compressing objects:  69% (76/110)        
+2025-04-22T05:15:21.5668117Z remote: Compressing objects:  70% (77/110)        
+2025-04-22T05:15:21.5697239Z remote: Compressing objects:  71% (79/110)        
+2025-04-22T05:15:21.5713422Z remote: Compressing objects:  72% (80/110)        
+2025-04-22T05:15:21.5714396Z remote: Compressing objects:  73% (81/110)        
+2025-04-22T05:15:21.5718047Z remote: Compressing objects:  74% (82/110)        
+2025-04-22T05:15:21.5797665Z remote: Compressing objects:  75% (83/110)        
+2025-04-22T05:15:21.5799469Z remote: Compressing objects:  76% (84/110)        
+2025-04-22T05:15:21.5800791Z remote: Compressing objects:  77% (85/110)        
+2025-04-22T05:15:21.5802234Z remote: Compressing objects:  78% (86/110)        
+2025-04-22T05:15:21.5803249Z remote: Compressing objects:  79% (87/110)        
+2025-04-22T05:15:21.5804284Z remote: Compressing objects:  80% (88/110)        
+2025-04-22T05:15:21.5805335Z remote: Compressing objects:  81% (90/110)        
+2025-04-22T05:15:21.5806387Z remote: Compressing objects:  82% (91/110)        
+2025-04-22T05:15:21.5807640Z remote: Compressing objects:  83% (92/110)        
+2025-04-22T05:15:21.5808680Z remote: Compressing objects:  84% (93/110)        
+2025-04-22T05:15:21.5809718Z remote: Compressing objects:  85% (94/110)        
+2025-04-22T05:15:21.5810830Z remote: Compressing objects:  86% (95/110)        
+2025-04-22T05:15:21.5812272Z remote: Compressing objects:  87% (96/110)        
+2025-04-22T05:15:21.5813515Z remote: Compressing objects:  88% (97/110)        
+2025-04-22T05:15:21.5815301Z remote: Compressing objects:  89% (98/110)        
+2025-04-22T05:15:21.5816772Z remote: Compressing objects:  90% (99/110)        
+2025-04-22T05:15:21.5818284Z remote: Compressing objects:  91% (101/110)        
+2025-04-22T05:15:21.5819779Z remote: Compressing objects:  92% (102/110)        
+2025-04-22T05:15:21.5821332Z remote: Compressing objects:  93% (103/110)        
+2025-04-22T05:15:21.5823044Z remote: Compressing objects:  94% (104/110)        
+2025-04-22T05:15:21.5824522Z remote: Compressing objects:  95% (105/110)        
+2025-04-22T05:15:21.5825998Z remote: Compressing objects:  96% (106/110)        
+2025-04-22T05:15:21.5827452Z remote: Compressing objects:  97% (107/110)        
+2025-04-22T05:15:21.5828906Z remote: Compressing objects:  98% (108/110)        
+2025-04-22T05:15:21.5830351Z remote: Compressing objects:  99% (109/110)        
+2025-04-22T05:15:21.5831911Z remote: Compressing objects: 100% (110/110)        
+2025-04-22T05:15:21.5833491Z remote: Compressing objects: 100% (110/110), done.        
+2025-04-22T05:15:21.5864771Z Receiving objects:   0% (1/124)
+2025-04-22T05:15:21.5866541Z Receiving objects:   1% (2/124)
+2025-04-22T05:15:21.5868238Z Receiving objects:   2% (3/124)
+2025-04-22T05:15:21.5870131Z Receiving objects:   3% (4/124)
+2025-04-22T05:15:21.5871807Z Receiving objects:   4% (5/124)
+2025-04-22T05:15:21.5873027Z Receiving objects:   5% (7/124)
+2025-04-22T05:15:21.5874216Z Receiving objects:   6% (8/124)
+2025-04-22T05:15:21.5875385Z Receiving objects:   7% (9/124)
+2025-04-22T05:15:21.5876584Z Receiving objects:   8% (10/124)
+2025-04-22T05:15:21.5877747Z Receiving objects:   9% (12/124)
+2025-04-22T05:15:21.5878928Z Receiving objects:  10% (13/124)
+2025-04-22T05:15:21.5880103Z Receiving objects:  11% (14/124)
+2025-04-22T05:15:21.5924300Z Receiving objects:  12% (15/124)
+2025-04-22T05:15:21.5925698Z Receiving objects:  13% (17/124)
+2025-04-22T05:15:21.6004339Z Receiving objects:  14% (18/124)
+2025-04-22T05:15:21.6006149Z Receiving objects:  15% (19/124)
+2025-04-22T05:15:21.6054025Z Receiving objects:  16% (20/124)
+2025-04-22T05:15:21.6055910Z Receiving objects:  17% (22/124)
+2025-04-22T05:15:21.6057626Z Receiving objects:  18% (23/124)
+2025-04-22T05:15:21.6058871Z Receiving objects:  19% (24/124)
+2025-04-22T05:15:21.6060142Z Receiving objects:  20% (25/124)
+2025-04-22T05:15:21.6264718Z Receiving objects:  21% (27/124)
+2025-04-22T05:15:21.6476266Z Receiving objects:  22% (28/124)
+2025-04-22T05:15:21.6516617Z Receiving objects:  23% (29/124)
+2025-04-22T05:15:21.6651458Z Receiving objects:  24% (30/124)
+2025-04-22T05:15:21.6845126Z Receiving objects:  25% (31/124)
+2025-04-22T05:15:21.7100594Z Receiving objects:  26% (33/124)
+2025-04-22T05:15:21.7133659Z Receiving objects:  27% (34/124)
+2025-04-22T05:15:21.7311259Z Receiving objects:  28% (35/124)
+2025-04-22T05:15:21.7414851Z Receiving objects:  29% (36/124)
+2025-04-22T05:15:21.7670283Z Receiving objects:  30% (38/124)
+2025-04-22T05:15:21.7672789Z Receiving objects:  31% (39/124)
+2025-04-22T05:15:21.7697224Z Receiving objects:  32% (40/124)
+2025-04-22T05:15:21.7754701Z Receiving objects:  33% (41/124)
+2025-04-22T05:15:21.7764445Z Receiving objects:  34% (43/124)
+2025-04-22T05:15:21.7783809Z Receiving objects:  35% (44/124)
+2025-04-22T05:15:21.7816093Z Receiving objects:  36% (45/124)
+2025-04-22T05:15:21.7964468Z Receiving objects:  37% (46/124)
+2025-04-22T05:15:21.7977585Z Receiving objects:  38% (48/124)
+2025-04-22T05:15:21.8087045Z Receiving objects:  39% (49/124)
+2025-04-22T05:15:21.8175744Z Receiving objects:  40% (50/124)
+2025-04-22T05:15:21.8264671Z Receiving objects:  41% (51/124)
+2025-04-22T05:15:21.8273441Z Receiving objects:  42% (53/124)
+2025-04-22T05:15:21.8283056Z Receiving objects:  43% (54/124)
+2025-04-22T05:15:21.8289291Z Receiving objects:  44% (55/124)
+2025-04-22T05:15:21.8324571Z Receiving objects:  45% (56/124)
+2025-04-22T05:15:21.8352219Z Receiving objects:  46% (58/124)
+2025-04-22T05:15:21.8380705Z Receiving objects:  47% (59/124)
+2025-04-22T05:15:21.8395412Z Receiving objects:  48% (60/124)
+2025-04-22T05:15:21.8405721Z Receiving objects:  49% (61/124)
+2025-04-22T05:15:21.8530508Z Receiving objects:  50% (62/124)
+2025-04-22T05:15:21.8531360Z Receiving objects:  51% (64/124)
+2025-04-22T05:15:21.8532323Z Receiving objects:  52% (65/124)
+2025-04-22T05:15:21.8533002Z Receiving objects:  53% (66/124)
+2025-04-22T05:15:21.8533661Z Receiving objects:  54% (67/124)
+2025-04-22T05:15:21.8534154Z Receiving objects:  55% (69/124)
+2025-04-22T05:15:21.8534564Z Receiving objects:  56% (70/124)
+2025-04-22T05:15:21.8535115Z Receiving objects:  57% (71/124)
+2025-04-22T05:15:21.8537871Z Receiving objects:  58% (72/124)
+2025-04-22T05:15:21.8538798Z Receiving objects:  59% (74/124)
+2025-04-22T05:15:21.8539671Z Receiving objects:  60% (75/124)
+2025-04-22T05:15:21.8540552Z Receiving objects:  61% (76/124)
+2025-04-22T05:15:21.8831271Z Receiving objects:  62% (77/124)
+2025-04-22T05:15:21.8832423Z Receiving objects:  63% (79/124)
+2025-04-22T05:15:21.8833387Z Receiving objects:  64% (80/124)
+2025-04-22T05:15:21.8834319Z Receiving objects:  65% (81/124)
+2025-04-22T05:15:21.8835346Z Receiving objects:  66% (82/124)
+2025-04-22T05:15:21.8837094Z Receiving objects:  67% (84/124)
+2025-04-22T05:15:21.8838466Z Receiving objects:  68% (85/124)
+2025-04-22T05:15:21.8925950Z Receiving objects:  69% (86/124)
+2025-04-22T05:15:21.8926867Z Receiving objects:  70% (87/124)
+2025-04-22T05:15:21.8927463Z Receiving objects:  71% (89/124)
+2025-04-22T05:15:21.8928441Z Receiving objects:  72% (90/124)
+2025-04-22T05:15:21.8929281Z Receiving objects:  73% (91/124)
+2025-04-22T05:15:21.8930161Z Receiving objects:  74% (92/124)
+2025-04-22T05:15:21.8931433Z Receiving objects:  75% (93/124)
+2025-04-22T05:15:21.8932884Z Receiving objects:  76% (95/124)
+2025-04-22T05:15:21.8933820Z Receiving objects:  77% (96/124)
+2025-04-22T05:15:21.8934883Z Receiving objects:  78% (97/124)
+2025-04-22T05:15:21.8936201Z Receiving objects:  79% (98/124)
+2025-04-22T05:15:21.8936987Z Receiving objects:  80% (100/124)
+2025-04-22T05:15:21.8938107Z Receiving objects:  81% (101/124)
+2025-04-22T05:15:21.8938918Z Receiving objects:  82% (102/124)
+2025-04-22T05:15:21.8939923Z Receiving objects:  83% (103/124)
+2025-04-22T05:15:21.8940731Z Receiving objects:  84% (105/124)
+2025-04-22T05:15:21.8941748Z Receiving objects:  85% (106/124)
+2025-04-22T05:15:21.8942555Z Receiving objects:  86% (107/124)
+2025-04-22T05:15:21.8943592Z Receiving objects:  87% (108/124)
+2025-04-22T05:15:21.8944355Z Receiving objects:  88% (110/124)
+2025-04-22T05:15:21.8945036Z remote: Total 124 (delta 11), reused 112 (delta 11), pack-reused 0 (from 0)        
+2025-04-22T05:15:21.8945689Z Receiving objects:  89% (111/124)
+2025-04-22T05:15:21.8946188Z Receiving objects:  90% (112/124)
+2025-04-22T05:15:21.8946852Z Receiving objects:  91% (113/124)
+2025-04-22T05:15:21.8947346Z Receiving objects:  92% (115/124)
+2025-04-22T05:15:21.8947824Z Receiving objects:  93% (116/124)
+2025-04-22T05:15:21.8948321Z Receiving objects:  94% (117/124)
+2025-04-22T05:15:21.8948798Z Receiving objects:  95% (118/124)
+2025-04-22T05:15:21.8949276Z Receiving objects:  96% (120/124)
+2025-04-22T05:15:21.8949907Z Receiving objects:  97% (121/124)
+2025-04-22T05:15:21.8950399Z Receiving objects:  98% (122/124)
+2025-04-22T05:15:21.8950891Z Receiving objects:  99% (123/124)
+2025-04-22T05:15:21.8951380Z Receiving objects: 100% (124/124)
+2025-04-22T05:15:21.8952313Z Receiving objects: 100% (124/124), 2.39 MiB | 7.93 MiB/s, done.
+2025-04-22T05:15:21.8952899Z Resolving deltas:   0% (0/11)
+2025-04-22T05:15:21.8953368Z Resolving deltas:   9% (1/11)
+2025-04-22T05:15:21.8953833Z Resolving deltas:  18% (2/11)
+2025-04-22T05:15:21.8954710Z Resolving deltas:  27% (3/11)
+2025-04-22T05:15:21.8955179Z Resolving deltas:  36% (4/11)
+2025-04-22T05:15:21.8955650Z Resolving deltas:  45% (5/11)
+2025-04-22T05:15:21.8956117Z Resolving deltas:  54% (6/11)
+2025-04-22T05:15:21.8956587Z Resolving deltas:  63% (7/11)
+2025-04-22T05:15:21.8957054Z Resolving deltas:  72% (8/11)
+2025-04-22T05:15:21.8957681Z Resolving deltas:  81% (9/11)
+2025-04-22T05:15:21.8958159Z Resolving deltas:  90% (10/11)
+2025-04-22T05:15:21.8958630Z Resolving deltas: 100% (11/11)
+2025-04-22T05:15:21.8959090Z Resolving deltas: 100% (11/11), done.
+2025-04-22T05:15:21.9012132Z From https://github.com/thedinomilk/homelab-dashboard
+2025-04-22T05:15:21.9013339Z  * [new ref]         6f5da49deed2364e6b752f2837d27ab36d8e8c88 -> origin/main
+2025-04-22T05:15:21.9041415Z ##[endgroup]
+2025-04-22T05:15:21.9042951Z ##[group]Determining the checkout info
+2025-04-22T05:15:21.9044353Z ##[endgroup]
+2025-04-22T05:15:21.9045532Z ##[group]Checking out the ref
+2025-04-22T05:15:21.9049376Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2025-04-22T05:15:21.9264165Z Switched to a new branch 'main'
+2025-04-22T05:15:21.9266891Z branch 'main' set up to track 'origin/main'.
+2025-04-22T05:15:21.9273311Z ##[endgroup]
+2025-04-22T05:15:21.9306972Z [command]/usr/bin/git log -1 --format='%H'
+2025-04-22T05:15:21.9329650Z '6f5da49deed2364e6b752f2837d27ab36d8e8c88'
+2025-04-22T05:15:21.9545311Z ##[group]Run # Use env defined above to create .env file
+2025-04-22T05:15:21.9546002Z [36;1m# Use env defined above to create .env file[0m
+2025-04-22T05:15:21.9546720Z [36;1menv | grep -E '^(PROXMOX_|DOCKER_|DATABASE_URL|GITHUB_TOKEN|SECRET_KEY|SESSION_SECRET)' > .env[0m
+2025-04-22T05:15:21.9547426Z [36;1mecho "FLASK_ENV=production" >> .env[0m
+2025-04-22T05:15:21.9547969Z [36;1mecho "Created .env file successfully."[0m
+2025-04-22T05:15:21.9599235Z shell: /usr/bin/bash -e {0}
+2025-04-22T05:15:21.9599716Z env:
+2025-04-22T05:15:21.9600319Z   PROXMOX_HOST: ***
+2025-04-22T05:15:21.9600802Z   PROXMOX_USER: ***
+2025-04-22T05:15:21.9601300Z   PROXMOX_TOKEN_NAME: ***
+2025-04-22T05:15:21.9602061Z   PROXMOX_TOKEN_VALUE: ***
+2025-04-22T05:15:21.9602521Z   DOCKER_HOST: ***
+2025-04-22T05:15:21.9602941Z   DOCKER_PORT: ***
+2025-04-22T05:15:21.9603638Z   DATABASE_URL: ***
+2025-04-22T05:15:21.9604153Z   GITHUB_TOKEN: ***
+2025-04-22T05:15:21.9604621Z   SECRET_KEY: ***
+2025-04-22T05:15:21.9605127Z   SESSION_SECRET: ***
+2025-04-22T05:15:21.9605530Z ##[endgroup]
+2025-04-22T05:15:21.9711127Z Created .env file successfully.
+2025-04-22T05:15:21.9748261Z ##[group]Run # We'll skip the direct SSH copy to the server, as it's causing connection timeouts
+2025-04-22T05:15:21.9749117Z [36;1m# We'll skip the direct SSH copy to the server, as it's causing connection timeouts[0m
+2025-04-22T05:15:21.9749865Z [36;1m# Instead, we'll rely on the Portainer API to pull directly from GitHub[0m
+2025-04-22T05:15:21.9750529Z [36;1mecho "Preparing for direct Portainer deployment..."[0m
+2025-04-22T05:15:21.9751174Z [36;1mecho "Created .env file will be used by the GitHub Action"[0m
+2025-04-22T05:15:21.9794900Z shell: /usr/bin/bash -e {0}
+2025-04-22T05:15:21.9795365Z ##[endgroup]
+2025-04-22T05:15:21.9860139Z Preparing for direct Portainer deployment...
+2025-04-22T05:15:21.9860748Z Created .env file will be used by the GitHub Action
+2025-04-22T05:15:21.9911965Z ##[group]Run # Install jq
+2025-04-22T05:15:21.9912503Z [36;1m# Install jq[0m
+2025-04-22T05:15:21.9913027Z [36;1msudo apt-get update && sudo apt-get install -y jq curl[0m
+2025-04-22T05:15:21.9913585Z [36;1m[0m
+2025-04-22T05:15:21.9914063Z [36;1m# Execute the updated direct Portainer API script[0m
+2025-04-22T05:15:21.9914656Z [36;1mbash .github/scripts/update-portainer.sh \[0m
+2025-04-22T05:15:21.9915301Z [36;1m  "***" \[0m
+2025-04-22T05:15:21.9915858Z [36;1m  "***" \[0m
+2025-04-22T05:15:21.9916291Z [36;1m  "homelab-dashboard"[0m
+2025-04-22T05:15:21.9960422Z shell: /usr/bin/bash -e {0}
+2025-04-22T05:15:21.9960897Z ##[endgroup]
+2025-04-22T05:15:22.0813484Z Hit:1 http://azure.archive.ubuntu.com/ubuntu noble InRelease
+2025-04-22T05:15:22.0814823Z Get:2 http://azure.archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+2025-04-22T05:15:22.0827747Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+2025-04-22T05:15:22.0889586Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+2025-04-22T05:15:22.2254952Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1020 kB]
+2025-04-22T05:15:22.2384752Z Get:6 http://azure.archive.ubuntu.com/ubuntu noble-updates/main Translation-en [223 kB]
+2025-04-22T05:15:22.2421856Z Get:7 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [1056 kB]
+2025-04-22T05:15:22.2447235Z Hit:8 https://packages.microsoft.com/repos/azure-cli noble InRelease
+2025-04-22T05:15:22.2475786Z Get:9 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe Translation-en [266 kB]
+2025-04-22T05:15:22.2499792Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Packages [951 kB]
+2025-04-22T05:15:22.2518745Z Get:11 https://packages.microsoft.com/ubuntu/24.04/prod noble InRelease [3600 B]
+2025-04-22T05:15:22.2556898Z Get:12 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted Translation-en [195 kB]
+2025-04-22T05:15:22.3342979Z Get:13 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 Packages [748 kB]
+2025-04-22T05:15:22.3390359Z Get:14 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 Packages [830 kB]
+2025-04-22T05:15:22.4309131Z Get:15 https://packages.microsoft.com/ubuntu/24.04/prod noble/main amd64 Packages [27.9 kB]
+2025-04-22T05:15:22.4366756Z Get:16 https://packages.microsoft.com/ubuntu/24.04/prod noble/main arm64 Packages [17.6 kB]
+2025-04-22T05:15:22.4401969Z Get:17 https://packages.microsoft.com/ubuntu/24.04/prod noble/main armhf Packages [7979 B]
+2025-04-22T05:15:26.8689027Z Fetched 5724 kB in 1s (8244 kB/s)
+2025-04-22T05:15:27.4783487Z Reading package lists...
+2025-04-22T05:15:27.5130767Z Reading package lists...
+2025-04-22T05:15:27.6379827Z Building dependency tree...
+2025-04-22T05:15:27.6386496Z Reading state information...
+2025-04-22T05:15:27.7838526Z jq is already the newest version (1.7.1-3build1).
+2025-04-22T05:15:27.7839409Z curl is already the newest version (8.5.0-2ubuntu10.6).
+2025-04-22T05:15:27.7840122Z 0 upgraded, 0 newly installed, 0 to remove and 74 not upgraded.
+2025-04-22T05:15:27.7874273Z Updating Portainer stack: homelab-dashboard
+2025-04-22T05:15:27.7887783Z Using local docker-compose.yml file...
+2025-04-22T05:15:27.7906935Z Getting stack ID...
+2025-04-22T05:17:41.7141717Z Stack not found. Creating new stack...
+2025-04-22T05:17:41.7231899Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2025-04-22T05:17:41.7234199Z                                  Dload  Upload   Total   Spent    Left  Speed
+2025-04-22T05:17:41.7234694Z 
+2025-04-22T05:17:42.7244893Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2025-04-22T05:17:43.7256981Z   0     0    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--     0
+2025-04-22T05:17:44.7267601Z   0     0    0     0    0     0      0      0 --:--:--  0:00:02 --:--:--     0
+2025-04-22T05:17:45.7279475Z   0     0    0     0    0     0      0      0 --:--:--  0:00:03 --:--:--     0
+2025-04-22T05:17:46.7290271Z   0     0    0     0    0     0      0      0 --:--:--  0:00:04 --:--:--     0
+2025-04-22T05:17:47.7301078Z   0     0    0     0    0     0      0      0 --:--:--  0:00:05 --:--:--     0
+2025-04-22T05:17:48.7312436Z   0     0    0     0    0     0      0      0 --:--:--  0:00:06 --:--:--     0
+2025-04-22T05:17:49.7323799Z   0     0    0     0    0     0      0      0 --:--:--  0:00:07 --:--:--     0
+2025-04-22T05:17:50.7334983Z   0     0    0     0    0     0      0      0 --:--:--  0:00:08 --:--:--     0
+2025-04-22T05:17:51.7346109Z   0     0    0     0    0     0      0      0 --:--:--  0:00:09 --:--:--     0
+2025-04-22T05:17:52.7357093Z   0     0    0     0    0     0      0      0 --:--:--  0:00:10 --:--:--     0
+2025-04-22T05:17:53.7368474Z   0     0    0     0    0     0      0      0 --:--:--  0:00:11 --:--:--     0
+2025-04-22T05:17:54.7379112Z   0     0    0     0    0     0      0      0 --:--:--  0:00:12 --:--:--     0
+2025-04-22T05:17:55.7390429Z   0     0    0     0    0     0      0      0 --:--:--  0:00:13 --:--:--     0
+2025-04-22T05:17:56.7401902Z   0     0    0     0    0     0      0      0 --:--:--  0:00:14 --:--:--     0
+2025-04-22T05:17:57.7412564Z   0     0    0     0    0     0      0      0 --:--:--  0:00:15 --:--:--     0
+2025-04-22T05:17:58.7423967Z   0     0    0     0    0     0      0      0 --:--:--  0:00:16 --:--:--     0
+2025-04-22T05:17:59.7435218Z   0     0    0     0    0     0      0      0 --:--:--  0:00:17 --:--:--     0
+2025-04-22T05:18:00.7446498Z   0     0    0     0    0     0      0      0 --:--:--  0:00:18 --:--:--     0
+2025-04-22T05:18:01.7457632Z   0     0    0     0    0     0      0      0 --:--:--  0:00:19 --:--:--     0
+2025-04-22T05:18:02.7468693Z   0     0    0     0    0     0      0      0 --:--:--  0:00:20 --:--:--     0
+2025-04-22T05:18:03.7479824Z   0     0    0     0    0     0      0      0 --:--:--  0:00:21 --:--:--     0
+2025-04-22T05:18:04.7490718Z   0     0    0     0    0     0      0      0 --:--:--  0:00:22 --:--:--     0
+2025-04-22T05:18:05.7493106Z   0     0    0     0    0     0      0      0 --:--:--  0:00:23 --:--:--     0
+2025-04-22T05:18:06.7504249Z   0     0    0     0    0     0      0      0 --:--:--  0:00:24 --:--:--     0
+2025-04-22T05:18:07.7515492Z   0     0    0     0    0     0      0      0 --:--:--  0:00:25 --:--:--     0
+2025-04-22T05:18:08.7526636Z   0     0    0     0    0     0      0      0 --:--:--  0:00:26 --:--:--     0
+2025-04-22T05:18:09.7537810Z   0     0    0     0    0     0      0      0 --:--:--  0:00:27 --:--:--     0
+2025-04-22T05:18:10.7548928Z   0     0    0     0    0     0      0      0 --:--:--  0:00:28 --:--:--     0
+2025-04-22T05:18:11.7560088Z   0     0    0     0    0     0      0      0 --:--:--  0:00:29 --:--:--     0
+2025-04-22T05:18:12.7571383Z   0     0    0     0    0     0      0      0 --:--:--  0:00:30 --:--:--     0
+2025-04-22T05:18:13.7582181Z   0     0    0     0    0     0      0      0 --:--:--  0:00:31 --:--:--     0
+2025-04-22T05:18:14.7585449Z   0     0    0     0    0     0      0      0 --:--:--  0:00:32 --:--:--     0
+2025-04-22T05:18:15.7597400Z   0     0    0     0    0     0      0      0 --:--:--  0:00:33 --:--:--     0
+2025-04-22T05:18:16.7608746Z   0     0    0     0    0     0      0      0 --:--:--  0:00:34 --:--:--     0
+2025-04-22T05:18:17.7619476Z   0     0    0     0    0     0      0      0 --:--:--  0:00:35 --:--:--     0
+2025-04-22T05:18:18.7631144Z   0     0    0     0    0     0      0      0 --:--:--  0:00:36 --:--:--     0
+2025-04-22T05:18:19.7642103Z   0     0    0     0    0     0      0      0 --:--:--  0:00:37 --:--:--     0
+2025-04-22T05:18:20.7653799Z   0     0    0     0    0     0      0      0 --:--:--  0:00:38 --:--:--     0
+2025-04-22T05:18:21.7665108Z   0     0    0     0    0     0      0      0 --:--:--  0:00:39 --:--:--     0
+2025-04-22T05:18:22.7676232Z   0     0    0     0    0     0      0      0 --:--:--  0:00:40 --:--:--     0
+2025-04-22T05:18:23.7687677Z   0     0    0     0    0     0      0      0 --:--:--  0:00:41 --:--:--     0
+2025-04-22T05:18:24.7698524Z   0     0    0     0    0     0      0      0 --:--:--  0:00:42 --:--:--     0
+2025-04-22T05:18:25.7709886Z   0     0    0     0    0     0      0      0 --:--:--  0:00:43 --:--:--     0
+2025-04-22T05:18:26.7720970Z   0     0    0     0    0     0      0      0 --:--:--  0:00:44 --:--:--     0
+2025-04-22T05:18:27.7732270Z   0     0    0     0    0     0      0      0 --:--:--  0:00:45 --:--:--     0
+2025-04-22T05:18:28.7743089Z   0     0    0     0    0     0      0      0 --:--:--  0:00:46 --:--:--     0
+2025-04-22T05:18:29.7754664Z   0     0    0     0    0     0      0      0 --:--:--  0:00:47 --:--:--     0
+2025-04-22T05:18:30.7765758Z   0     0    0     0    0     0      0      0 --:--:--  0:00:48 --:--:--     0
+2025-04-22T05:18:31.7777285Z   0     0    0     0    0     0      0      0 --:--:--  0:00:49 --:--:--     0
+2025-04-22T05:18:32.7788321Z   0     0    0     0    0     0      0      0 --:--:--  0:00:50 --:--:--     0
+2025-04-22T05:18:33.7799335Z   0     0    0     0    0     0      0      0 --:--:--  0:00:51 --:--:--     0
+2025-04-22T05:18:34.7810594Z   0     0    0     0    0     0      0      0 --:--:--  0:00:52 --:--:--     0
+2025-04-22T05:18:35.7822173Z   0     0    0     0    0     0      0      0 --:--:--  0:00:53 --:--:--     0
+2025-04-22T05:18:36.7832779Z   0     0    0     0    0     0      0      0 --:--:--  0:00:54 --:--:--     0
+2025-04-22T05:18:37.7844280Z   0     0    0     0    0     0      0      0 --:--:--  0:00:55 --:--:--     0
+2025-04-22T05:18:38.7855465Z   0     0    0     0    0     0      0      0 --:--:--  0:00:56 --:--:--     0
+2025-04-22T05:18:39.7866140Z   0     0    0     0    0     0      0      0 --:--:--  0:00:57 --:--:--     0
+2025-04-22T05:18:40.7877499Z   0     0    0     0    0     0      0      0 --:--:--  0:00:58 --:--:--     0
+2025-04-22T05:18:41.7888745Z   0     0    0     0    0     0      0      0 --:--:--  0:00:59 --:--:--     0
+2025-04-22T05:18:42.7899915Z   0     0    0     0    0     0      0      0 --:--:--  0:01:00 --:--:--     0
+2025-04-22T05:18:43.7911118Z   0     0    0     0    0     0      0      0 --:--:--  0:01:01 --:--:--     0
+2025-04-22T05:18:44.7922455Z   0     0    0     0    0     0      0      0 --:--:--  0:01:02 --:--:--     0
+2025-04-22T05:18:45.7933859Z   0     0    0     0    0     0      0      0 --:--:--  0:01:03 --:--:--     0
+2025-04-22T05:18:46.7945003Z   0     0    0     0    0     0      0      0 --:--:--  0:01:04 --:--:--     0
+2025-04-22T05:18:47.7956197Z   0     0    0     0    0     0      0      0 --:--:--  0:01:05 --:--:--     0
+2025-04-22T05:18:48.7966869Z   0     0    0     0    0     0      0      0 --:--:--  0:01:06 --:--:--     0
+2025-04-22T05:18:49.7978235Z   0     0    0     0    0     0      0      0 --:--:--  0:01:07 --:--:--     0
+2025-04-22T05:18:50.7989543Z   0     0    0     0    0     0      0      0 --:--:--  0:01:08 --:--:--     0
+2025-04-22T05:18:51.8000708Z   0     0    0     0    0     0      0      0 --:--:--  0:01:09 --:--:--     0
+2025-04-22T05:18:52.8012195Z   0     0    0     0    0     0      0      0 --:--:--  0:01:10 --:--:--     0
+2025-04-22T05:18:53.8023220Z   0     0    0     0    0     0      0      0 --:--:--  0:01:11 --:--:--     0
+2025-04-22T05:18:54.8034166Z   0     0    0     0    0     0      0      0 --:--:--  0:01:12 --:--:--     0
+2025-04-22T05:18:55.8045626Z   0     0    0     0    0     0      0      0 --:--:--  0:01:13 --:--:--     0
+2025-04-22T05:18:56.8056721Z   0     0    0     0    0     0      0      0 --:--:--  0:01:14 --:--:--     0
+2025-04-22T05:18:57.8062522Z   0     0    0     0    0     0      0      0 --:--:--  0:01:15 --:--:--     0
+2025-04-22T05:18:58.8074154Z   0     0    0     0    0     0      0      0 --:--:--  0:01:16 --:--:--     0
+2025-04-22T05:18:59.8085279Z   0     0    0     0    0     0      0      0 --:--:--  0:01:17 --:--:--     0
+2025-04-22T05:19:00.8096491Z   0     0    0     0    0     0      0      0 --:--:--  0:01:18 --:--:--     0
+2025-04-22T05:19:01.8107932Z   0     0    0     0    0     0      0      0 --:--:--  0:01:19 --:--:--     0
+2025-04-22T05:19:02.8118320Z   0     0    0     0    0     0      0      0 --:--:--  0:01:20 --:--:--     0
+2025-04-22T05:19:03.8129961Z   0     0    0     0    0     0      0      0 --:--:--  0:01:21 --:--:--     0
+2025-04-22T05:19:04.8140705Z   0     0    0     0    0     0      0      0 --:--:--  0:01:22 --:--:--     0
+2025-04-22T05:19:05.8152260Z   0     0    0     0    0     0      0      0 --:--:--  0:01:23 --:--:--     0
+2025-04-22T05:19:06.8163044Z   0     0    0     0    0     0      0      0 --:--:--  0:01:24 --:--:--     0
+2025-04-22T05:19:07.8173632Z   0     0    0     0    0     0      0      0 --:--:--  0:01:25 --:--:--     0
+2025-04-22T05:19:08.8184318Z   0     0    0     0    0     0      0      0 --:--:--  0:01:26 --:--:--     0
+2025-04-22T05:19:09.8195632Z   0     0    0     0    0     0      0      0 --:--:--  0:01:27 --:--:--     0
+2025-04-22T05:19:10.8206790Z   0     0    0     0    0     0      0      0 --:--:--  0:01:28 --:--:--     0
+2025-04-22T05:19:11.8218033Z   0     0    0     0    0     0      0      0 --:--:--  0:01:29 --:--:--     0
+2025-04-22T05:19:12.8228633Z   0     0    0     0    0     0      0      0 --:--:--  0:01:30 --:--:--     0
+2025-04-22T05:19:13.8230438Z   0     0    0     0    0     0      0      0 --:--:--  0:01:31 --:--:--     0
+2025-04-22T05:19:14.8241488Z   0     0    0     0    0     0      0      0 --:--:--  0:01:32 --:--:--     0
+2025-04-22T05:19:15.8252572Z   0     0    0     0    0     0      0      0 --:--:--  0:01:33 --:--:--     0
+2025-04-22T05:19:16.8263908Z   0     0    0     0    0     0      0      0 --:--:--  0:01:34 --:--:--     0
+2025-04-22T05:19:17.8274885Z   0     0    0     0    0     0      0      0 --:--:--  0:01:35 --:--:--     0
+2025-04-22T05:19:18.8282980Z   0     0    0     0    0     0      0      0 --:--:--  0:01:36 --:--:--     0
+2025-04-22T05:19:19.8293942Z   0     0    0     0    0     0      0      0 --:--:--  0:01:37 --:--:--     0
+2025-04-22T05:19:20.8302863Z   0     0    0     0    0     0      0      0 --:--:--  0:01:38 --:--:--     0
+2025-04-22T05:19:21.8312742Z   0     0    0     0    0     0      0      0 --:--:--  0:01:39 --:--:--     0
+2025-04-22T05:19:22.8323087Z   0     0    0     0    0     0      0      0 --:--:--  0:01:40 --:--:--     0
+2025-04-22T05:19:23.8334538Z   0     0    0     0    0     0      0      0 --:--:--  0:01:41 --:--:--     0
+2025-04-22T05:19:24.8345742Z   0     0    0     0    0     0      0      0 --:--:--  0:01:42 --:--:--     0
+2025-04-22T05:19:25.8356871Z   0     0    0     0    0     0      0      0 --:--:--  0:01:43 --:--:--     0
+2025-04-22T05:19:26.8368245Z   0     0    0     0    0     0      0      0 --:--:--  0:01:44 --:--:--     0
+2025-04-22T05:19:27.8379018Z   0     0    0     0    0     0      0      0 --:--:--  0:01:45 --:--:--     0
+2025-04-22T05:19:28.8390761Z   0     0    0     0    0     0      0      0 --:--:--  0:01:46 --:--:--     0
+2025-04-22T05:19:29.8401356Z   0     0    0     0    0     0      0      0 --:--:--  0:01:47 --:--:--     0
+2025-04-22T05:19:30.8413030Z   0     0    0     0    0     0      0      0 --:--:--  0:01:48 --:--:--     0
+2025-04-22T05:19:31.8414166Z   0     0    0     0    0     0      0      0 --:--:--  0:01:49 --:--:--     0
+2025-04-22T05:19:32.8425741Z   0     0    0     0    0     0      0      0 --:--:--  0:01:50 --:--:--     0
+2025-04-22T05:19:33.8437108Z   0     0    0     0    0     0      0      0 --:--:--  0:01:51 --:--:--     0
+2025-04-22T05:19:34.8448177Z   0     0    0     0    0     0      0      0 --:--:--  0:01:52 --:--:--     0
+2025-04-22T05:19:35.8459421Z   0     0    0     0    0     0      0      0 --:--:--  0:01:53 --:--:--     0
+2025-04-22T05:19:36.8470519Z   0     0    0     0    0     0      0      0 --:--:--  0:01:54 --:--:--     0
+2025-04-22T05:19:37.8481089Z   0     0    0     0    0     0      0      0 --:--:--  0:01:55 --:--:--     0
+2025-04-22T05:19:38.8492334Z   0     0    0     0    0     0      0      0 --:--:--  0:01:56 --:--:--     0
+2025-04-22T05:19:39.8504145Z   0     0    0     0    0     0      0      0 --:--:--  0:01:57 --:--:--     0
+2025-04-22T05:19:40.8514932Z   0     0    0     0    0     0      0      0 --:--:--  0:01:58 --:--:--     0
+2025-04-22T05:19:41.8525877Z   0     0    0     0    0     0      0      0 --:--:--  0:01:59 --:--:--     0
+2025-04-22T05:19:42.8537055Z   0     0    0     0    0     0      0      0 --:--:--  0:02:00 --:--:--     0
+2025-04-22T05:19:43.8548587Z   0     0    0     0    0     0      0      0 --:--:--  0:02:01 --:--:--     0
+2025-04-22T05:19:44.8559492Z   0     0    0     0    0     0      0      0 --:--:--  0:02:02 --:--:--     0
+2025-04-22T05:19:45.8570618Z   0     0    0     0    0     0      0      0 --:--:--  0:02:03 --:--:--     0
+2025-04-22T05:19:46.8582116Z   0     0    0     0    0     0      0      0 --:--:--  0:02:04 --:--:--     0
+2025-04-22T05:19:47.8592373Z   0     0    0     0    0     0      0      0 --:--:--  0:02:05 --:--:--     0
+2025-04-22T05:19:48.8604345Z   0     0    0     0    0     0      0      0 --:--:--  0:02:06 --:--:--     0
+2025-04-22T05:19:49.8615439Z   0     0    0     0    0     0      0      0 --:--:--  0:02:07 --:--:--     0
+2025-04-22T05:19:50.8626652Z   0     0    0     0    0     0      0      0 --:--:--  0:02:08 --:--:--     0
+2025-04-22T05:19:51.8637734Z   0     0    0     0    0     0      0      0 --:--:--  0:02:09 --:--:--     0
+2025-04-22T05:19:52.8649025Z   0     0    0     0    0     0      0      0 --:--:--  0:02:10 --:--:--     0
+2025-04-22T05:19:53.8660138Z   0     0    0     0    0     0      0      0 --:--:--  0:02:11 --:--:--     0
+2025-04-22T05:19:54.8671361Z   0     0    0     0    0     0      0      0 --:--:--  0:02:12 --:--:--     0
+2025-04-22T05:19:55.8682536Z   0     0    0     0    0     0      0      0 --:--:--  0:02:13 --:--:--     0
+2025-04-22T05:19:56.8693906Z   0     0    0     0    0     0      0      0 --:--:--  0:02:14 --:--:--     0
+2025-04-22T05:19:56.8803755Z   0     0    0     0    0     0      0      0 --:--:--  0:02:15 --:--:--     0
+2025-04-22T05:19:56.8804564Z   0     0    0     0    0     0      0      0 --:--:--  0:02:15 --:--:--     0
+2025-04-22T05:19:56.8805758Z curl: (28) Failed to connect to *** port 9000 after 135157 ms: Couldn't connect to server
+2025-04-22T05:19:56.8835615Z ##[error]Process completed with exit code 28.
+2025-04-22T05:19:56.8916337Z Post job cleanup.
+2025-04-22T05:19:56.9793168Z [command]/usr/bin/git version
+2025-04-22T05:19:56.9832979Z git version 2.49.0
+2025-04-22T05:19:56.9876226Z Temporarily overriding HOME='/home/runner/work/_temp/2341639c-cff5-40f2-9579-bb10928b7e6a' before making global git config changes
+2025-04-22T05:19:56.9877553Z Adding repository directory to the temporary git global config as a safe directory
+2025-04-22T05:19:56.9881017Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/homelab-dashboard/homelab-dashboard
+2025-04-22T05:19:56.9913594Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-04-22T05:19:56.9945538Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-04-22T05:19:57.0172447Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-04-22T05:19:57.0194047Z http.https://github.com/.extraheader
+2025-04-22T05:19:57.0204294Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2025-04-22T05:19:57.0234886Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-04-22T05:19:57.0578927Z Cleaning up orphan processes
