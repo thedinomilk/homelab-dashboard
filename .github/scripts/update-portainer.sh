@@ -1,128 +1,70 @@
 #!/bin/bash
 set -e
 
-# This script updates a Portainer stack with the latest code and configuration
+# This script updates a Portainer stack with the latest code
+# Usage: ./update-portainer.sh PORTAINER_URL PORTAINER_API_KEY STACK_NAME SSH_CONNECTION REMOTE_PATH
 
-# Required variables (should be set as GitHub secrets)
-PORTAINER_URL="${PORTAINER_URL}"
-PORTAINER_USERNAME="${PORTAINER_USERNAME}"
-PORTAINER_PASSWORD="${PORTAINER_PASSWORD}"
-STACK_NAME="${STACK_NAME:-homelab-dashboard}"
-ENV_FILE_PATH="${ENV_FILE_PATH:-/home/${HOMELAB_USER}/homelab-dashboard/.env}"
+# Arguments
+PORTAINER_URL="$1"
+PORTAINER_API_KEY="$2"
+STACK_NAME="$3"
+SSH_CONNECTION="$4"
+REMOTE_PATH="$5"
 
-# Login to Portainer and get auth token
-echo "Logging in to Portainer..."
-AUTH_RESPONSE=$(curl -s -X POST "${PORTAINER_URL}/api/auth" \
-  -H "Content-Type: application/json" \
-  -d "{\"username\":\"${PORTAINER_USERNAME}\",\"password\":\"${PORTAINER_PASSWORD}\"}")
-
-JWT=$(echo ${AUTH_RESPONSE} | grep -o '"jwt":"[^"]*' | cut -d'"' -f4)
-
-if [ -z "${JWT}" ]; then
-  echo "Failed to get authentication token from Portainer."
-  echo "Response: ${AUTH_RESPONSE}"
-  exit 1
+# Check if all required arguments are provided
+if [ -z "$PORTAINER_URL" ] || [ -z "$PORTAINER_API_KEY" ] || [ -z "$STACK_NAME" ] || [ -z "$SSH_CONNECTION" ] || [ -z "$REMOTE_PATH" ]; then
+    echo "Error: Missing required arguments"
+    echo "Usage: ./update-portainer.sh PORTAINER_URL PORTAINER_API_KEY STACK_NAME SSH_CONNECTION REMOTE_PATH"
+    exit 1
 fi
 
-echo "Successfully authenticated with Portainer."
+echo "Updating Portainer stack: $STACK_NAME"
 
-# Get endpoints (usually 1 for local)
-echo "Getting endpoints..."
-ENDPOINTS_RESPONSE=$(curl -s -X GET "${PORTAINER_URL}/api/endpoints" \
-  -H "Authorization: Bearer ${JWT}")
+# Find the stack ID
+echo "Getting stack ID..."
+STACK_ID=$(curl -s -H "X-API-Key: $PORTAINER_API_KEY" "$PORTAINER_URL/api/stacks" | jq -r ".[] | select(.Name == \"$STACK_NAME\") | .Id")
 
-ENDPOINT_ID=$(echo ${ENDPOINTS_RESPONSE} | grep -o '"Id":[0-9]*' | head -1 | cut -d':' -f2)
-
-if [ -z "${ENDPOINT_ID}" ]; then
-  echo "Failed to get endpoint ID."
-  echo "Response: ${ENDPOINTS_RESPONSE}"
-  exit 1
-fi
-
-echo "Using endpoint ID: ${ENDPOINT_ID}"
-
-# Get stack ID
-echo "Getting stack ID for ${STACK_NAME}..."
-STACKS_RESPONSE=$(curl -s -X GET "${PORTAINER_URL}/api/stacks" \
-  -H "Authorization: Bearer ${JWT}")
-
-STACK_ID=$(echo ${STACKS_RESPONSE} | grep -o "\"Name\":\"${STACK_NAME}\"[^}]*" | grep -o '"Id":[0-9]*' | cut -d':' -f2)
-
-if [ -z "${STACK_ID}" ]; then
-  echo "Failed to find stack named '${STACK_NAME}'."
-  echo "Please ensure the stack exists in Portainer."
-  exit 1
-fi
-
-echo "Found stack ID: ${STACK_ID}"
-
-# Get stack details
-echo "Getting stack details..."
-STACK_DETAILS=$(curl -s -X GET "${PORTAINER_URL}/api/stacks/${STACK_ID}" \
-  -H "Authorization: Bearer ${JWT}")
-
-# Extract information needed for update
-ENVIRONMENT_VARS=$(curl -s -X GET "${PORTAINER_URL}/api/stacks/${STACK_ID}/env" \
-  -H "Authorization: Bearer ${JWT}")
-
-# If the environment variables file exists, add it to the stack update
-if ssh ${HOMELAB_USER}@${HOMELAB_HOST} "[ -f ${ENV_FILE_PATH} ]"; then
-  echo "Using environment variables from ${ENV_FILE_PATH}..."
-  
-  # Read the variables from the .env file
-  ENV_VARS=$(ssh ${HOMELAB_USER}@${HOMELAB_HOST} "cat ${ENV_FILE_PATH}" | grep -v "^#" | grep "=" | sed -e 's/\r//g')
-  
-  # Create JSON array for env variables
-  ENV_JSON="["
-  while IFS= read -r line; do
-    if [[ ! -z "$line" ]]; then
-      key=$(echo "$line" | cut -d= -f1)
-      value=$(echo "$line" | cut -d= -f2-)
-      ENV_JSON+="{ \"name\": \"$key\", \"value\": \"$value\" },"
-    fi
-  done <<< "$ENV_VARS"
-  # Remove trailing comma and close array
-  ENV_JSON=${ENV_JSON%,}
-  ENV_JSON+="]"
-  
-  # Update the stack with the pull option and new environment variables
-  echo "Updating stack ${STACK_NAME} with environment variables..."
-  UPDATE_RESPONSE=$(curl -s -X PUT "${PORTAINER_URL}/api/stacks/${STACK_ID}?endpointId=${ENDPOINT_ID}" \
-    -H "Authorization: Bearer ${JWT}" \
-    -H "Content-Type: application/json" \
-    -d "{
-      \"prune\": true,
-      \"pullImage\": true,
-      \"env\": ${ENV_JSON}
-    }")
+if [ -z "$STACK_ID" ]; then
+    echo "Stack not found. Creating new stack..."
+    
+    # Get docker-compose content from remote server
+    echo "Getting docker-compose content from remote server..."
+    COMPOSE_CONTENT=$(ssh $SSH_CONNECTION "cat $REMOTE_PATH/docker-compose.yml")
+    
+    # Create new stack
+    curl -X POST \
+        -H "X-API-Key: $PORTAINER_API_KEY" \
+        -H "Content-Type: application/json" \
+        -d "{\"name\": \"$STACK_NAME\", \"stackFileContent\": \"$COMPOSE_CONTENT\", \"env\": []}" \
+        "$PORTAINER_URL/api/stacks"
+        
+    echo "Stack created successfully!"
 else
-  # Fall back to existing environment variables  
-  echo "Updating stack ${STACK_NAME} with existing environment variables..."
-  UPDATE_RESPONSE=$(curl -s -X PUT "${PORTAINER_URL}/api/stacks/${STACK_ID}?endpointId=${ENDPOINT_ID}" \
-    -H "Authorization: Bearer ${JWT}" \
-    -H "Content-Type: application/json" \
-    -d "{
-      \"prune\": true,
-      \"pullImage\": true,
-      \"env\": ${ENVIRONMENT_VARS}
-    }")
+    echo "Updating existing stack (ID: $STACK_ID)..."
+    
+    # Get environment variables
+    ENV_VARS=$(curl -s -H "X-API-Key: $PORTAINER_API_KEY" "$PORTAINER_URL/api/stacks/$STACK_ID" | jq -c '.Env')
+    
+    # Get docker-compose content from remote server
+    echo "Getting docker-compose content from remote server..."
+    COMPOSE_CONTENT=$(ssh $SSH_CONNECTION "cat $REMOTE_PATH/docker-compose.yml" | sed 's/"/\\"/g' | sed 's/$/\\n/' | tr -d '\n')
+    
+    # Update stack
+    curl -X PUT \
+        -H "X-API-Key: $PORTAINER_API_KEY" \
+        -H "Content-Type: application/json" \
+        -d "{\"stackFileContent\": \"$COMPOSE_CONTENT\", \"env\": $ENV_VARS, \"prune\": false}" \
+        "$PORTAINER_URL/api/stacks/$STACK_ID/file"
+        
+    echo "Stack updated successfully!"
+    
+    # Redeploy stack
+    echo "Redeploying stack..."
+    curl -X POST \
+        -H "X-API-Key: $PORTAINER_API_KEY" \
+        "$PORTAINER_URL/api/stacks/$STACK_ID/start"
+        
+    echo "Stack redeployed successfully!"
 fi
 
-if echo "${UPDATE_RESPONSE}" | grep -q "ResourceControl"; then
-  echo "Stack ${STACK_NAME} updated successfully!"
-else
-  echo "Failed to update stack."
-  echo "Response: ${UPDATE_RESPONSE}"
-  exit 1
-fi
-
-# Verify the env file exists
-echo "Checking if .env file exists at ${ENV_FILE_PATH}..."
-if ssh ${HOMELAB_USER}@${HOMELAB_HOST} "[ -f ${ENV_FILE_PATH} ]"; then
-  echo ".env file found at ${ENV_FILE_PATH}"
-else
-  echo "Warning: .env file not found at ${ENV_FILE_PATH}"
-  echo "Ensure the .env file was copied correctly during deployment."
-fi
-
-echo "Deployment completed successfully!"
+echo "Portainer stack update completed!"

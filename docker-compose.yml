@@ -1,28 +1,31 @@
-version: '3'
+version: '3.8'
 
 services:
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: homelab-dashboard
     restart: always
     ports:
       - "5000:5000"
-    environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/homelab_dashboard
-      - SESSION_SECRET=${SESSION_SECRET:-defaultsecretkey}
-    depends_on:
-      - db
     volumes:
-      - ./uploads:/app/uploads  # Persist any uploads
-
-  db:
-    image: postgres:14
-    restart: always
+      - ./:/app
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=homelab_dashboard
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - PROXMOX_HOST=${PROXMOX_HOST}
+      - PROXMOX_USER=${PROXMOX_USER}
+      - PROXMOX_TOKEN_NAME=${PROXMOX_TOKEN_NAME}
+      - PROXMOX_TOKEN_VALUE=${PROXMOX_TOKEN_VALUE}
+      - DOCKER_HOST=${DOCKER_HOST}
+      - DOCKER_PORT=${DOCKER_PORT}
+      - DATABASE_URL=${DATABASE_URL}
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - FLASK_ENV=${FLASK_ENV:-production}
+      - SECRET_KEY=${SECRET_KEY}
+      - SESSION_SECRET=${SESSION_SECRET}
+    networks:
+      - homelab-network
 
-volumes:
-  postgres_data:
+networks:
+  homelab-network:
+    name: homelab-network
