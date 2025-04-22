@@ -20,6 +20,20 @@ fi
 
 echo "Updating Portainer stack: $STACK_NAME"
 
+# Create a temporary directory for working files
+TMP_DIR=$(mktemp -d)
+TMP_COMPOSE_FILE="$TMP_DIR/docker-compose.yml"
+TMP_JSON_FILE="$TMP_DIR/stack-request.json"
+
+# Copy the docker-compose file from the remote server
+echo "Copying docker-compose file from remote server..."
+scp "$SSH_CONNECTION:$REMOTE_PATH/docker-compose.yml" "$TMP_COMPOSE_FILE"
+
+if [ ! -f "$TMP_COMPOSE_FILE" ]; then
+    echo "Error: Failed to copy docker-compose.yml from remote server"
+    exit 1
+fi
+
 # Find the stack ID
 echo "Getting stack ID..."
 STACK_ID=$(curl -s -H "X-API-Key: $PORTAINER_API_KEY" "$PORTAINER_URL/api/stacks" | jq -r ".[] | select(.Name == \"$STACK_NAME\") | .Id")
@@ -27,15 +41,15 @@ STACK_ID=$(curl -s -H "X-API-Key: $PORTAINER_API_KEY" "$PORTAINER_URL/api/stacks
 if [ -z "$STACK_ID" ]; then
     echo "Stack not found. Creating new stack..."
     
-    # Get docker-compose content from remote server - with safer handling
-    echo "Getting docker-compose content from remote server..."
-    COMPOSE_CONTENT=$(ssh $SSH_CONNECTION "cat $REMOTE_PATH/docker-compose.yml" | awk '{printf "%s\\n", $0}' | sed 's/"/\\"/g')
+    # Create JSON request body for creating a new stack
+    jq -n --arg name "$STACK_NAME" --arg content "$(cat $TMP_COMPOSE_FILE)" \
+        '{name: $name, stackFileContent: $content, env: []}' > "$TMP_JSON_FILE"
     
     # Create new stack
     curl -X POST \
         -H "X-API-Key: $PORTAINER_API_KEY" \
         -H "Content-Type: application/json" \
-        -d "{\"name\": \"$STACK_NAME\", \"stackFileContent\": \"$COMPOSE_CONTENT\", \"env\": []}" \
+        -d @"$TMP_JSON_FILE" \
         "$PORTAINER_URL/api/stacks"
         
     echo "Stack created successfully!"
@@ -45,15 +59,15 @@ else
     # Get environment variables
     ENV_VARS=$(curl -s -H "X-API-Key: $PORTAINER_API_KEY" "$PORTAINER_URL/api/stacks/$STACK_ID" | jq -c '.Env')
     
-    # Get docker-compose content from remote server - with safer handling
-    echo "Getting docker-compose content from remote server..."
-    COMPOSE_CONTENT=$(ssh $SSH_CONNECTION "cat $REMOTE_PATH/docker-compose.yml" | awk '{printf "%s\\n", $0}' | sed 's/"/\\"/g')
+    # Create JSON request body for updating the stack
+    jq -n --arg content "$(cat $TMP_COMPOSE_FILE)" --argjson env "$ENV_VARS" \
+        '{stackFileContent: $content, env: $env, prune: false}' > "$TMP_JSON_FILE"
     
     # Update stack
     curl -X PUT \
         -H "X-API-Key: $PORTAINER_API_KEY" \
         -H "Content-Type: application/json" \
-        -d "{\"stackFileContent\": \"$COMPOSE_CONTENT\", \"env\": $ENV_VARS, \"prune\": false}" \
+        -d @"$TMP_JSON_FILE" \
         "$PORTAINER_URL/api/stacks/$STACK_ID/file"
         
     echo "Stack updated successfully!"
@@ -66,5 +80,8 @@ else
         
     echo "Stack redeployed successfully!"
 fi
+
+# Clean up temporary files
+rm -rf "$TMP_DIR"
 
 echo "Portainer stack update completed!"

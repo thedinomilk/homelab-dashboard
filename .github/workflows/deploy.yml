@@ -19,29 +19,22 @@ jobs:
 
       - name: Create .env file
         run: |
-          # Create .env file line by line
-          {
-            echo "# Proxmox configuration"
-            echo "PROXMOX_HOST=${{ secrets.PROXMOX_HOST }}"
-            echo "PROXMOX_USER=${{ secrets.PROXMOX_USER }}"
-            echo "PROXMOX_TOKEN_NAME=${{ secrets.PROXMOX_TOKEN_NAME }}"
-            echo "PROXMOX_TOKEN_VALUE=${{ secrets.PROXMOX_TOKEN_VALUE }}"
-            echo ""
-            echo "# Docker configuration"
-            echo "DOCKER_HOST=${{ secrets.DOCKER_HOST }}"
-            echo "DOCKER_PORT=${{ secrets.DOCKER_PORT }}"
-            echo ""
-            echo "# Database configuration"
-            echo "DATABASE_URL=${{ secrets.DATABASE_URL }}"
-            echo ""
-            echo "# GitHub configuration (optional)"
-            echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-            echo ""
-            echo "# Flask configuration"
-            echo "FLASK_ENV=production"
-            echo "SECRET_KEY=${{ secrets.SECRET_KEY }}"
-            echo "SESSION_SECRET=${{ secrets.SESSION_SECRET }}"
-          } > .env
+          # Create .env file using a very simple approach
+          rm -f .env
+          touch .env
+          printf "PROXMOX_HOST=%s\n" "${{ secrets.PROXMOX_HOST }}" >> .env
+          printf "PROXMOX_USER=%s\n" "${{ secrets.PROXMOX_USER }}" >> .env
+          printf "PROXMOX_TOKEN_NAME=%s\n" "${{ secrets.PROXMOX_TOKEN_NAME }}" >> .env
+          printf "PROXMOX_TOKEN_VALUE=%s\n" "${{ secrets.PROXMOX_TOKEN_VALUE }}" >> .env
+          printf "DOCKER_HOST=%s\n" "${{ secrets.DOCKER_HOST }}" >> .env
+          printf "DOCKER_PORT=%s\n" "${{ secrets.DOCKER_PORT }}" >> .env
+          printf "DATABASE_URL=%s\n" "${{ secrets.DATABASE_URL }}" >> .env
+          printf "GITHUB_TOKEN=%s\n" "${{ secrets.GITHUB_TOKEN }}" >> .env
+          printf "FLASK_ENV=production\n" >> .env
+          printf "SECRET_KEY=%s\n" "${{ secrets.SECRET_KEY }}" >> .env
+          printf "SESSION_SECRET=%s\n" "${{ secrets.SESSION_SECRET }}" >> .env
+          
+          echo "Created .env file:"
           cat .env
 
       - name: Copy project to server
