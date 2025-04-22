@@ -18,6 +18,11 @@ def get_proxmox_connection(settings=None):
     Returns:
         tuple: (base_url, headers, verify_ssl)
     """
+    # When running on Replit, we're in development mode and can't connect to the real Proxmox server
+    import os
+    if os.environ.get("REPLIT_DB_URL"):
+        # This is a development environment (Replit), return mock values
+        return ("https://example.com/api2/json", {"Authorization": "PVEAPIToken=mock:token"}, False)
     # Hardcoded Proxmox credentials
     proxmox_host = os.environ.get("PROXMOX_HOST")
     proxmox_user = os.environ.get("PROXMOX_USER")
@@ -59,6 +64,13 @@ def get_proxmox_connection(settings=None):
     
     return (base_url, headers, verify_ssl)
 
+def get_mock_nodes():
+    """Return mock Proxmox node data for development environment"""
+    return [
+        {"node": "proxmox-1", "status": "online", "cpu": 0.1, "maxcpu": 8, "mem": 2048, "maxmem": 16384, "uptime": 1234567},
+        {"node": "proxmox-2", "status": "online", "cpu": 0.2, "maxcpu": 8, "mem": 4096, "maxmem": 32768, "uptime": 7654321}
+    ]
+
 def get_nodes(settings):
     """
     Get a list of Proxmox nodes
@@ -69,16 +81,18 @@ def get_nodes(settings):
     Returns:
         list: List of node objects
     """
+    # Check for Replit environment
+    if os.environ.get("REPLIT_DB_URL"):
+        # When running on Replit, return mock data
+        logging.warning("Replit environment detected - returning mock Proxmox nodes")
+        return get_mock_nodes()
+    
     # Check for development mode
     development_mode = os.environ.get("DEVELOPMENT_MODE", "false").lower() == "true"
     
     if development_mode:
         logging.warning("Development mode enabled - returning mock Proxmox nodes")
-        # Return mock data for development
-        return [
-            {"node": "proxmox-1", "status": "online", "cpu": 0.1, "maxcpu": 8, "mem": 2048, "maxmem": 16384, "uptime": 1234567},
-            {"node": "proxmox-2", "status": "online", "cpu": 0.2, "maxcpu": 8, "mem": 4096, "maxmem": 32768, "uptime": 7654321}
-        ]
+        return get_mock_nodes()
     
     # Normal production mode
     base_url, headers, verify_ssl = get_proxmox_connection(settings)
@@ -98,6 +112,34 @@ def get_nodes(settings):
         logging.error(f"Error connecting to Proxmox API: {str(e)}")
         raise Exception(f"Error connecting to Proxmox: {str(e)}")
 
+def get_mock_resources(resource_type=None):
+    """Return mock Proxmox resources for development environment"""
+    if resource_type == "vm":
+        return [
+            {"type": "qemu", "node": "proxmox-1", "id": "qemu/100", "name": "web-server", "status": "running", "cpu": 1, "maxcpu": 2, "mem": 2048, "maxmem": 4096},
+            {"type": "qemu", "node": "proxmox-2", "id": "qemu/101", "name": "db-server", "status": "running", "cpu": 2, "maxcpu": 4, "mem": 4096, "maxmem": 8192}
+        ]
+    elif resource_type == "lxc":
+        return [
+            {"type": "lxc", "node": "proxmox-1", "id": "lxc/200", "name": "docker-host", "status": "running", "cpu": 1, "maxcpu": 2, "mem": 1024, "maxmem": 2048},
+            {"type": "lxc", "node": "proxmox-2", "id": "lxc/201", "name": "media-server", "status": "running", "cpu": 2, "maxcpu": 4, "mem": 2048, "maxmem": 4096}
+        ]
+    elif resource_type == "storage":
+        return [
+            {"type": "storage", "node": "proxmox-1", "storage": "local", "total": 1000000000, "used": 500000000, "avail": 500000000},
+            {"type": "storage", "node": "proxmox-2", "storage": "zfs-pool", "total": 5000000000, "used": 1000000000, "avail": 4000000000}
+        ]
+    else:
+        # Generic resource list
+        return [
+            {"type": "node", "node": "proxmox-1", "status": "online", "cpu": 0.1, "mem": 0.3, "disk": 0.5},
+            {"type": "node", "node": "proxmox-2", "status": "online", "cpu": 0.2, "mem": 0.4, "disk": 0.6},
+            {"type": "qemu", "node": "proxmox-1", "id": "qemu/100", "name": "web-server", "status": "running"},
+            {"type": "qemu", "node": "proxmox-2", "id": "qemu/101", "name": "db-server", "status": "running"},
+            {"type": "lxc", "node": "proxmox-1", "id": "lxc/200", "name": "docker-host", "status": "running"},
+            {"type": "lxc", "node": "proxmox-2", "id": "lxc/201", "name": "media-server", "status": "running"}
+        ]
+
 def get_resources(settings, resource_type=None):
     """
     Get resources from Proxmox
@@ -109,6 +151,12 @@ def get_resources(settings, resource_type=None):
     Returns:
         list: List of resources
     """
+    # Check for Replit environment
+    if os.environ.get("REPLIT_DB_URL"):
+        # When running on Replit, return mock data
+        logging.warning(f"Replit environment detected - returning mock Proxmox resources for type: {resource_type}")
+        return get_mock_resources(resource_type)
+        
     # Check for development mode
     development_mode = os.environ.get("DEVELOPMENT_MODE", "false").lower() == "true"
     

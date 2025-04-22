@@ -4,6 +4,79 @@ import json
 import os
 from datetime import datetime
 
+# Function to generate mock container data for development/testing
+def get_mock_containers(all_containers=True):
+    """Generate mock container data for testing"""
+    now = datetime.now().timestamp()
+    
+    mock_containers = [
+        {
+            "Id": "container1",
+            "Names": ["/media-server"],
+            "Name": "media-server",
+            "Image": "linuxserver/plex:latest",
+            "Created": now - 86400,  # 1 day ago
+            "CreatedFormatted": datetime.fromtimestamp(now - 86400).strftime('%Y-%m-%d %H:%M:%S'),
+            "Status": "Up 1 day",
+            "StatusClass": "success",
+            "Ports": [{"PrivatePort": 32400, "PublicPort": 32400, "Type": "tcp"}],
+            "PortsFormatted": ["32400:32400/tcp"]
+        },
+        {
+            "Id": "container2",
+            "Names": ["/transmission"],
+            "Name": "transmission",
+            "Image": "linuxserver/transmission:latest",
+            "Created": now - 172800,  # 2 days ago
+            "CreatedFormatted": datetime.fromtimestamp(now - 172800).strftime('%Y-%m-%d %H:%M:%S'),
+            "Status": "Up 2 days",
+            "StatusClass": "success",
+            "Ports": [{"PrivatePort": 9091, "PublicPort": 9091, "Type": "tcp"}],
+            "PortsFormatted": ["9091:9091/tcp"]
+        },
+        {
+            "Id": "container3",
+            "Names": ["/portainer"],
+            "Name": "portainer",
+            "Image": "portainer/portainer-ce:latest",
+            "Created": now - 604800,  # 7 days ago
+            "CreatedFormatted": datetime.fromtimestamp(now - 604800).strftime('%Y-%m-%d %H:%M:%S'),
+            "Status": "Up 7 days",
+            "StatusClass": "success",
+            "Ports": [{"PrivatePort": 9000, "PublicPort": 9000, "Type": "tcp"}],
+            "PortsFormatted": ["9000:9000/tcp"]
+        },
+        {
+            "Id": "container4",
+            "Names": ["/database"],
+            "Name": "database",
+            "Image": "postgres:14",
+            "Created": now - 259200,  # 3 days ago
+            "CreatedFormatted": datetime.fromtimestamp(now - 259200).strftime('%Y-%m-%d %H:%M:%S'),
+            "Status": "Exited (0) 1 hour ago",
+            "StatusClass": "danger",
+            "Ports": [{"PrivatePort": 5432, "PublicPort": 5432, "Type": "tcp"}],
+            "PortsFormatted": ["5432:5432/tcp"]
+        },
+        {
+            "Id": "container5",
+            "Names": ["/homelab-postgres"],
+            "Name": "homelab-postgres",
+            "Image": "postgres:latest",
+            "Created": now - 3600,  # 1 hour ago
+            "CreatedFormatted": datetime.fromtimestamp(now - 3600).strftime('%Y-%m-%d %H:%M:%S'),
+            "Status": "Up 1 hour",
+            "StatusClass": "success",
+            "Ports": [{"PrivatePort": 5432, "PublicPort": 5432, "Type": "tcp"}],
+            "PortsFormatted": ["5432:5432/tcp"]
+        }
+    ]
+    
+    # Only return running containers if all_containers is False
+    if not all_containers:
+        return [c for c in mock_containers if 'up' in c['Status'].lower()]
+    return mock_containers
+
 def get_docker_url(settings=None):
     """
     Build the Docker API URL using hardcoded values
@@ -14,6 +87,11 @@ def get_docker_url(settings=None):
     Returns:
         str: Docker API base URL
     """
+    # When running on Replit, we're in development mode
+    import os
+    if os.environ.get("REPLIT_DB_URL"):
+        # This is a development environment, return a placeholder URL
+        return "http://localhost:2375"
     # Hardcoded Docker credentials
     docker_host = os.environ.get("DOCKER_HOST")
     docker_port = int(os.environ.get("DOCKER_PORT", 2375))
@@ -53,6 +131,12 @@ def get_containers(settings, all_containers=True):
     Returns:
         list: List of container objects
     """
+    # Check for Replit environment
+    if os.environ.get("REPLIT_DB_URL"):
+        # When running on Replit, always return mock data
+        logging.warning("Replit environment detected - returning mock Docker containers")
+        return get_mock_containers(all_containers)
+    
     # Check for development mode
     development_mode = os.environ.get("DEVELOPMENT_MODE", "false").lower() == "true"
     
