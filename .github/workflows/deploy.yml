@@ -19,27 +19,30 @@ jobs:
 
       - name: Create .env file
         run: |
-          # Create .env file more safely
-          echo "# Proxmox configuration" > .env
-          echo "PROXMOX_HOST=${{ secrets.PROXMOX_HOST }}" >> .env
-          echo "PROXMOX_USER=${{ secrets.PROXMOX_USER }}" >> .env
-          echo "PROXMOX_TOKEN_NAME=${{ secrets.PROXMOX_TOKEN_NAME }}" >> .env
-          echo "PROXMOX_TOKEN_VALUE=${{ secrets.PROXMOX_TOKEN_VALUE }}" >> .env
-          echo "" >> .env
-          echo "# Docker configuration" >> .env
-          echo "DOCKER_HOST=${{ secrets.DOCKER_HOST }}" >> .env
-          echo "DOCKER_PORT=${{ secrets.DOCKER_PORT }}" >> .env
-          echo "" >> .env
-          echo "# Database configuration" >> .env
-          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
-          echo "" >> .env
-          echo "# GitHub configuration (optional)" >> .env
-          echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> .env
-          echo "" >> .env
-          echo "# Flask configuration" >> .env
-          echo "FLASK_ENV=production" >> .env
-          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
-          echo "SESSION_SECRET=${{ secrets.SESSION_SECRET }}" >> .env
+          # Create .env file line by line
+          {
+            echo "# Proxmox configuration"
+            echo "PROXMOX_HOST=${{ secrets.PROXMOX_HOST }}"
+            echo "PROXMOX_USER=${{ secrets.PROXMOX_USER }}"
+            echo "PROXMOX_TOKEN_NAME=${{ secrets.PROXMOX_TOKEN_NAME }}"
+            echo "PROXMOX_TOKEN_VALUE=${{ secrets.PROXMOX_TOKEN_VALUE }}"
+            echo ""
+            echo "# Docker configuration"
+            echo "DOCKER_HOST=${{ secrets.DOCKER_HOST }}"
+            echo "DOCKER_PORT=${{ secrets.DOCKER_PORT }}"
+            echo ""
+            echo "# Database configuration"
+            echo "DATABASE_URL=${{ secrets.DATABASE_URL }}"
+            echo ""
+            echo "# GitHub configuration (optional)"
+            echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+            echo ""
+            echo "# Flask configuration"
+            echo "FLASK_ENV=production"
+            echo "SECRET_KEY=${{ secrets.SECRET_KEY }}"
+            echo "SESSION_SECRET=${{ secrets.SESSION_SECRET }}"
+          } > .env
+          cat .env
 
       - name: Copy project to server
         run: |
