@@ -17,21 +17,12 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Create .env file (ultra simplistic)
+      - name: Create .env file (using static file)
         run: |
-          echo "PROXMOX_HOST=${{ secrets.PROXMOX_HOST }}" > .env
-          echo "PROXMOX_USER=${{ secrets.PROXMOX_USER }}" >> .env
-          echo "PROXMOX_TOKEN_NAME=${{ secrets.PROXMOX_TOKEN_NAME }}" >> .env
-          echo "PROXMOX_TOKEN_VALUE=${{ secrets.PROXMOX_TOKEN_VALUE }}" >> .env
-          echo "DOCKER_HOST=${{ secrets.DOCKER_HOST }}" >> .env
-          echo "DOCKER_PORT=${{ secrets.DOCKER_PORT }}" >> .env
-          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
-          echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> .env
-          echo "FLASK_ENV=production" >> .env
-          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
-          echo "SESSION_SECRET=${{ secrets.SESSION_SECRET }}" >> .env
+          # Use a static script to create the .env file to bypass any shell issues
+          bash .github/static-env-creator.sh
           
-          echo "Created .env file successfully."
+          echo "Created static .env file for testing."
 
       - name: Copy project to server
         run: |
