@@ -29,7 +29,7 @@ init_db(app)
 
 # Import utils after app initialization
 from utils import proxmox, docker, storage
-from models import UserSettings, DocuEntry, ScriptEntry
+from models import UserSettings, DocuEntry, ScriptEntry, MediaRequest
 
 # Initialize default settings if none exist
 with app.app_context():
@@ -336,6 +336,86 @@ def transfer_files_to_server():
     except Exception as e:
         logging.error(f"Error transferring files: {str(e)}")
         return jsonify({"error": str(e)}), 500
+
+# Media Request Routes
+@app.route('/media-requests')
+def media_requests_page():
+    """Page for viewing and submitting media requests"""
+    requests = MediaRequest.query.order_by(MediaRequest.created_at.desc()).all()
+    return render_template('media_requests.html', active_page='media-requests', requests=requests)
+
+@app.route('/api/media-requests', methods=['GET', 'POST'])
+def manage_media_requests():
+    """API for managing media requests"""
+    if request.method == 'POST':
+        data = request.get_json()
+        new_request = MediaRequest(
+            title=data.get('title'),
+            media_type=data.get('media_type'),
+            description=data.get('description', ''),
+            requester_name=data.get('requester_name', ''),
+            status='Pending',
+            created_at=datetime.now()
+        )
+        db.session.add(new_request)
+        db.session.commit()
+        return jsonify({"success": True, "id": new_request.id})
+    else:
+        requests = MediaRequest.query.all()
+        return jsonify([{
+            "id": req.id,
+            "title": req.title,
+            "media_type": req.media_type,
+            "description": req.description,
+            "requester_name": req.requester_name,
+            "status": req.status,
+            "notes": req.notes,
+            "created_at": req.created_at.isoformat(),
+            "updated_at": req.updated_at.isoformat()
+        } for req in requests])
+
+@app.route('/api/media-requests/<int:request_id>', methods=['GET', 'PUT', 'DELETE'])
+def manage_media_request(request_id):
+    """API for managing a specific media request"""
+    req = MediaRequest.query.get_or_404(request_id)
+    
+    if request.method == 'GET':
+        return jsonify({
+            "id": req.id,
+            "title": req.title,
+            "media_type": req.media_type,
+            "description": req.description,
+            "requester_name": req.requester_name,
+            "status": req.status,
+            "notes": req.notes,
+            "created_at": req.created_at.isoformat(),
+            "updated_at": req.updated_at.isoformat()
+        })
+        
+    elif request.method == 'PUT':
+        data = request.get_json()
+        
+        # Only update fields that were provided
+        if 'title' in data:
+            req.title = data.get('title')
+        if 'media_type' in data:
+            req.media_type = data.get('media_type')
+        if 'description' in data:
+            req.description = data.get('description')
+        if 'requester_name' in data:
+            req.requester_name = data.get('requester_name')
+        if 'status' in data:
+            req.status = data.get('status')
+        if 'notes' in data:
+            req.notes = data.get('notes')
+            
+        db.session.commit()
+        return jsonify({"success": True})
+        
+    elif request.method == 'DELETE':
+        db.session.delete(req)
+        db.session.commit()
+        return jsonify({"success": True})
 
 # Documentation APIs
 @app.route('/api/docs', methods=['GET', 'POST'])

@@ -19,6 +19,20 @@ class UserSettings(db.Model):
     
     def __repr__(self):
         return f'<UserSettings {self.id}>'
+        
+class MediaRequest(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255), nullable=False)
+    media_type = db.Column(db.String(50), nullable=False)  # movie, tv_show, audiobook
+    description = db.Column(db.Text, nullable=True)
+    requester_name = db.Column(db.String(100), nullable=True)
+    status = db.Column(db.String(50), default='Pending')  # Pending, Approved, Downloading, Completed, Rejected
+    notes = db.Column(db.Text, nullable=True)  # Admin notes/comments
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    def __repr__(self):
+        return f'<MediaRequest {self.id} - {self.title}>'
 
 class ProxmoxAnalysis(db.Model):
     id = db.Column(db.Integer, primary_key=True)
