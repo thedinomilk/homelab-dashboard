@@ -19,28 +19,27 @@ jobs:
 
       - name: Create .env file
         run: |
-          cat > .env << EOF
-          # Proxmox configuration
-          PROXMOX_HOST=${{ secrets.PROXMOX_HOST }}
-          PROXMOX_USER=${{ secrets.PROXMOX_USER }}
-          PROXMOX_TOKEN_NAME=${{ secrets.PROXMOX_TOKEN_NAME }}
-          PROXMOX_TOKEN_VALUE=${{ secrets.PROXMOX_TOKEN_VALUE }}
-          
-          # Docker configuration
-          DOCKER_HOST=${{ secrets.DOCKER_HOST }}
-          DOCKER_PORT=${{ secrets.DOCKER_PORT }}
-          
-          # Database configuration
-          DATABASE_URL=${{ secrets.DATABASE_URL }}
-          
-          # GitHub configuration (optional)
-          GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
-          
-          # Flask configuration
-          FLASK_ENV=production
-          SECRET_KEY=${{ secrets.SECRET_KEY }}
-          SESSION_SECRET=${{ secrets.SESSION_SECRET }}
-          EOF
+          # Create .env file more safely
+          echo "# Proxmox configuration" > .env
+          echo "PROXMOX_HOST=${{ secrets.PROXMOX_HOST }}" >> .env
+          echo "PROXMOX_USER=${{ secrets.PROXMOX_USER }}" >> .env
+          echo "PROXMOX_TOKEN_NAME=${{ secrets.PROXMOX_TOKEN_NAME }}" >> .env
+          echo "PROXMOX_TOKEN_VALUE=${{ secrets.PROXMOX_TOKEN_VALUE }}" >> .env
+          echo "" >> .env
+          echo "# Docker configuration" >> .env
+          echo "DOCKER_HOST=${{ secrets.DOCKER_HOST }}" >> .env
+          echo "DOCKER_PORT=${{ secrets.DOCKER_PORT }}" >> .env
+          echo "" >> .env
+          echo "# Database configuration" >> .env
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+          echo "" >> .env
+          echo "# GitHub configuration (optional)" >> .env
+          echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> .env
+          echo "" >> .env
+          echo "# Flask configuration" >> .env
+          echo "FLASK_ENV=production" >> .env
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
+          echo "SESSION_SECRET=${{ secrets.SESSION_SECRET }}" >> .env
 
       - name: Copy project to server
         run: |

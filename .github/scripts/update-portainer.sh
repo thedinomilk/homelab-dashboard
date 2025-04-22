@@ -27,9 +27,9 @@ STACK_ID=$(curl -s -H "X-API-Key: $PORTAINER_API_KEY" "$PORTAINER_URL/api/stacks
 if [ -z "$STACK_ID" ]; then
     echo "Stack not found. Creating new stack..."
     
-    # Get docker-compose content from remote server
+    # Get docker-compose content from remote server - with safer handling
     echo "Getting docker-compose content from remote server..."
-    COMPOSE_CONTENT=$(ssh $SSH_CONNECTION "cat $REMOTE_PATH/docker-compose.yml")
+    COMPOSE_CONTENT=$(ssh $SSH_CONNECTION "cat $REMOTE_PATH/docker-compose.yml" | awk '{printf "%s\\n", $0}' | sed 's/"/\\"/g')
     
     # Create new stack
     curl -X POST \
@@ -45,9 +45,9 @@ else
     # Get environment variables
     ENV_VARS=$(curl -s -H "X-API-Key: $PORTAINER_API_KEY" "$PORTAINER_URL/api/stacks/$STACK_ID" | jq -c '.Env')
     
-    # Get docker-compose content from remote server
+    # Get docker-compose content from remote server - with safer handling
     echo "Getting docker-compose content from remote server..."
-    COMPOSE_CONTENT=$(ssh $SSH_CONNECTION "cat $REMOTE_PATH/docker-compose.yml" | sed 's/"/\\"/g' | sed 's/$/\\n/' | tr -d '\n')
+    COMPOSE_CONTENT=$(ssh $SSH_CONNECTION "cat $REMOTE_PATH/docker-compose.yml" | awk '{printf "%s\\n", $0}' | sed 's/"/\\"/g')
     
     # Update stack
     curl -X PUT \
