@@ -1,0 +1,941 @@
+    ┌──────────────────────────────────────────────────────────────────────┐
+    │                 • MobaXterm Personal Edition v25.1 •                 │
+    │               (SSH client, X server and network tools)               │
+    │                                                                      │
+    │ ⮞ SSH session to dinomilk@192.168.86.40                              │
+    │   • Direct SSH      :  ✓                                             │
+    │   • SSH compression :  ✓                                             │
+    │   • SSH-browser     :  ✓                                             │
+    │   • X11-forwarding  :  ✓  (remote display is forwarded through SSH)  │
+    │                                                                      │
+    │ ⮞ For more info, ctrl+click on help or visit our website.            │
+    └──────────────────────────────────────────────────────────────────────┘
+
+Welcome to Ubuntu 22.04.5 LTS (GNU/Linux 5.15.0-138-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Mon Apr 21 06:38:23 PM UTC 2025
+
+  System load:            0.04
+  Usage of /:             46.7% of 14.66GB
+  Memory usage:           14%
+  Swap usage:             0%
+  Processes:              210
+  Users logged in:        1
+  IPv4 address for ens18: 192.168.86.40
+  IPv6 address for ens18: fd28:2ca:fee7:e3c1:be24:11ff:fe90:6f36
+
+ * Strictly confined Kubernetes makes edge and IoT secure. Learn how MicroK8s
+   just raised the bar for easy, resilient and secure K8s cluster deployment.
+
+   https://ubuntu.com/engage/secure-kubernetes-at-the-edge
+
+Expanded Security Maintenance for Applications is not enabled.
+
+0 updates can be applied immediately.
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+New release '24.04.2 LTS' available.
+Run 'do-release-upgrade' to upgrade to it.
+
+
+Last login: Mon Apr 21 18:35:58 2025 from 192.168.86.34
+dinomilk@quetzalcoatlus:~$ docker exec nordvpn wget -qO- ifconfig.me
+OCI runtime exec failed: exec failed: unable to start container process: exec: "                                                                  wget": executable file not found in $PATH: unknown
+dinomilk@quetzalcoatlus:~$ docker exec nordvpn curl -s ifconfig.me
+dinomilk@quetzalcoatlus:~$ docker exec nordvpn sh -c "echo 'nameserver 8.8.8.8' > /etc/resolv.conf && apk add --no-cache curl && curl -s ifconfig.me"-s ifconfig.me"
+sh: 1: apk: not found
+dinomilk@quetzalcoatlus:~$ docker logs nordvpn | tail -n 30
+fix-attrs: warning: fix-attrs is deprecated, please fix volume permissions in your container manager instead
+No inet6 network
+Enabling connection to network 192.168.86.0/24
+[custom-init] No custom files found, skipping...
+[ls.io-init] done.
+A new version of NordVPN is available! Please update the application.
+Welcome to NordVPN! You can now connect to VPN by using 'nordvpn connect'.
+A new version of NordVPN is available! Please update the application.
+Technology is already set to 'NORDLYNX'.
+A new version of NordVPN is available! Please update the application.
+Port 9092 (UDP|TCP) is whitelisted successfully.
+A new version of NordVPN is available! Please update the application.
+Subnet 172.18.0.0/16 is whitelisted successfully.
+A new version of NordVPN is available! Please update the application.
+Subnet 192.168.86.0/24 is whitelisted successfully.
+Connecting...
+A new version of NordVPN is available! Please update the application.
+Connecting to United States #9999 (us9999.nordvpn.com)
+You are connected to United States #9999 (us9999.nordvpn.com)!
+############################################################
+__  .___  ___. .______     ______   .______     .___________.    ___      .__   __. .___________.
+|  | |   \/   | |   _  \   /  __  \  |   _  \    |           |   /   \     |  \ |  | |           |
+|  | |  \  /  | |  |_)  | |  |  |  | |  |_)  |   `---|  |----`  /  ^  \    |   \|  | `---|  |----`
+|  | |  |\/|  | |   ___/  |  |  |  | |      /        |  |      /  /_\  \   |  . `  |     |  |
+|  | |  |  |  | |  |      |  `--'  | |  |\  \----.   |  |     /  _____  \  |  |\   |     |  |
+|__| |__|  |__| | _|       \______/  | _| `._____|   |__|    /__/     \__\ |__| \__|     |__|
+↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+Please migrate to the NordLynx container (https://github.com/bubuntux/nordlynx)
+Here is your private Key: cAncOgxSlp1fKnlLP7pJFMPGYPgwR0z4PBdjle5BAGQ=
+IP: 10.5.0.2/32
+############################################################
+dinomilk@quetzalcoatlus:~$ docker logs transmission | tail
+sendto: Operation not permitted
+sendto: Operation not permitted
+sendto: Operation not permitted
+sendto: Operation not permitted
+Connection to localhost (127.0.0.1) 9091 port [tcp/*] succeeded!
+[2025-04-21 11:50:09.675] ERR watchdir-inotify.cc:94 Couldn't watch '/watch': No such file or directory (2) (watchdir-inotify.cc:94)
+
+User UID:    1000
+User GID:    1000
+───────────────────────────────────────
+Linuxserver.io version: 4.0.6-r4-ls289
+Build-date: 2025-04-15T10:44:04+00:00
+───────────────────────────────────────
+
+[custom-init] No custom files found, skipping...
+[ls.io-init] done.
+dinomilk@quetzalcoatlus:~$ mkdir -p /apatosaurus/data/downloads/watch
+dinomilk@quetzalcoatlus:~$ # Create necessary directories
+mkdir -p /apatosaurus/data/media/tv
+mkdir -p /apatosaurus/data/media/movies
+mkdir -p /apatosaurus/data/media/music
+mkdir -p /apatosaurus/data/downloads/{complete,incomplete,watch}
+mkdir -p /apatosaurus/data/appdata/{plex,sonarr,radarr,prowlarr}
+dinomilk@quetzalcoatlus:~$ nano ~\docker-compose.yaml
+dinomilk@quetzalcoatlus:~$ cd mediaserver/
+dinomilk@quetzalcoatlus:~/mediaserver$ nano docker-compose.yml
+dinomilk@quetzalcoatlus:~/mediaserver$ docker-compose up -d nordvpn transmission
+nordvpn is up-to-date
+transmission is up-to-date
+dinomilk@quetzalcoatlus:~/mediaserver$ docker-compose --help
+Define and run multi-container applications with Docker.
+
+Usage:
+  docker-compose [-f <arg>...] [--profile <name>...] [options] [--] [COMMAND] [ARGS...]
+  docker-compose -h|--help
+
+Options:
+  -f, --file FILE             Specify an alternate compose file
+                              (default: docker-compose.yml)
+  -p, --project-name NAME     Specify an alternate project name
+                              (default: directory name)
+  --profile NAME              Specify a profile to enable
+  -c, --context NAME          Specify a context name
+  --verbose                   Show more output
+  --log-level LEVEL           Set log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+  --ansi (never|always|auto)  Control when to print ANSI control characters
+  --no-ansi                   Do not print ANSI control characters (DEPRECATED)
+  -v, --version               Print version and exit
+  -H, --host HOST             Daemon socket to connect to
+
+  --tls                       Use TLS; implied by --tlsverify
+  --tlscacert CA_PATH         Trust certs signed only by this CA
+  --tlscert CLIENT_CERT_PATH  Path to TLS certificate file
+  --tlskey TLS_KEY_PATH       Path to TLS key file
+  --tlsverify                 Use TLS and verify the remote
+  --skip-hostname-check       Don't check the daemon's hostname against the
+                              name specified in the client certificate
+  --project-directory PATH    Specify an alternate working directory
+                              (default: the path of the Compose file)
+  --compatibility             If set, Compose will attempt to convert keys
+                              in v3 files to their non-Swarm equivalent (DEPRECATED)
+  --env-file PATH             Specify an alternate environment file
+
+Commands:
+  build              Build or rebuild services
+  config             Validate and view the Compose file
+  create             Create services
+  down               Stop and remove resources
+  events             Receive real time events from containers
+  exec               Execute a command in a running container
+  help               Get help on a command
+  images             List images
+  kill               Kill containers
+  logs               View output from containers
+  pause              Pause services
+  port               Print the public port for a port binding
+  ps                 List containers
+  pull               Pull service images
+  push               Push service images
+  restart            Restart services
+  rm                 Remove stopped containers
+  run                Run a one-off command
+  scale              Set number of containers for a service
+  start              Start services
+  stop               Stop services
+  top                Display the running processes
+  unpause            Unpause services
+  up                 Create and start containers
+  version            Show version information and quit
+dinomilk@quetzalcoatlus:~/mediaserver$ docker-compose down
+Stopping transmission ... done
+Stopping prowlarr     ... done
+Stopping sonarr       ... done
+Stopping plex         ... done
+Stopping nordvpn      ... done
+Stopping radarr       ... done
+Removing transmission ... done
+Removing prowlarr     ... done
+Removing sonarr       ... done
+Removing plex         ... done
+Removing nordvpn      ... done
+Removing radarr       ... done
+Removing network mediaserver_default
+dinomilk@quetzalcoatlus:~/mediaserver$ docker-compose up -d nordvpn transmission
+Creating network "mediaserver_default" with the default driver
+Creating nordvpn ... done
+Creating transmission ... done
+dinomilk@quetzalcoatlus:~/mediaserver$ docker-compose -d --help
+Define and run multi-container applications with Docker.
+
+Usage:
+  docker-compose [-f <arg>...] [--profile <name>...] [options] [--] [COMMAND] [ARGS...]
+  docker-compose -h|--help
+
+Options:
+  -f, --file FILE             Specify an alternate compose file
+                              (default: docker-compose.yml)
+  -p, --project-name NAME     Specify an alternate project name
+                              (default: directory name)
+  --profile NAME              Specify a profile to enable
+  -c, --context NAME          Specify a context name
+  --verbose                   Show more output
+  --log-level LEVEL           Set log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+  --ansi (never|always|auto)  Control when to print ANSI control characters
+  --no-ansi                   Do not print ANSI control characters (DEPRECATED)
+  -v, --version               Print version and exit
+  -H, --host HOST             Daemon socket to connect to
+
+  --tls                       Use TLS; implied by --tlsverify
+  --tlscacert CA_PATH         Trust certs signed only by this CA
+  --tlscert CLIENT_CERT_PATH  Path to TLS certificate file
+  --tlskey TLS_KEY_PATH       Path to TLS key file
+  --tlsverify                 Use TLS and verify the remote
+  --skip-hostname-check       Don't check the daemon's hostname against the
+                              name specified in the client certificate
+  --project-directory PATH    Specify an alternate working directory
+                              (default: the path of the Compose file)
+  --compatibility             If set, Compose will attempt to convert keys
+                              in v3 files to their non-Swarm equivalent (DEPRECATED)
+  --env-file PATH             Specify an alternate environment file
+
+Commands:
+  build              Build or rebuild services
+  config             Validate and view the Compose file
+  create             Create services
+  down               Stop and remove resources
+  events             Receive real time events from containers
+  exec               Execute a command in a running container
+  help               Get help on a command
+  images             List images
+  kill               Kill containers
+  logs               View output from containers
+  pause              Pause services
+  port               Print the public port for a port binding
+  ps                 List containers
+  pull               Pull service images
+  push               Push service images
+  restart            Restart services
+  rm                 Remove stopped containers
+  run                Run a one-off command
+  scale              Set number of containers for a service
+  start              Start services
+  stop               Stop services
+  top                Display the running processes
+  unpause            Unpause services
+  up                 Create and start containers
+  version            Show version information and quit
+dinomilk@quetzalcoatlus:~/mediaserver$ docker-compose up -d
+nordvpn is up-to-date
+Creating plex     ...
+Creating prowlarr ...
+Creating sonarr   ...
+Creating prowlarr ... done
+ERROR: for plex  "host" network_mode is incompatible with port_bindings
+Creating sonarr   ... done
+Creating radarr   ... done
+
+ERROR: for plex  "host" network_mode is incompatible with port_bindings
+Traceback (most recent call last):
+  File "/usr/bin/docker-compose", line 33, in <module>
+    sys.exit(load_entry_point('docker-compose==1.29.2', 'console_scripts', 'docker-compose')())
+  File "/usr/lib/python3/dist-packages/compose/cli/main.py", line 81, in main
+    command_func()
+  File "/usr/lib/python3/dist-packages/compose/cli/main.py", line 203, in perform_command
+    handler(command, command_options)
+  File "/usr/lib/python3/dist-packages/compose/metrics/decorator.py", line 18, in wrapper
+    result = fn(*args, **kwargs)
+  File "/usr/lib/python3/dist-packages/compose/cli/main.py", line 1186, in up
+    to_attach = up(False)
+  File "/usr/lib/python3/dist-packages/compose/cli/main.py", line 1166, in up
+    return self.project.up(
+  File "/usr/lib/python3/dist-packages/compose/project.py", line 697, in up
+    results, errors = parallel.parallel_execute(
+  File "/usr/lib/python3/dist-packages/compose/parallel.py", line 108, in parallel_execute
+    raise error_to_reraise
+  File "/usr/lib/python3/dist-packages/compose/parallel.py", line 206, in producer
+    result = func(obj)
+  File "/usr/lib/python3/dist-packages/compose/project.py", line 679, in do
+    return service.execute_convergence_plan(
+  File "/usr/lib/python3/dist-packages/compose/service.py", line 559, in execute_convergence_plan
+    return self._execute_convergence_create(
+  File "/usr/lib/python3/dist-packages/compose/service.py", line 473, in _execute_convergence_create
+    containers, errors = parallel_execute(
+  File "/usr/lib/python3/dist-packages/compose/parallel.py", line 108, in parallel_execute
+    raise error_to_reraise
+  File "/usr/lib/python3/dist-packages/compose/parallel.py", line 206, in producer
+    result = func(obj)
+  File "/usr/lib/python3/dist-packages/compose/service.py", line 478, in <lambda>
+    lambda service_name: create_and_start(self, service_name.number),
+  File "/usr/lib/python3/dist-packages/compose/service.py", line 457, in create_and_start
+    container = service.create_container(number=n, quiet=True)
+  File "/usr/lib/python3/dist-packages/compose/service.py", line 330, in create_container
+    container_options = self._get_container_create_options(
+  File "/usr/lib/python3/dist-packages/compose/service.py", line 939, in _get_container_create_options
+    container_options['host_config'] = self._get_container_host_config(
+  File "/usr/lib/python3/dist-packages/compose/service.py", line 1014, in _get_container_host_config
+    return self.client.create_host_config(
+  File "/usr/lib/python3/dist-packages/docker/api/container.py", line 596, in create_host_config
+    return HostConfig(*args, **kwargs)
+  File "/usr/lib/python3/dist-packages/docker/types/containers.py", line 336, in __init__
+    raise host_config_incompatible_error(
+docker.errors.InvalidArgument: "host" network_mode is incompatible with port_bindings
+dinomilk@quetzalcoatlus:~/mediaserver$ docker-compose up -d
+nordvpn is up-to-date
+sonarr is up-to-date
+radarr is up-to-date
+Creating plex ...
+prowlarr is up-to-date
+transmission is up-to-date
+
+ERROR: for plex  "host" network_mode is incompatible with port_bindings
+
+ERROR: for plex  "host" network_mode is incompatible with port_bindings
+Traceback (most recent call last):
+  File "/usr/bin/docker-compose", line 33, in <module>
+    sys.exit(load_entry_point('docker-compose==1.29.2', 'console_scripts', 'docker-compose')())
+  File "/usr/lib/python3/dist-packages/compose/cli/main.py", line 81, in main
+    command_func()
+  File "/usr/lib/python3/dist-packages/compose/cli/main.py", line 203, in perform_command
+    handler(command, command_options)
+  File "/usr/lib/python3/dist-packages/compose/metrics/decorator.py", line 18, in wrapper
+    result = fn(*args, **kwargs)
+  File "/usr/lib/python3/dist-packages/compose/cli/main.py", line 1186, in up
+    to_attach = up(False)
+  File "/usr/lib/python3/dist-packages/compose/cli/main.py", line 1166, in up
+    return self.project.up(
+  File "/usr/lib/python3/dist-packages/compose/project.py", line 697, in up
+    results, errors = parallel.parallel_execute(
+  File "/usr/lib/python3/dist-packages/compose/parallel.py", line 108, in parallel_execute
+    raise error_to_reraise
+  File "/usr/lib/python3/dist-packages/compose/parallel.py", line 206, in producer
+    result = func(obj)
+  File "/usr/lib/python3/dist-packages/compose/project.py", line 679, in do
+    return service.execute_convergence_plan(
+  File "/usr/lib/python3/dist-packages/compose/service.py", line 559, in execute_convergence_plan
+    return self._execute_convergence_create(
+  File "/usr/lib/python3/dist-packages/compose/service.py", line 473, in _execute_convergence_create
+    containers, errors = parallel_execute(
+  File "/usr/lib/python3/dist-packages/compose/parallel.py", line 108, in parallel_execute
+    raise error_to_reraise
+  File "/usr/lib/python3/dist-packages/compose/parallel.py", line 206, in producer
+    result = func(obj)
+  File "/usr/lib/python3/dist-packages/compose/service.py", line 478, in <lambda>
+    lambda service_name: create_and_start(self, service_name.number),
+  File "/usr/lib/python3/dist-packages/compose/service.py", line 457, in create_and_start
+    container = service.create_container(number=n, quiet=True)
+  File "/usr/lib/python3/dist-packages/compose/service.py", line 330, in create_container
+    container_options = self._get_container_create_options(
+  File "/usr/lib/python3/dist-packages/compose/service.py", line 939, in _get_container_create_options
+    container_options['host_config'] = self._get_container_host_config(
+  File "/usr/lib/python3/dist-packages/compose/service.py", line 1014, in _get_container_host_config
+    return self.client.create_host_config(
+  File "/usr/lib/python3/dist-packages/docker/api/container.py", line 596, in create_host_config
+    return HostConfig(*args, **kwargs)
+  File "/usr/lib/python3/dist-packages/docker/types/containers.py", line 336, in __init__
+    raise host_config_incompatible_error(
+docker.errors.InvalidArgument: "host" network_mode is incompatible with port_bindings
+dinomilk@quetzalcoatlus:~/mediaserver$ docker-compose ps
+    Name                  Command               State                    Ports
+------------------------------------------------------------------------------------------------
+nordvpn        /init /bin/sh -c nord_logi ...   Up      0.0.0.0:9092->9091/tcp,:::9092->9091/tcp
+prowlarr       /init                            Up      0.0.0.0:9696->9696/tcp,:::9696->9696/tcp
+radarr         /init                            Up      0.0.0.0:7878->7878/tcp,:::7878->7878/tcp
+sonarr         /init                            Up      0.0.0.0:8989->8989/tcp,:::8989->8989/tcp
+transmission   /init                            Up
+dinomilk@quetzalcoatlus:~/mediaserver$ nano docker-compose.yml
+dinomilk@quetzalcoatlus:~/mediaserver$ docker-compose up -d plex
+Creating plex ... done
+dinomilk@quetzalcoatlus:~/mediaserver$ docker-compose ps
+    Name                  Command                  State                                              Ports
+--------------------------------------------------------------------------------------------------------------------------------------------------
+nordvpn        /init /bin/sh -c nord_logi ...   Up             0.0.0.0:9092->9091/tcp,:::9092->9091/tcp
+plex           /init                            Up (healthy)   1900/udp, 0.0.0.0:32400->32400/tcp,:::32400->32400/tcp, 32410/udp, 32412/udp,
+                                                               32413/udp, 32414/udp, 32469/tcp, 8324/tcp
+prowlarr       /init                            Up             0.0.0.0:9696->9696/tcp,:::9696->9696/tcp
+radarr         /init                            Up             0.0.0.0:7878->7878/tcp,:::7878->7878/tcp
+sonarr         /init                            Up             0.0.0.0:8989->8989/tcp,:::8989->8989/tcp
+transmission   /init                            Up
+dinomilk@quetzalcoatlus:~/mediaserver$ docker run -d -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -portainer_data:/data portainer/portainer-ce
+Unable to find image 'portainer/portainer-ce:latest' locally
+latest: Pulling from portainer/portainer-ce
+6970b305841e: Pull complete
+c05d4fb47930: Pull complete
+04de093ad5ed: Pull complete
+a9ff7abff372: Pull complete
+e09df2601140: Pull complete
+df254cde32a0: Pull complete
+6b34a21056c4: Pull complete
+faf3a09a336d: Pull complete
+26693e01e9e2: Pull complete
+4f4fb700ef54: Pull complete
+Digest: sha256:449202d765d28ec443c1657fc1121aff92b8afcee6b58bcea36e1f0e81e8297c
+Status: Downloaded newer image for portainer/portainer-ce:latest
+2f2acb83a1d6e03cb058bcc5944c6cd09a2e70c11ef5c040a5ad28f095360f48
+dinomilk@quetzalcoatlus:~/mediaserver$ nano docker-compose.yml
+dinomilk@quetzalcoatlus:~/mediaserver$ docker-compose down -d
+Stops containers and removes containers, networks, volumes, and images
+created by `up`.
+
+By default, the only things removed are:
+
+- Containers for services defined in the Compose file
+- Networks defined in the `networks` section of the Compose file
+- The default network, if one is used
+
+Networks and volumes defined as `external` are never removed.
+
+Usage: down [options]
+
+Options:
+    --rmi type              Remove images. Type must be one of:
+                              'all': Remove all images used by any service.
+                              'local': Remove only images that don't have a
+                              custom tag set by the `image` field.
+    -v, --volumes           Remove named volumes declared in the `volumes`
+                            section of the Compose file and anonymous volumes
+                            attached to containers.
+    --remove-orphans        Remove containers for services not defined in the
+                            Compose file
+    -t, --timeout TIMEOUT   Specify a shutdown timeout in seconds.
+                            (default: 10)
+dinomilk@quetzalcoatlus:~/mediaserver$ docker-compose down
+Stopping plex         ... done
+Stopping radarr       ... done
+Stopping prowlarr     ... done
+Stopping sonarr       ... done
+Stopping transmission ... done
+Stopping nordvpn      ... done
+Removing plex         ... done
+Removing radarr       ... done
+Removing prowlarr     ... done
+Removing sonarr       ... done
+Removing transmission ... done
+Removing nordvpn      ... done
+Removing network mediaserver_default
+dinomilk@quetzalcoatlus:~/mediaserver$ docker-compose -d up
+Define and run multi-container applications with Docker.
+
+Usage:
+  docker-compose [-f <arg>...] [--profile <name>...] [options] [--] [COMMAND] [ARGS...]
+  docker-compose -h|--help
+
+Options:
+  -f, --file FILE             Specify an alternate compose file
+                              (default: docker-compose.yml)
+  -p, --project-name NAME     Specify an alternate project name
+                              (default: directory name)
+  --profile NAME              Specify a profile to enable
+  -c, --context NAME          Specify a context name
+  --verbose                   Show more output
+  --log-level LEVEL           Set log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+  --ansi (never|always|auto)  Control when to print ANSI control characters
+  --no-ansi                   Do not print ANSI control characters (DEPRECATED)
+  -v, --version               Print version and exit
+  -H, --host HOST             Daemon socket to connect to
+
+  --tls                       Use TLS; implied by --tlsverify
+  --tlscacert CA_PATH         Trust certs signed only by this CA
+  --tlscert CLIENT_CERT_PATH  Path to TLS certificate file
+  --tlskey TLS_KEY_PATH       Path to TLS key file
+  --tlsverify                 Use TLS and verify the remote
+  --skip-hostname-check       Don't check the daemon's hostname against the
+                              name specified in the client certificate
+  --project-directory PATH    Specify an alternate working directory
+                              (default: the path of the Compose file)
+  --compatibility             If set, Compose will attempt to convert keys
+                              in v3 files to their non-Swarm equivalent (DEPRECATED)
+  --env-file PATH             Specify an alternate environment file
+
+Commands:
+  build              Build or rebuild services
+  config             Validate and view the Compose file
+  create             Create services
+  down               Stop and remove resources
+  events             Receive real time events from containers
+  exec               Execute a command in a running container
+  help               Get help on a command
+  images             List images
+  kill               Kill containers
+  logs               View output from containers
+  pause              Pause services
+  port               Print the public port for a port binding
+  ps                 List containers
+  pull               Pull service images
+  push               Push service images
+  restart            Restart services
+  rm                 Remove stopped containers
+  run                Run a one-off command
+  scale              Set number of containers for a service
+  start              Start services
+  stop               Stop services
+  top                Display the running processes
+  unpause            Unpause services
+  up                 Create and start containers
+  version            Show version information and quit
+dinomilk@quetzalcoatlus:~/mediaserver$ docker-compose up -d
+Creating network "mediaserver_default" with the default driver
+Creating radarr   ... done
+Creating prowlarr ... done
+Creating nordvpn  ... done
+Creating plex     ... done
+Creating sonarr   ... done
+Creating transmission ... done
+dinomilk@quetzalcoatlus:~/mediaserver$ # First, try this command to see the IP through the VPN container
+docker exec nordvpn curl -s ifconfig.me
+45.143.82.221dinomilk@quetzalcoatlus:~/docker exec nordvpn cat /data/status | grep "IP:" | grep "IP:"
+cat: /data/status: No such file or directory
+dinomilk@quetzalcoatlus:~/mediaserver$
+Network error: Software caused connection abort
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+Session stopped
+    - Press <Return> to exit tab
+    - Press R to restart session
+    - Press S to save terminal output to file
+    ┌──────────────────────────────────────────────────────────────────────┐
+    │                 • MobaXterm Personal Edition v25.1 •                 │
+    │               (SSH client, X server and network tools)               │
+    │                                                                      │
+    │ ⮞ SSH session to dinomilk@192.168.86.40                              │
+    │   • Direct SSH      :  ✓                                             │
+    │   • SSH compression :  ✓                                             │
+    │   • SSH-browser     :  ✓                                             │
+    │   • X11-forwarding  :  ✓  (remote display is forwarded through SSH)  │
+    │                                                                      │
+    │ ⮞ For more info, ctrl+click on help or visit our website.            │
+    └──────────────────────────────────────────────────────────────────────┘
+
+Welcome to Ubuntu 22.04.5 LTS (GNU/Linux 5.15.0-138-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Mon Apr 21 11:30:20 PM UTC 2025
+
+  System load:            0.01
+  Usage of /:             48.5% of 14.66GB
+  Memory usage:           15%
+  Swap usage:             0%
+  Processes:              213
+  Users logged in:        1
+  IPv4 address for ens18: 192.168.86.40
+  IPv6 address for ens18: fd28:2ca:fee7:e3c1:be24:11ff:fe90:6f36
+
+ * Strictly confined Kubernetes makes edge and IoT secure. Learn how MicroK8s
+   just raised the bar for easy, resilient and secure K8s cluster deployment.
+
+   https://ubuntu.com/engage/secure-kubernetes-at-the-edge
+
+Expanded Security Maintenance for Applications is not enabled.
+
+0 updates can be applied immediately.
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+New release '24.04.2 LTS' available.
+Run 'do-release-upgrade' to upgrade to it.
+
+
+Last login: Mon Apr 21 18:38:23 2025 from 192.168.86.34
+dinomilk@quetzalcoatlus:~$ docker run -d \
+  --name=flaresolverr \
+  -p 8191:8191 \
+  -e LOG_LEVEL=info \
+  --restart unless-stopped \
+  ghcr.io/flaresolverr/flaresolverr:latest
+Unable to find image 'ghcr.io/flaresolverr/flaresolverr:latest' locally
+latest: Pulling from flaresolverr/flaresolverr
+f7b75fe1f735: Pull complete
+6fb769904474: Pull complete
+7b401a2f5ebc: Pull complete
+aeafed2c500c: Pull complete
+f059d28d8415: Pull complete
+2c166c0d9399: Pull complete
+a0a09e171b20: Pull complete
+5464abad85e4: Pull complete
+2e901c2afe41: Pull complete
+c6b6b51e0ce8: Pull complete
+98e38fd66970: Pull complete
+5f3491875a15: Pull complete
+ef59441e479b: Pull complete
+Digest: sha256:f104ee51e5124d83cf3be9b37480649355d223f7d8f9e453d0d5ef06c6e3b31b
+Status: Downloaded newer image for ghcr.io/flaresolverr/flaresolverr:latest
+13826f90b727a500a2c1abde3009d38b4b1e7d2803289794eb1d1b8222cd2837
+dinomilk@quetzalcoatlus:~$ cd list
+-bash: cd: list: No such file or directory
+dinomilk@quetzalcoatlus:~$ cd mediaserver/
+dinomilk@quetzalcoatlus:~/mediaserver$ nano docker-compose.yml
+dinomilk@quetzalcoatlus:~/mediaserver$ docker-compose up -d
+prowlarr is up-to-date
+radarr is up-to-date
+sonarr is up-to-date
+nordvpn is up-to-date
+plex is up-to-date
+transmission is up-to-date
+Creating flaresolverr ... error
+
+ERROR: for flaresolverr  Cannot create container for service flaresolverr: Conflict. The container name "/flaresolverr" is already in use by container "13826f90b727a500a2c1abde3009d38b4b1e7d2803289794eb1d1b8222cd2837". You have to remove (or rename) that container to be able to reuse that name.
+
+ERROR: for flaresolverr  Cannot create container for service flaresolverr: Conflict. The container name "/flaresolverr" is already in use by container "13826f90b727a500a2c1abde3009d38b4b1e7d2803289794eb1d1b8222cd2837". You have to remove (or rename) that container to be able to reuse that name.
+ERROR: Encountered errors while bringing up the project.
+dinomilk@quetzalcoatlus:~/mediaserver$ docker ps
+CONTAINER ID   IMAGE                                      COMMAND                  CREATED         STATUS                 PORTS                                                                                                        NAMES
+13826f90b727   ghcr.io/flaresolverr/flaresolverr:latest   "/usr/bin/dumb-init …"   3 minutes ago   Up 3 minutes           0.0.0.0:8191->8191/tcp, [::]:8191->8191/tcp, 8192/tcp                                                        flaresolverr
+1353e1e3e6d2   linuxserver/transmission                   "/init"                  4 hours ago     Up 4 hours                                                                                                                          transmission
+3375c0c2cd89   linuxserver/sonarr:latest                  "/init"                  4 hours ago     Up 4 hours             0.0.0.0:8989->8989/tcp, [::]:8989->8989/tcp                                                                  sonarr
+9f8f6b4b375b   plexinc/pms-docker:latest                  "/init"                  4 hours ago     Up 4 hours (healthy)   1900/udp, 32410/udp, 8324/tcp, 32412-32414/udp, 32469/tcp, 0.0.0.0:32400->32400/tcp, [::]:32400->32400/tcp   plex
+52aac65c1100   ghcr.io/bubuntux/nordvpn                   "/init /bin/sh -c 'n…"   4 hours ago     Up 4 hours             0.0.0.0:9092->9091/tcp, [::]:9092->9091/tcp                                                                  nordvpn
+5b2df3669d4e   linuxserver/prowlarr:latest                "/init"                  4 hours ago     Up 4 hours             0.0.0.0:9696->9696/tcp, [::]:9696->9696/tcp                                                                  prowlarr
+2b928884573d   linuxserver/radarr:latest                  "/init"                  4 hours ago     Up 4 hours             0.0.0.0:7878->7878/tcp, [::]:7878->7878/tcp                                                                  radarr
+2f2acb83a1d6   portainer/portainer-ce                     "/portainer"             4 hours ago     Up 4 hours             8000/tcp, 9443/tcp, 0.0.0.0:9000->9000/tcp, [::]:9000->9000/tcp                                              portainer
+dinomilk@quetzalcoatlus:~/mediaserver$ docker-compose down -d
+Stops containers and removes containers, networks, volumes, and images
+created by `up`.
+
+By default, the only things removed are:
+
+- Containers for services defined in the Compose file
+- Networks defined in the `networks` section of the Compose file
+- The default network, if one is used
+
+Networks and volumes defined as `external` are never removed.
+
+Usage: down [options]
+
+Options:
+    --rmi type              Remove images. Type must be one of:
+                              'all': Remove all images used by any service.
+                              'local': Remove only images that don't have a
+                              custom tag set by the `image` field.
+    -v, --volumes           Remove named volumes declared in the `volumes`
+                            section of the Compose file and anonymous volumes
+                            attached to containers.
+    --remove-orphans        Remove containers for services not defined in the
+                            Compose file
+    -t, --timeout TIMEOUT   Specify a shutdown timeout in seconds.
+                            (default: 10)
+dinomilk@quetzalcoatlus:~/mediaserver$ docker-compose -d down
+Define and run multi-container applications with Docker.
+
+Usage:
+  docker-compose [-f <arg>...] [--profile <name>...] [options] [--] [COMMAND] [ARGS...]
+  docker-compose -h|--help
+
+Options:
+  -f, --file FILE             Specify an alternate compose file
+                              (default: docker-compose.yml)
+  -p, --project-name NAME     Specify an alternate project name
+                              (default: directory name)
+  --profile NAME              Specify a profile to enable
+  -c, --context NAME          Specify a context name
+  --verbose                   Show more output
+  --log-level LEVEL           Set log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+  --ansi (never|always|auto)  Control when to print ANSI control characters
+  --no-ansi                   Do not print ANSI control characters (DEPRECATED)
+  -v, --version               Print version and exit
+  -H, --host HOST             Daemon socket to connect to
+
+  --tls                       Use TLS; implied by --tlsverify
+  --tlscacert CA_PATH         Trust certs signed only by this CA
+  --tlscert CLIENT_CERT_PATH  Path to TLS certificate file
+  --tlskey TLS_KEY_PATH       Path to TLS key file
+  --tlsverify                 Use TLS and verify the remote
+  --skip-hostname-check       Don't check the daemon's hostname against the
+                              name specified in the client certificate
+  --project-directory PATH    Specify an alternate working directory
+                              (default: the path of the Compose file)
+  --compatibility             If set, Compose will attempt to convert keys
+                              in v3 files to their non-Swarm equivalent (DEPRECATED)
+  --env-file PATH             Specify an alternate environment file
+
+Commands:
+  build              Build or rebuild services
+  config             Validate and view the Compose file
+  create             Create services
+  down               Stop and remove resources
+  events             Receive real time events from containers
+  exec               Execute a command in a running container
+  help               Get help on a command
+  images             List images
+  kill               Kill containers
+  logs               View output from containers
+  pause              Pause services
+  port               Print the public port for a port binding
+  ps                 List containers
+  pull               Pull service images
+  push               Push service images
+  restart            Restart services
+  rm                 Remove stopped containers
+  run                Run a one-off command
+  scale              Set number of containers for a service
+  start              Start services
+  stop               Stop services
+  top                Display the running processes
+  unpause            Unpause services
+  up                 Create and start containers
+  version            Show version information and quit
+dinomilk@quetzalcoatlus:~/mediaserver$ docker-compose down
+Stopping transmission ... done
+Stopping sonarr       ... done
+Stopping plex         ... done
+Stopping nordvpn      ... done
+Stopping prowlarr     ... done
+Stopping radarr       ... done
+Removing transmission ... done
+Removing sonarr       ... done
+Removing plex         ... done
+Removing nordvpn      ... done
+Removing prowlarr     ... done
+Removing radarr       ... done
+Removing network mediaserver_default
+dinomilk@quetzalcoatlus:~/mediaserver$ docker-compose -d up
+Define and run multi-container applications with Docker.
+
+Usage:
+  docker-compose [-f <arg>...] [--profile <name>...] [options] [--] [COMMAND] [ARGS...]
+  docker-compose -h|--help
+
+Options:
+  -f, --file FILE             Specify an alternate compose file
+                              (default: docker-compose.yml)
+  -p, --project-name NAME     Specify an alternate project name
+                              (default: directory name)
+  --profile NAME              Specify a profile to enable
+  -c, --context NAME          Specify a context name
+  --verbose                   Show more output
+  --log-level LEVEL           Set log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+  --ansi (never|always|auto)  Control when to print ANSI control characters
+  --no-ansi                   Do not print ANSI control characters (DEPRECATED)
+  -v, --version               Print version and exit
+  -H, --host HOST             Daemon socket to connect to
+
+  --tls                       Use TLS; implied by --tlsverify
+  --tlscacert CA_PATH         Trust certs signed only by this CA
+  --tlscert CLIENT_CERT_PATH  Path to TLS certificate file
+  --tlskey TLS_KEY_PATH       Path to TLS key file
+  --tlsverify                 Use TLS and verify the remote
+  --skip-hostname-check       Don't check the daemon's hostname against the
+                              name specified in the client certificate
+  --project-directory PATH    Specify an alternate working directory
+                              (default: the path of the Compose file)
+  --compatibility             If set, Compose will attempt to convert keys
+                              in v3 files to their non-Swarm equivalent (DEPRECATED)
+  --env-file PATH             Specify an alternate environment file
+
+Commands:
+  build              Build or rebuild services
+  config             Validate and view the Compose file
+  create             Create services
+  down               Stop and remove resources
+  events             Receive real time events from containers
+  exec               Execute a command in a running container
+  help               Get help on a command
+  images             List images
+  kill               Kill containers
+  logs               View output from containers
+  pause              Pause services
+  port               Print the public port for a port binding
+  ps                 List containers
+  pull               Pull service images
+  push               Push service images
+  restart            Restart services
+  rm                 Remove stopped containers
+  run                Run a one-off command
+  scale              Set number of containers for a service
+  start              Start services
+  stop               Stop services
+  top                Display the running processes
+  unpause            Unpause services
+  up                 Create and start containers
+  version            Show version information and quit
+dinomilk@quetzalcoatlus:~/mediaserver$ docker-compose up -d
+Creating network "mediaserver_default" with the default driver
+Creating flaresolverr ... error
+Creating sonarr       ...
+Creating nordvpn      ...
+Creating radarr       ...
+
+Creating sonarr       ... done
+Creating nordvpn      ... done
+Creating radarr       ... done
+Creating prowlarr     ... done
+Creating plex         ... done
+Creating transmission ... done
+
+ERROR: for flaresolverr  Cannot create container for service flaresolverr: Conflict. The container name "/flaresolverr" is already in use by container "13826f90b727a500a2c1abde3009d38b4b1e7d2803289794eb1d1b8222cd2837". You have to remove (or rename) that container to be able to reuse that name.
+ERROR: Encountered errors while bringing up the project.
+dinomilk@quetzalcoatlus:~/mediaserver$ docker ps
+CONTAINER ID   IMAGE                                      COMMAND                  CREATED          STATUS                    PORTS                                                                                                        NAMES
+d00e28ac443e   linuxserver/transmission                   "/init"                  11 seconds ago   Up 11 seconds                                                                                                                          transmission
+dd922307bdd5   linuxserver/prowlarr:latest                "/init"                  11 seconds ago   Up 11 seconds             0.0.0.0:9696->9696/tcp, [::]:9696->9696/tcp                                                                  prowlarr
+6d16822842bd   linuxserver/radarr:latest                  "/init"                  11 seconds ago   Up 11 seconds             0.0.0.0:7878->7878/tcp, [::]:7878->7878/tcp                                                                  radarr
+8120cf55e53d   plexinc/pms-docker:latest                  "/init"                  11 seconds ago   Up 11 seconds (healthy)   1900/udp, 32410/udp, 8324/tcp, 32412-32414/udp, 32469/tcp, 0.0.0.0:32400->32400/tcp, [::]:32400->32400/tcp   plex
+3859b4706a15   ghcr.io/bubuntux/nordvpn                   "/init /bin/sh -c 'n…"   11 seconds ago   Up 11 seconds             0.0.0.0:9092->9091/tcp, [::]:9092->9091/tcp                                                                  nordvpn
+d1c52f95726d   linuxserver/sonarr:latest                  "/init"                  11 seconds ago   Up 11 seconds             0.0.0.0:8989->8989/tcp, [::]:8989->8989/tcp                                                                  sonarr
+13826f90b727   ghcr.io/flaresolverr/flaresolverr:latest   "/usr/bin/dumb-init …"   4 minutes ago    Up 4 minutes              0.0.0.0:8191->8191/tcp, [::]:8191->8191/tcp, 8192/tcp                                                        flaresolverr
+2f2acb83a1d6   portainer/portainer-ce                     "/portainer"             4 hours ago      Up 4 hours                8000/tcp, 9443/tcp, 0.0.0.0:9000->9000/tcp, [::]:9000->9000/tcp                                              portainer
+dinomilk@quetzalcoatlus:~/mediaserver$ cd..
+cd..: command not found
+dinomilk@quetzalcoatlus:~/mediaserver$ cd ..
+dinomilk@quetzalcoatlus:~$ docker ps
+CONTAINER ID   IMAGE                                      COMMAND                  CREATED              STATUS                        PORTS                                                                                                        NAMES
+d00e28ac443e   linuxserver/transmission                   "/init"                  About a minute ago   Up About a minute                                                                                                                          transmission
+dd922307bdd5   linuxserver/prowlarr:latest                "/init"                  About a minute ago   Up About a minute             0.0.0.0:9696->9696/tcp, [::]:9696->9696/tcp                                                                  prowlarr
+6d16822842bd   linuxserver/radarr:latest                  "/init"                  About a minute ago   Up About a minute             0.0.0.0:7878->7878/tcp, [::]:7878->7878/tcp                                                                  radarr
+8120cf55e53d   plexinc/pms-docker:latest                  "/init"                  About a minute ago   Up About a minute (healthy)   1900/udp, 32410/udp, 8324/tcp, 32412-32414/udp, 32469/tcp, 0.0.0.0:32400->32400/tcp, [::]:32400->32400/tcp   plex
+3859b4706a15   ghcr.io/bubuntux/nordvpn                   "/init /bin/sh -c 'n…"   About a minute ago   Up About a minute             0.0.0.0:9092->9091/tcp, [::]:9092->9091/tcp                                                                  nordvpn
+d1c52f95726d   linuxserver/sonarr:latest                  "/init"                  About a minute ago   Up About a minute             0.0.0.0:8989->8989/tcp, [::]:8989->8989/tcp                                                                  sonarr
+13826f90b727   ghcr.io/flaresolverr/flaresolverr:latest   "/usr/bin/dumb-init …"   5 minutes ago        Up 5 minutes                  0.0.0.0:8191->8191/tcp, [::]:8191->8191/tcp, 8192/tcp                                                        flaresolverr
+2f2acb83a1d6   portainer/portainer-ce                     "/portainer"             4 hours ago          Up 4 hours                    8000/tcp, 9443/tcp, 0.0.0.0:9000->9000/tcp, [::]:9000->9000/tcp                                              portainer
+dinomilk@quetzalcoatlus:~$ docker down
+docker: unknown command: docker down
+
+Run 'docker --help' for more information
+dinomilk@quetzalcoatlus:~$ docker-compose down
+ERROR:
+        Can't find a suitable configuration file in this directory or any
+        parent. Are you in the right directory?
+
+        Supported filenames: docker-compose.yml, docker-compose.yaml, compose.yml, compose.yaml
+
+dinomilk@quetzalcoatlus:~$ cd mediaserver/
+dinomilk@quetzalcoatlus:~/mediaserver$ docker-compose down
+Stopping transmission ... done
+Stopping prowlarr     ... done
+Stopping plex         ... done
+Stopping plex         ...
+Removing transmission ... done
+Removing prowlarr     ... done
+Removing radarr       ... done
+Removing plex         ... done
+Removing nordvpn      ... done
+Removing sonarr       ... done
+Removing network mediaserver_default                                                                                                         dinomilk@quetzalcoatlus:~/mediaserver$ nano docker-compose.yml
+dinomilk@quetzalcoatlus:~/mediaserver$ docker ps
+CONTAINER ID   IMAGE                                      COMMAND                  CREATED         STATUS         PORTS                                                             NAMES
+13826f90b727   ghcr.io/flaresolverr/flaresolverr:latest   "/usr/bin/dumb-init …"   6 minutes ago   Up 6 minutes   0.0.0.0:8191->8191/tcp, [::]:8191->8191/tcp, 8192/tcp             flaresolverr
+2f2acb83a1d6   portainer/portainer-ce                     "/portainer"             5 hours ago     Up 5 hours     8000/tcp, 9443/tcp, 0.0.0.0:9000->9000/tcp, [::]:9000->9000/tcp   portainer
+dinomilk@quetzalcoatlus:~/mediaserver$ docker ps
+CONTAINER ID   IMAGE                                      COMMAND                  CREATED         STATUS         PORTS                                                             NAMES
+13826f90b727   ghcr.io/flaresolverr/flaresolverr:latest   "/usr/bin/dumb-init …"   6 minutes ago   Up 6 minutes   0.0.0.0:8191->8191/tcp, [::]:8191->8191/tcp, 8192/tcp             flaresolverr
+2f2acb83a1d6   portainer/portainer-ce                     "/portainer"             5 hours ago     Up 5 hours     8000/tcp, 9443/tcp, 0.0.0.0:9000->9000/tcp, [::]:9000->9000/tcp   portainer
+dinomilk@quetzalcoatlus:~/mediaserver$ docker stop flaresolverr
+flaresolverr
+dinomilk@quetzalcoatlus:~/mediaserver$ docker rm flaresolverr
+flaresolverr
+dinomilk@quetzalcoatlus:~/mediaserver$ nano docker-compose.yml
+dinomilk@quetzalcoatlus:~/mediaserver$ docker-compose up -d
+Creating network "mediaserver_default" with the default driver
+Creating nordvpn      ... done
+Creating radarr       ... done
+Creating sonarr       ... done
+Creating prowlarr     ... done
+Creating flaresolverr ... done
+Creating plex         ... done
+Creating transmission ... done
+dinomilk@quetzalcoatlus:~/mediaserver$ nano docker-compose.yml
+dinomilk@quetzalcoatlus:~/mediaserver$ docker-compose up -d
+ERROR: yaml.parser.ParserError: while parsing a block mapping
+  in "./docker-compose.yml", line 4, column 3
+expected <block end>, but found '<block mapping start>'
+  in "./docker-compose.yml", line 114, column 4
+dinomilk@quetzalcoatlus:~/mediaserver$ nano docker-compose.yml
+dinomilk@quetzalcoatlus:~/mediaserver$ nano docker-compose.yml
+  GNU nano 6.2                                                    docker-compose.yml                                                        M
+  # NordVPN Setup
+  nordvpn:
+    container_name: nordvpn
+    image: ghcr.io/bubuntux/nordvpn
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW  # Added this
+      - SYS_MODULE
+    sysctls:
+      - net.ipv4.conf.all.rp_filter=2
+    environment:
+      - TOKEN=e9f2ab191e109a137e8dfd8b96e2fb5191d3760dee967bee4c35ca786407f852
+      - CONNECT=us
+      - TECHNOLOGY=NordLynx
+      - NETWORK=192.168.86.0/24
+      - PORTS=9092
+    ports:
+      - 9092:9091  # Transmission Web UI
+    volumes:
+      - /apatosaurus/data/appdata/nordvpn:/data
+    restart: unless-stopped
+
+  # Transmission
+  transmission:
+    container_name: transmission
+    image: linuxserver/transmission
+    network_mode: service:nordvpn
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Anchorage
+    volumes:
+      - /apatosaurus/data/appdata/transmission:/config
+      - /apatosaurus/data/downloads:/downloads
+    restart: unless-stopped
+    depends_on:
+      - nordvpn
+
+  # FlareSolverr
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    environment:
+      - LOG_LEVEL=info
+    ports:
+      - 8191:8191
+    restart: unless-stopped
+
+  # Samba/SMB Setup for Windows Fileshare
+   samba:
+    image: dperson/samba
+    container_name: samba
+    hostname: mediaserver
+    ports:
+      - "139:139"
+      - "445:445"
+    volumes:
+      - /apatosaurus/data/a
+    environment:
+      - TZ=America/Anchorage
+    command: >-
+      -u "quetzuser;datadatadata"
+      -s "media;/shared/media;yes;no;yes;all;none;all"
+    restart: unless-stopped
+
+
+^G Help         ^O Write Out    ^W Where Is     ^K Cut          ^T Execute      ^C Location     M-U Undo        M-A Set Mark    M-] To Bracket
+^X Exit         ^R Read File    ^\ Replace      ^U Paste        ^J Justify      ^/ Go To Line   M-E Redo        M-6 Copy        ^Q Where Was
